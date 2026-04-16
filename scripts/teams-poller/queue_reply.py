@@ -18,9 +18,19 @@ else:
 
 if reply and reply != "TEAMS_NO_REPLY":
     OUTBOUND_QUEUE.parent.mkdir(parents=True, exist_ok=True)
+    # Check if there's a pending inbound with a chat_id to reply to
+    INBOUND_QUEUE = OUTBOUND_QUEUE.parent / "inbound_queue.json"
+    target_chat_id = ""
+    try:
+        with open(INBOUND_QUEUE.parent / "last_inbound_chat.json") as f:
+            target_chat_id = json.load(f).get("chat_id", "")
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+
     with open(OUTBOUND_QUEUE, "w") as f:
         json.dump({
             "reply": reply,
+            "chat_id": target_chat_id,
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }, f, indent=2)
     print("Reply queued for posting")

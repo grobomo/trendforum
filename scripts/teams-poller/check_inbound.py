@@ -14,6 +14,12 @@ try:
         entry = json.load(f)
     if entry and entry.get("prompt"):
         print(entry["prompt"])
+        # Save chat_id for queue_reply to use
+        chat_id = entry.get("chat_id", "")
+        if chat_id:
+            LAST_CHAT = INBOUND_QUEUE.parent / "last_inbound_chat.json"
+            with open(LAST_CHAT, "w") as f:
+                json.dump({"chat_id": chat_id}, f)
         # Clear the queue
         with open(INBOUND_QUEUE, "w") as f:
             json.dump(None, f)

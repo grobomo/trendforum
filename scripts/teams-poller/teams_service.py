@@ -61,6 +61,7 @@ def write_inbound(prompt: str, pending_reply: dict):
     entry = {
         "prompt": prompt,
         "pending_reply": pending_reply,
+        "chat_id": pending_reply.get("chat_id", "") if pending_reply else "",
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
     # Atomic-ish write
@@ -177,8 +178,11 @@ def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
         for msg in new_messages:
             parts.append(f"- **{msg['sender_name']}**: {msg['text']}")
 
+    # Tag which chat this is from
+    chat_label = "private" if chat_id == config.get("private_chat_id") else "group"
     parts.extend([
         "",
+        f"[Chat: {chat_label}]",
         "Reply to the new message(s). Your reply will be posted to the Teams chat.",
         "If the messages don't need a reply (casual banter, already answered, etc.), respond with just: TEAMS_NO_REPLY",
     ])
@@ -206,15 +210,15 @@ def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
     return prompt
 
 
-def post_reply(client: GraphClient, config: dict, reply_text: str):
+def post_reply(client: GraphClient, config: dict, reply_text: str, target_chat_id: str = None):
     """Post a reply to Teams."""
-    chat_id = config.get("chat_id", "")
+    chat_id = target_chat_id or config.get("chat_id", "")
     bot_signature = config.get("bot_signature", BOT_SIGNATURE)
 
     signed = f"{reply_text}\n\n<i>{bot_signature}</i>"
     try:
         teams.send_chat_message(client, chat_id, signed)
-        log.info("Posted reply to Teams")
+        log.info("Posted reply to Teams chat %s", chat_id[:30])
     except Exception as e:
         log.error("Failed to post reply: %s", e)
 
@@ -267,17 +271,24 @@ def run_service(interval: int = 5):
                     token_refresh_time = time.time()
                     log.info("Token refreshed")
 
-            # Poll for new messages
-            prompt = poll_once(client, config, state)
-            if prompt:
-                write_inbound(prompt, state.get("pending_reply"))
+            # Poll both chats for new messages
+            chat_ids = [config.get("chat_id", "")]
+            private_id = config.get("private_chat_id", "")
+            if private_id:
+                chat_ids.append(private_id)
+
+            for cid in chat_ids:
+                prompt = poll_once(client, {**config, "chat_id": cid}, state)
+                if prompt:
+                    write_inbound(prompt, state.get("pending_reply"))
 
             # Check for outbound replies to post
             outbound = read_and_clear_outbound()
             if outbound and outbound.get("reply"):
                 reply = outbound["reply"].strip()
                 if reply and reply != "TEAMS_NO_REPLY":
-                    post_reply(client, config, reply)
+                    target = outbound.get("chat_id") or config.get("chat_id", "")
+                    post_reply(client, config, reply, target_chat_id=target)
 
             consecutive_errors = 0
 
