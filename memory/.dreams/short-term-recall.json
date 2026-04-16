@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-16T19:50:23.237Z",
+  "updatedAt": "2026-04-16T20:41:02.203Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -403,6 +403,130 @@
         "near-zero",
         "fixed",
         "removing"
+      ]
+    },
+    "memory:memory/2026-04-16.md:204:224": {
+      "key": "memory:memory/2026-04-16.md:204:224",
+      "path": "memory/2026-04-16.md",
+      "startLine": 204,
+      "endLine": 224,
+      "source": "memory",
+      "snippet": "- Shared MCP manager link with Chrissa (initially shared wrong project) - **Mission update**: Coconut = central brain for \"The Misfits\" sales squad - Joel Ginsberg (TS-NA) — Post-sales Technical Advisor - Chrissa Constantine (SE-NA) — Sales Engineer (hackathon winner!) - Justin Hook (SAL-NA) — Enterprise Account Manager - Squad bonded over shared trauma at QBR dinner - Updated SOUL.md with squad brain mission, USER.md with squad profiles + key accounts - Justin Hook joined private Teams chat, introduced himself (San Diego, 858-805-1985) - Chrissa acknowledged new role, busy with automation projects - Sent squad intro message to private Teams chat asking Chrissa about her automation -",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T20:41:02.203Z",
+      "lastRecalledAt": "2026-04-16T20:41:02.203Z",
+      "queryHashes": [
+        "17cc14570f5b"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "ts-na",
+        "post-sales",
+        "se-na",
+        "sal-na",
+        "soul.md",
+        "user.md",
+        "858-805-1985",
+        "shared"
+      ]
+    },
+    "memory:memory/2026-04-16.md:221:243": {
+      "key": "memory:memory/2026-04-16.md:221:243",
+      "path": "memory/2026-04-16.md",
+      "startLine": 221,
+      "endLine": 243,
+      "source": "memory",
+      "snippet": "- Joel wants: recording analyzer file watcher, Graph API transcripts, eventually AWS hosting via claude-portable - Triaged emails throughout day: - EP MDR alert (false positive, typo `trednmicro.com` → closed by customer Dan Toresi) - Panavision SIEM alignment (Chrissa's thread, Matt confirming Windows Event Rule 1002795) - DeepSeas/Dole meeting scheduled: tomorrow 11-11:30 AM PST (1-1:30 PM CDT) via Justin Hook - Automated lab cost report ($23.22/day savings from shut-down VMs) - Token expiry issues around 2:22 PM CDT — service auto-recovered - Quiet period 12:30-2:30 PM — all polls returned empty, HEARTBEAT_OK responses ### Key Files Modified - `SOUL.md` — Rewrote with Misfits squ",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T20:41:02.203Z",
+      "lastRecalledAt": "2026-04-16T20:41:02.203Z",
+      "queryHashes": [
+        "17cc14570f5b"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "claude-portable",
+        "trednmicro.com",
+        "deepseas/dole",
+        "11-11",
+        "1-1",
+        "23.22/day",
+        "shut-down",
+        "auto-recovered"
+      ]
+    },
+    "memory:memory/2026-04-16.md:161:193": {
+      "key": "memory:memory/2026-04-16.md:161:193",
+      "path": "memory/2026-04-16.md",
+      "startLine": 161,
+      "endLine": 193,
+      "source": "memory",
+      "snippet": "- Systemd user service polling Graph every 3 seconds (Joel's preference) - Writes new messages to `~/.openclaw/teams-poller/inbound_queue.json` - Reads replies from `outbound_queue.json` and posts to Teams - Auto-refreshes token every 30 minutes, handles error streaks - Cron job `teams-poll` (every 10s) checks inbound queue via `check_inbound.py` - Replies written via `queue_reply.py` → service picks up and posts ### Watchdog Cron (`teams-watchdog`) - Every 5 minutes, checks `systemctl --user is-active teams-poller` - Restarts if inactive/failed ### Email Poller (`scripts/email-poller/`) - `poll_email.py` — polls Graph for unread emails, formats summaries - Cron job `email-poll` every 1 mi",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.6316019263894959,
+      "maxScore": 0.6316019263894959,
+      "firstRecalledAt": "2026-04-16T20:41:02.203Z",
+      "lastRecalledAt": "2026-04-16T20:41:02.203Z",
+      "queryHashes": [
+        "17cc14570f5b"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "outbound-queue.json",
+        "auto-refreshes",
+        "teams-poll",
+        "check-inbound.py",
+        "queue-reply.py",
+        "teams-watchdog",
+        "is-active",
+        "teams-poller"
+      ]
+    },
+    "memory:memory/2026-04-16.md:139:165": {
+      "key": "memory:memory/2026-04-16.md:139:165",
+      "path": "memory/2026-04-16.md",
+      "startLine": 139,
+      "endLine": 165,
+      "source": "memory",
+      "snippet": "### New approach: `scripts/teams-poller/` - **poll_teams.py** — polls MS Graph for new messages, builds conversation context (last 30 messages), presents new messages with full chat history - **send_reply.py** — posts replies back to Teams with @mentions and bot signature - **config.json** — chat_id, bot_signature, context window settings - State tracked in `~/.openclaw/teams-poller/state.json` - Skips stale messages (>10 min old) to avoid replaying backlogs after outages - Uses same msgraph lib at `~/lib/teams-agent` - Cron job `teams-poll` runs every 1 minute, fires system-event to main session - Old bridge Teams channel disabled (config.json `teams.enabled: false`) - First real reply sent",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.6314305974689043,
+      "maxScore": 0.6314305974689043,
+      "firstRecalledAt": "2026-04-16T20:41:02.203Z",
+      "lastRecalledAt": "2026-04-16T20:41:02.203Z",
+      "queryHashes": [
+        "17cc14570f5b"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "scripts/teams-poller",
+        "poll-teams.py",
+        "send-reply.py",
+        "config.json",
+        "chat-id",
+        "bot-signature",
+        "openclaw/teams-poller/state.json",
+        "lib/teams-agent"
       ]
     }
   }

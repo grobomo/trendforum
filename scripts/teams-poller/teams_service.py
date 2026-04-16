@@ -18,10 +18,10 @@ import json
 import logging
 import os
 import signal
+import subprocess
 import sys
 import time
-import urllib.request
-import urllib.error
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -73,7 +73,7 @@ def _get_gateway_token() -> str | None:
 
 
 def _wake_openclaw():
-    """Send a wake event to OpenClaw gateway so it processes the inbound queue immediately."""
+    """Wake OpenClaw by sending a message via the chat completions API (fire-and-forget)."""
     global _last_wake_time
     now = time.time()
     if now - _last_wake_time < WAKE_DEBOUNCE_SECONDS:
@@ -84,24 +84,32 @@ def _wake_openclaw():
     if not token:
         log.warning("No gateway token found, skipping wake")
         return
-    try:
-        payload = json.dumps({
-            "text": "New Teams message received. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle output per the unified poll instructions.",
-            "mode": "now",
-        }).encode()
-        req = urllib.request.Request(
-            f"http://127.0.0.1:{OPENCLAW_PORT}/hooks/wake",
-            data=payload,
-            headers={
-                "Authorization": f"Bearer {token}",
-                "Content-Type": "application/json",
-            },
-            method="POST",
-        )
-        with urllib.request.urlopen(req, timeout=5) as resp:
-            log.info("Woke OpenClaw (status %d)", resp.status)
-    except Exception as e:
-        log.warning("Failed to wake OpenClaw: %s", e)
+
+    def _do_wake():
+        try:
+            payload = json.dumps({
+                "model": "openclaw/main",
+                "messages": [{"role": "system", "content": "New Teams message received. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle output: TEAMS = compose reply then run python3 /home/ubu/.openclaw/workspace/scripts/teams-poller/queue_reply.py with your reply. GITHUB = compose replies in GITHUB_REPLY format then run python3 /home/ubu/.openclaw/workspace/scripts/github-poller/send_reply.py. EMAIL = summarize and flag urgent items. If no output, do nothing."}, {"role": "user", "content": "A new Teams message just arrived. Process it now."}],
+                "stream": False,
+            })
+            # Fire-and-forget via curl subprocess so we don't block the poll loop
+            subprocess.run(
+                ["curl", "-s", "-X", "POST",
+                 f"http://127.0.0.1:{OPENCLAW_PORT}/v1/chat/completions",
+                 "-H", f"Authorization: Bearer {token}",
+                 "-H", "Content-Type: application/json",
+                 "-d", payload,
+                 "--max-time", "120"],
+                capture_output=True, timeout=130,
+            )
+            log.info("OpenClaw wake completed")
+        except Exception as e:
+            log.warning("Failed to wake OpenClaw: %s", e)
+
+    # Run in background thread so poll loop isn't blocked
+    t = threading.Thread(target=_do_wake, daemon=True)
+    t.start()
+    log.info("Sent wake to OpenClaw (background thread)")
 
 
 # ── Queue files ──────────────────────────────────────────────────
