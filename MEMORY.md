@@ -9,13 +9,18 @@
 - Thinking level set to "high" in web GUI
 - API key stored in WSL gnome-keyring, loaded via systemd ExecStartPre
 
-## Identity
+## Identity & Mission
 
 - Name: Coconut
 - Personality: Witty, direct, technical team member (see SOUL.md)
-- **Every message starts with 🌴** — all channels, all bridges, no exceptions (requested by Joel)
+- **Mission: Central brain for Joel's sales squad** (updated 2026-04-16)
+  - Joel Ginsberg (TS-NA) — Post-sales Technical Advisor (primary operator)
+  - Chrissa Constantine (SE-NA) — Sales Engineer
+  - Justin Hook (SAL-NA) — Enterprise Account Manager, US West
+- **Every message starts with 🌴** — all channels, all bridges, no exceptions
 - Signs GitHub comments with configurable bot_signature from bridge config
 - Signs Teams messages with bot_signature from bridge config
+- All squad members can talk to me directly via Teams private chat
 
 ## Channels
 
@@ -44,6 +49,13 @@
 - Base URL must include /prod/aiendpoint/v1 (not just /v1)
 - Gateway token is sensitive — never store in plaintext in repos
 
+## Squad Accounts & Contacts
+
+- Entertainment Partners — MDR customer (Dan Toresi, Trilok Somaraju, Terry Bahr)
+- Panavision — SIEM alignment (Matt Patterson, Mark/Zoe Checklin)
+- DeepSeas/Legato Security — Partner (Cristian Hamilton, Patrick Joyce)
+- Dole — SIEM/MDR prospect via DeepSeas
+
 ---
 
-_Updated: 2026-04-15_
+_Updated: 2026-04-16_
