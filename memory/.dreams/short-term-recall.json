@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-16T10:58:55.892Z",
+  "updatedAt": "2026-04-16T19:50:23.237Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -279,6 +279,130 @@
         "request-timeout-seconds",
         "github-channel.py",
         "time-based"
+      ]
+    },
+    "memory:memory/2026-04-16.md:26:52": {
+      "key": "memory:memory/2026-04-16.md:26:52",
+      "path": "memory/2026-04-16.md",
+      "startLine": 26,
+      "endLine": 52,
+      "source": "memory",
+      "snippet": "## Teams Chat — Switched to Cron Poller The old custom Teams bridge (in github-bridge) was a disaster — it relayed each Teams message individually to OpenClaw as a standalone chat completion, with no conversation context. Result: Coconut replied to every historical message at once (\"Coconut Bourne\" moment). ### New approach: `scripts/teams-poller/` - **poll_teams.py** — polls MS Graph for new messages, builds conversation context (last 30 messages), presents new messages with full chat history - **send_reply.py** — posts replies back to Teams with @mentions and bot signature - **config.json** — chat_id, bot_signature, context window settings - State tracked in `~/.openclaw/teams-poller/sta",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T19:50:23.237Z",
+      "lastRecalledAt": "2026-04-16T19:50:23.237Z",
+      "queryHashes": [
+        "253d6f330562"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "github-bridge",
+        "scripts/teams-poller",
+        "poll-teams.py",
+        "send-reply.py",
+        "config.json",
+        "chat-id",
+        "bot-signature",
+        "openclaw/teams-poller/sta"
+      ]
+    },
+    "memory:memory/2026-04-16.md:44:81": {
+      "key": "memory:memory/2026-04-16.md:44:81",
+      "path": "memory/2026-04-16.md",
+      "startLine": 44,
+      "endLine": 81,
+      "source": "memory",
+      "snippet": "3. Stale message filtering prevents replay storms 4. Bot signature detection skips own posts ## Architecture Upgrade — Service + Queue Model Joel wanted faster Teams response times. Evolved from 1min cron → 15s cron → full service: ### Teams Service (`teams_service.py`) - Systemd user service polling Graph every 3 seconds (Joel's preference) - Writes new messages to `~/.openclaw/teams-poller/inbound_queue.json` - Reads replies from `outbound_queue.json` and posts to Teams - Auto-refreshes token every 30 minutes, handles error streaks - Cron job `teams-poll` (every 10s) checks inbound queue via `check_inbound.py` - Replies written via `queue_reply.py` → service picks up and posts ### Watc",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T19:50:23.237Z",
+      "lastRecalledAt": "2026-04-16T19:50:23.237Z",
+      "queryHashes": [
+        "253d6f330562"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "teams-service.py",
+        "outbound-queue.json",
+        "auto-refreshes",
+        "teams-poll",
+        "check-inbound.py",
+        "queue-reply.py",
+        "stale",
+        "message"
+      ]
+    },
+    "memory:memory/2026-04-16.md:1:30": {
+      "key": "memory:memory/2026-04-16.md:1:30",
+      "path": "memory/2026-04-16.md",
+      "startLine": 1,
+      "endLine": 30,
+      "source": "memory",
+      "snippet": "# 2026-04-16 ## Bridge Resilience Improvements (Issue #11) Joel requested the bridge handle API interruptions more gracefully. Shipped three changes: ### 1. `openclaw_client.py` — Retry + Circuit Breaker - Transient errors (timeouts, 429, 5xx) retry up to 3x with exponential backoff (5s → 10s → 20s) - Non-transient errors fail immediately - Circuit breaker opens after 5 consecutive failures, cools down 60s - Config-driven: `max_retries`, `base_backoff_seconds`, `request_timeout_seconds` ### 2. `github_channel.py` — Deferred Retry Queue + Dead Letter - Failed events use time-based deferral (30s → 60s → ... 10min cap) instead of immediate retry - Retry limit 3 → 5 to survive longer outages",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T19:50:23.237Z",
+      "lastRecalledAt": "2026-04-16T19:50:23.237Z",
+      "queryHashes": [
+        "253d6f330562"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "openclaw-client.py",
+        "non-transient",
+        "config-driven",
+        "max-retries",
+        "base-backoff-seconds",
+        "request-timeout-seconds",
+        "github-channel.py",
+        "time-based"
+      ]
+    },
+    "memory:memory/2026-04-16.md:71:91": {
+      "key": "memory:memory/2026-04-16.md:71:91",
+      "path": "memory/2026-04-16.md",
+      "startLine": 71,
+      "endLine": 91,
+      "source": "memory",
+      "snippet": "- Fixed by removing mention logic entirely — just clean text + bot signature ## GitHub PR - Commented on joel-ginsberg_tmemu/lab-worker#1 (empty init PR) ## Cron Jobs Summary | Name | Interval | Type | |------|----------|------| | teams-poll | 10s | Queue check | | github-poll | 1m | Direct poll | | email-poll | 1m | Direct poll | | teams-watchdog | 5m | Health check | ## TODO Later - **Webhook notifications** — Replace Graph API polling with MS Graph change notifications (webhooks) for Teams and email. Molty offered to share code (~180 lines Node). Need: publicly reachable HTTPS endpoint (Tailscale Funnel), subscription renewal cron every 30 min, webhook server. Benefits: near-zero API c",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T19:50:23.237Z",
+      "lastRecalledAt": "2026-04-16T19:50:23.237Z",
+      "queryHashes": [
+        "253d6f330562"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "joel-ginsberg-tmemu/lab-worker",
+        "teams-poll",
+        "github-poll",
+        "email-poll",
+        "teams-watchdog",
+        "near-zero",
+        "fixed",
+        "removing"
       ]
     }
   }

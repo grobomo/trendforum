@@ -20,6 +20,8 @@ import os
 import signal
 import sys
 import time
+import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -47,6 +49,61 @@ from lib.msgraph.auth import TokenManager
 from lib.msgraph.client import GraphClient
 from lib.msgraph import teams
 
+# ── OpenClaw wake ────────────────────────────────────────────────
+
+OPENCLAW_CONFIG = Path.home() / ".openclaw" / "openclaw.json"
+OPENCLAW_PORT = 18789
+_gateway_token = None
+_last_wake_time = 0
+WAKE_DEBOUNCE_SECONDS = 10  # Don't wake more than once per 10 seconds
+
+
+def _get_gateway_token() -> str | None:
+    """Read gateway auth token from openclaw.json (cached)."""
+    global _gateway_token
+    if _gateway_token:
+        return _gateway_token
+    try:
+        with open(OPENCLAW_CONFIG) as f:
+            cfg = json.load(f)
+        _gateway_token = cfg.get("gateway", {}).get("auth", {}).get("token")
+        return _gateway_token
+    except Exception:
+        return None
+
+
+def _wake_openclaw():
+    """Send a wake event to OpenClaw gateway so it processes the inbound queue immediately."""
+    global _last_wake_time
+    now = time.time()
+    if now - _last_wake_time < WAKE_DEBOUNCE_SECONDS:
+        log.debug("Wake debounced (%.0fs since last)", now - _last_wake_time)
+        return
+    _last_wake_time = now
+    token = _get_gateway_token()
+    if not token:
+        log.warning("No gateway token found, skipping wake")
+        return
+    try:
+        payload = json.dumps({
+            "text": "New Teams message received. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle output per the unified poll instructions.",
+            "mode": "now",
+        }).encode()
+        req = urllib.request.Request(
+            f"http://127.0.0.1:{OPENCLAW_PORT}/hooks/wake",
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            log.info("Woke OpenClaw (status %d)", resp.status)
+    except Exception as e:
+        log.warning("Failed to wake OpenClaw: %s", e)
+
+
 # ── Queue files ──────────────────────────────────────────────────
 
 QUEUE_DIR = Path.home() / ".openclaw" / "teams-poller"
@@ -68,6 +125,9 @@ def write_inbound(prompt: str, pending_reply: dict):
     with open(INBOUND_QUEUE, "w") as f:
         json.dump(entry, f, indent=2)
     log.info("Queued inbound message for cron pickup")
+
+    # Immediately wake OpenClaw to process the message
+    _wake_openclaw()
 
 
 def read_and_clear_inbound() -> dict | None:
