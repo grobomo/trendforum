@@ -1,0 +1,4 @@
+{
+  "max_emails_per_poll": 10,
+  "max_body_length": 2000
+}
