@@ -52,28 +52,11 @@ def main():
         sys.exit(1)
     client = GraphClient(token=token)
 
-    # Build reply
+    # Build reply — no @mention prefix, just the reply text + signature
+    # (The old bridge prepended sender names which caused double-tagging)
     signed = f"{reply_text}\n\n<i>{bot_signature}</i>"
-
+    body_html = signed
     mentions = []
-    mention_parts = []
-    if pending and pending.get("senders"):
-        for i, sender in enumerate(pending["senders"]):
-            if sender.get("id"):
-                mention_parts.append(f'<at id="{i}">{sender["name"]}</at>')
-                mentions.append({
-                    "id": i,
-                    "mentionText": sender["name"],
-                    "mentioned": {
-                        "user": {
-                            "id": sender["id"],
-                            "displayName": sender["name"],
-                            "userIdentityType": "aadUser",
-                        }
-                    },
-                })
-
-    body_html = (" ".join(mention_parts) + " " + signed) if mention_parts else signed
 
     teams.send_chat_message(client, chat_id, body_html, mentions=mentions)
     print("Reply sent successfully")
