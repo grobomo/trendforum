@@ -1,4 +1,4 @@
-# USER.md - The Squad
+# USER.md - The Misfits
 
 ## Primary Operator
 
@@ -12,7 +12,7 @@
 
 ### Chrissa Constantine (SE-NA)
 - **Role:** Sales Engineer, Pre-Sales
-- **Notes:** Technical, customer-facing. Working on MCP server setup. Good sport. Handles SIEM alignment docs, product architecture discussions.
+- **Notes:** Technical, customer-facing. Working on MCP server setup. Good sport. Handles SIEM alignment docs, product architecture discussions. Won Trend Micro company hackathon (Joel came 2nd). Has built significant automation — details TBD.
 
 ### Justin Hook (SAL-NA)
 - **Role:** Enterprise Account Manager, US West (San Diego)
