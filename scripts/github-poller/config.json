@@ -1,0 +1,8 @@
+{
+  "owner": "joel-ginsberg_tmemu",
+  "bot_signature": "\n\n---\n*openclaw-bot*",
+  "max_context_comments": 10,
+  "max_event_age_seconds": 3600,
+  "ignore_event_types": ["ForkEvent", "WatchEvent", "StarEvent"],
+  "ignore_actors": []
+}
