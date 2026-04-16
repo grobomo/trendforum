@@ -1,0 +1,285 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-16T10:58:55.892Z",
+  "entries": {
+    "memory:memory/2026-04-15.md:1:20": {
+      "key": "memory:memory/2026-04-15.md:1:20",
+      "path": "memory/2026-04-15.md",
+      "startLine": 1,
+      "endLine": 20,
+      "source": "memory",
+      "snippet": "# 2026-04-15 - Daily Notes ## Setup Progress - Memory system configured: MEMORY.md created, FTS5 indexing working - Active Memory plugin enabled (proactive context surfacing) - Vector search unavailable (needs node-llama-cpp / Node 24) — using keyword search only - Health check script passes 5/5 checks - Secret-scan CI workflow added - Wiki reference library comment posted ## Configuration Changes - Added agents.defaults.memorySearch to openclaw.json - Added plugins.entries.active-memory to openclaw.json - Memory provider: auto (falls back to FTS5 keyword search) ## Pending - Signal channel: not linked (user needs to scan QR via ~/openclaw-signal-link.sh) - publish.json: needs manual crea",
+      "recallCount": 18,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 13.588254356101896,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T02:35:46.349Z",
+      "lastRecalledAt": "2026-04-16T10:35:43.086Z",
+      "queryHashes": [
+        "1eefffd14820",
+        "a695f8b6aed4",
+        "757b2ea771d0",
+        "84b692b44e4d",
+        "6606f95bfbfa",
+        "d8eed4d50feb",
+        "3db908419439",
+        "400b3aafa3a2",
+        "6dd4f14fbd32",
+        "1480495725e0",
+        "9928f5318e97",
+        "ae779d97a79c",
+        "dfea1731ec5e",
+        "0e4b7d6e9bbe",
+        "a464f696ac43",
+        "6a9baccc0d13",
+        "4f0c65d0fa4d",
+        "229f294337fb"
+      ],
+      "recallDays": [
+        "2026-04-15",
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "memory.md",
+        "node-llama-cpp",
+        "5/5",
+        "secret-scan",
+        "agents.defaults.memorysearch",
+        "openclaw.json",
+        "plugins.entries.active-memory",
+        "openclaw-signal-link.sh"
+      ]
+    },
+    "memory:memory/2026-04-16.md:1:9": {
+      "key": "memory:memory/2026-04-16.md:1:9",
+      "path": "memory/2026-04-16.md",
+      "startLine": 1,
+      "endLine": 9,
+      "source": "memory",
+      "snippet": "## Issue #4 — Packaging OpenClaw for Team Distribution - Joel wants to package OpenClaw + bridges so teammates can set up easily - Plan: export chat history → review learnings → build installer → test on EC2 (Linux/Win/Mac) → publish to aatf org - Posted detailed plan as GitHub comment with 4-phase approach - Key challenge: chat-export skill doesn't exist yet, need to figure out where setup conversations are stored - Teams bridge still disabled/experimental - Keyring portability across platforms is the hardest automation piece",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3.2655582584996967,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T05:58:31.990Z",
+      "lastRecalledAt": "2026-04-16T06:07:14.235Z",
+      "queryHashes": [
+        "5c9a738eae16",
+        "6606f95bfbfa",
+        "4dec0100dbac",
+        "d8eed4d50feb"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "linux/win/mac",
+        "4-phase",
+        "chat-export",
+        "disabled/experimental",
+        "issue",
+        "packaging",
+        "openclaw",
+        "team"
+      ]
+    },
+    "memory:memory/2026-04-16.md:1:26": {
+      "key": "memory:memory/2026-04-16.md:1:26",
+      "path": "memory/2026-04-16.md",
+      "startLine": 1,
+      "endLine": 26,
+      "source": "memory",
+      "snippet": "## Issue #4 — Packaging OpenClaw for Team Distribution - Joel wants to package OpenClaw + bridges so teammates can set up easily - Plan: export chat history → review learnings → build installer → test on EC2 (Linux/Win/Mac) → publish to aatf org - Posted detailed plan as GitHub comment with 4-phase approach ### Chat Export Complete - Found chat-export skill at `projectscl1/_grobomo/chat-export/` - Exported 10 sessions: 6 OpenClaw (1,710 turns), 4 Coconut (855 turns) - Output: `~/Downloads/claude-exports/openclaw/` and `~/Downloads/claude-exports/coconut/` - HTML exports with searchable UI, expandable tool calls, raw text download ### Key Findings from Chat History - **Hard blockers for te",
+      "recallCount": 6,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4.893900521831567,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T06:09:09.661Z",
+      "lastRecalledAt": "2026-04-16T06:48:04.135Z",
+      "queryHashes": [
+        "3db908419439",
+        "400b3aafa3a2",
+        "6dd4f14fbd32",
+        "1480495725e0",
+        "9928f5318e97",
+        "ae779d97a79c"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "linux/win/mac",
+        "4-phase",
+        "chat-export",
+        "grobomo/chat-export",
+        "downloads/claude-exports/coconut",
+        "issue",
+        "packaging",
+        "openclaw"
+      ]
+    },
+    "memory:memory/2026-04-16.md:1:28": {
+      "key": "memory:memory/2026-04-16.md:1:28",
+      "path": "memory/2026-04-16.md",
+      "startLine": 1,
+      "endLine": 28,
+      "source": "memory",
+      "snippet": "## Issue #4 — Packaging OpenClaw for Team Distribution - Joel wants to package OpenClaw + bridges so teammates can set up easily - Plan: export chat history → review learnings → build installer → test on EC2 (Linux/Win/Mac) → publish to aatf org - Posted detailed plan as GitHub comment with 4-phase approach ### Chat Export Complete - Found chat-export skill at `projectscl1/_grobomo/chat-export/` - Exported 10 sessions: 6 OpenClaw (1,710 turns), 4 Coconut (855 turns) - Output: `~/Downloads/claude-exports/openclaw/` and `~/Downloads/claude-exports/coconut/` - HTML exports with searchable UI, expandable tool calls, raw text download ### Key Findings from Chat History - **Hard blockers for te",
+      "recallCount": 17,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 14.412053569377235,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T06:53:12.305Z",
+      "lastRecalledAt": "2026-04-16T09:17:53.374Z",
+      "queryHashes": [
+        "dfea1731ec5e",
+        "0e4b7d6e9bbe",
+        "a464f696ac43",
+        "038e4dec65c0",
+        "6ed2356c1f80",
+        "6a9baccc0d13",
+        "46b3f297cf0c",
+        "bba688e53941",
+        "4d4329031b5b",
+        "2315cb1c2f49",
+        "4f0c65d0fa4d",
+        "47943d467986",
+        "b07455db6427",
+        "20ddb8ace77e",
+        "0d847ed3572a",
+        "5d6dcc3f0168",
+        "c169ee989f87"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "linux/win/mac",
+        "4-phase",
+        "chat-export",
+        "grobomo/chat-export",
+        "downloads/claude-exports/coconut",
+        "issue",
+        "packaging",
+        "openclaw"
+      ]
+    },
+    "memory:memory/2026-04-16.md:21:35": {
+      "key": "memory:memory/2026-04-16.md:21:35",
+      "path": "memory/2026-04-16.md",
+      "startLine": 21,
+      "endLine": 35,
+      "source": "memory",
+      "snippet": "3. Agent personality (template SOUL.md/MEMORY.md, name prompt) - Posted comprehensive comment on issue #4 with full analysis - Teams bridge still disabled/experimental - Next: build setup.sh, test on fresh EC2 ### Secret Management Design (No Plaintext) - Joel rejected .env fallback — API key must never be plaintext on disk - Proposed 3-tier approach: - Tier 1: Platform-native keyring (SecretService/Keychain/CredentialManager) - Tier 2: Self-healing diagnostics via `claude -p` when keyring fails - Tier 3: Encrypted file fallback using machine-id + openssl for headless environments - Enhanced `load-secrets.py` with --store, --verify, --doctor flags - Posted detailed comment on issue #",
+      "recallCount": 13,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 8.49928575014547,
+      "maxScore": 0.9107005675294819,
+      "firstRecalledAt": "2026-04-16T06:53:12.305Z",
+      "lastRecalledAt": "2026-04-16T07:46:17.371Z",
+      "queryHashes": [
+        "dfea1731ec5e",
+        "0e4b7d6e9bbe",
+        "a464f696ac43",
+        "038e4dec65c0",
+        "6ed2356c1f80",
+        "6a9baccc0d13",
+        "46b3f297cf0c",
+        "bba688e53941",
+        "4d4329031b5b",
+        "2315cb1c2f49",
+        "4f0c65d0fa4d",
+        "47943d467986",
+        "b07455db6427"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "soul.md/memory.md",
+        "disabled/experimental",
+        "setup.sh",
+        "3-tier",
+        "platform-native",
+        "self-healing",
+        "machine-id",
+        "load-secrets.py"
+      ]
+    },
+    "memory:memory/2026-04-16.md:21:46": {
+      "key": "memory:memory/2026-04-16.md:21:46",
+      "path": "memory/2026-04-16.md",
+      "startLine": 21,
+      "endLine": 46,
+      "source": "memory",
+      "snippet": "3. Agent personality (template SOUL.md/MEMORY.md, name prompt) - Posted comprehensive comment on issue #4 with full analysis - Teams bridge still disabled/experimental - Next: build setup.sh, test on fresh EC2 ### Secret Management Design (No Plaintext) - Joel rejected .env fallback — API key must never be plaintext on disk - Proposed 3-tier approach: - Tier 1: Platform-native keyring (SecretService/Keychain/CredentialManager) - Tier 2: Self-healing diagnostics via `claude -p` when keyring fails - Tier 3: Encrypted file fallback using machine-id + openssl for headless environments - Enhanced `load-secrets.py` with --store, --verify, --doctor flags - Posted detailed comment on issue #",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2.8937320189423255,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T08:14:41.640Z",
+      "lastRecalledAt": "2026-04-16T09:17:53.374Z",
+      "queryHashes": [
+        "20ddb8ace77e",
+        "0d847ed3572a",
+        "5d6dcc3f0168",
+        "c169ee989f87"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "soul.md/memory.md",
+        "disabled/experimental",
+        "setup.sh",
+        "3-tier",
+        "platform-native",
+        "self-healing",
+        "machine-id",
+        "load-secrets.py"
+      ]
+    },
+    "memory:memory/2026-04-16.md:1:25": {
+      "key": "memory:memory/2026-04-16.md:1:25",
+      "path": "memory/2026-04-16.md",
+      "startLine": 1,
+      "endLine": 25,
+      "source": "memory",
+      "snippet": "# 2026-04-16 ## Bridge Resilience Improvements (Issue #11) Joel requested the bridge handle API interruptions more gracefully. Shipped three changes: ### 1. `openclaw_client.py` — Retry + Circuit Breaker - Transient errors (timeouts, 429, 5xx) retry up to 3x with exponential backoff (5s → 10s → 20s) - Non-transient errors fail immediately - Circuit breaker opens after 5 consecutive failures, cools down 60s - Config-driven: `max_retries`, `base_backoff_seconds`, `request_timeout_seconds` ### 2. `github_channel.py` — Deferred Retry Queue + Dead Letter - Failed events use time-based deferral (30s → 60s → ... 10min cap) instead of immediate retry - Retry limit 3 → 5 to survive longer outages",
+      "recallCount": 6,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4.526616788424065,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-16T09:19:24.674Z",
+      "lastRecalledAt": "2026-04-16T10:58:55.892Z",
+      "queryHashes": [
+        "26cc69047aba",
+        "62291158947d",
+        "cf0923efd570",
+        "229f294337fb",
+        "62456c5c4a59",
+        "6994f3b3be29"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "openclaw-client.py",
+        "non-transient",
+        "config-driven",
+        "max-retries",
+        "base-backoff-seconds",
+        "request-timeout-seconds",
+        "github-channel.py",
+        "time-based"
+      ]
+    }
+  }
+}
