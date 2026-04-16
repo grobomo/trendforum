@@ -23,7 +23,7 @@ def run_script(name, script_path):
     try:
         r = subprocess.run(
             [sys.executable, str(script_path)],
-            capture_output=True, text=True, timeout=20,
+            capture_output=True, text=True, timeout=30,
         )
         output = r.stdout.strip()
         if output:
@@ -47,7 +47,7 @@ if gh_out:
 
 # 3. Email poll
 email_out = run_script("Email", SCRIPT_DIR / "email-poller/poll_email.py")
-if email_out:
+if email_out and "timed out" not in email_out:
     results.append(("EMAIL", email_out))
 
 # 4. Teams service health (lightweight)
