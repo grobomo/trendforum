@@ -55,6 +55,8 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - Bot user ID: `U0ATFQQ4WNS`
 - Bot name: Coconut
 - Workspace: misfits-rtf1993
+- Squad channel: `#coconut` (`C0ATJE19YRY`) — auto-reply, no @mention needed
+- Other channels (`#social`, `#all-misfits`): monitor only, reply on @mention
 
 ---
 
