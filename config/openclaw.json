@@ -1,0 +1,283 @@
+{
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "port": 18789,
+    "auth": {
+      "mode": "token",
+      "token": "7b5e69efc4c786b97b6df6e8a68112b3c5262f3f4b37c837"
+    },
+    "http": {
+      "endpoints": {
+        "chatCompletions": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "trendmicro-aiendpoint": {
+        "baseUrl": "https://api.rdsec.trendmicro.com/prod/aiendpoint/v1",
+        "apiKey": "${RDSEC_API_KEY}",
+        "api": "openai-completions",
+        "authHeader": true,
+        "models": [
+          {
+            "id": "claude-4.6-sonnet",
+            "name": "Claude 4.6 Sonnet (Trend Micro)",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 3,
+              "output": 15,
+              "cacheRead": 0.3,
+              "cacheWrite": 3.75
+            },
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "compat": {
+              "supportsStore": false,
+              "supportsUsageInStreaming": true
+            }
+          },
+          {
+            "id": "claude-4.6-opus",
+            "name": "Claude 4.6 Opus (Trend Micro)",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 5,
+              "output": 25,
+              "cacheRead": 0.5,
+              "cacheWrite": 6.25
+            },
+            "contextWindow": 200000,
+            "maxTokens": 128000,
+            "compat": {
+              "supportsStore": false,
+              "supportsUsageInStreaming": true
+            }
+          },
+          {
+            "id": "claude-4.5-haiku",
+            "name": "Claude 4.5 Haiku (Trend Micro)",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 1,
+              "output": 5,
+              "cacheRead": 0.1,
+              "cacheWrite": 1.25
+            },
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "compat": {
+              "supportsStore": false,
+              "supportsUsageInStreaming": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "trendmicro-aiendpoint/claude-4.6-opus"
+      },
+      "models": {
+        "trendmicro-aiendpoint/claude-4.6-opus": {
+          "alias": "Claude 4.6 Opus"
+        },
+        "trendmicro-aiendpoint/claude-4.6-sonnet": {
+          "alias": "Claude 4.6 Sonnet"
+        },
+        "trendmicro-aiendpoint/claude-4.5-haiku": {
+          "alias": "Claude 4.5 Haiku"
+        }
+      },
+      "memorySearch": {
+        "enabled": true,
+        "fallback": "none",
+        "query": {
+          "hybrid": {
+            "enabled": true,
+            "vectorWeight": 0.7,
+            "textWeight": 0.3
+          }
+        },
+        "cache": {
+          "enabled": true,
+          "maxEntries": 50000
+        }
+      },
+      "timeoutSeconds": 300,
+      "compaction": {
+        "mode": "safeguard"
+      }
+    }
+  },
+  "channels": {
+    "signal": {
+      "enabled": true,
+      "account": "",
+      "cliPath": "signal-cli",
+      "dmPolicy": "pairing",
+      "allowFrom": [],
+      "httpHost": "127.0.0.1",
+      "httpPort": 8080,
+      "autoStart": true,
+      "textChunkLimit": 4000,
+      "historyLimit": 50,
+      "sendReadReceipts": false
+    },
+    "slack": {
+      "enabled": true,
+      "mode": "socket",
+      "name": "coconut",
+      "botToken": "${SLACK_BOT_TOKEN}",
+      "appToken": "${SLACK_APP_TOKEN}",
+      "dmPolicy": "allowlist",
+      "allowFrom": [
+        "U0ATB4AAGJF"
+      ],
+      "groupPolicy": "allowlist",
+      "channels": {
+        "C0ATJE19YRY": {
+          "requireMention": false
+        },
+        "C0ATFDQRGRL": {
+          "requireMention": false
+        },
+        "C0ATB4AS9PD": {
+          "requireMention": false
+        }
+      },
+      "capabilities": {
+        "interactiveReplies": true
+      }
+    }
+  },
+  "plugins": {
+    "entries": {
+      "signal": {
+        "enabled": true
+      },
+      "active-memory": {
+        "enabled": true,
+        "config": {
+          "agents": [
+            "main"
+          ],
+          "allowedChatTypes": [
+            "direct"
+          ],
+          "queryMode": "recent",
+          "promptStyle": "balanced",
+          "timeoutMs": 15000,
+          "maxSummaryChars": 220,
+          "logging": true
+        }
+      },
+      "slack": {
+        "enabled": true
+      },
+      "cron-enforce": {
+        "enabled": true
+      },
+      "coconut-guardrails": {
+        "enabled": true,
+        "config": {
+          "auditLog": {
+            "enabled": true,
+            "path": "/home/ubu/.openclaw/logs/guardrails-audit.jsonl"
+          },
+          "defaultAction": "allow",
+          "rules": {
+            "no-palm-tree": {
+              "enabled": true,
+              "hook": "message_sending",
+              "action": "block",
+              "mode": "log",
+              "description": "Block outbound messages containing palm tree emoji (test rule)",
+              "severity": "info",
+              "tags": [
+                "test",
+                "comms"
+              ],
+              "match": {
+                "contentPatterns": [
+                  "🌴"
+                ]
+              }
+            }
+          },
+          "innerVoice": {
+            "enabled": true,
+            "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+            "rulesFile": "/home/ubu/.openclaw/channel-rules.json",
+            "alertChannel": "C0ATJE19YRY",
+            "timeoutMs": 10000,
+            "emergencyShutoff": false
+          }
+        }
+      }
+    },
+    "load": {
+      "paths": [
+        "/home/ubu/.openclaw/workspace/plugins/cron-enforce"
+      ]
+    },
+    "installs": {
+      "cron-enforce": {
+        "source": "path",
+        "sourcePath": "/home/ubu/.openclaw/workspace/plugins/cron-enforce",
+        "installPath": "/home/ubu/.openclaw/workspace/plugins/cron-enforce",
+        "version": "1.0.0",
+        "installedAt": "2026-04-17T04:21:27.924Z"
+      },
+      "coconut-guardrails": {
+        "source": "path",
+        "sourcePath": "/home/ubu/.openclaw/plugins/coconut-guardrails",
+        "installPath": "/home/ubu/.openclaw/extensions/coconut-guardrails",
+        "version": "0.1.0",
+        "installedAt": "2026-04-17T15:08:50.048Z"
+      }
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.4.14",
+    "lastTouchedAt": "2026-04-17T15:08:51.654Z"
+  },
+  "logging": {
+    "level": "info",
+    "redactSensitive": "off"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "heartbeat-enforce": {
+          "enabled": true
+        },
+        "channel-topic-inject": {
+          "enabled": true
+        },
+        "channel-topic-guard": {
+          "enabled": true
+        }
+      }
+    }
+  }
+}

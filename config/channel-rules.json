@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "description": "Static channel/comm method rules for Coconut's inner voice guardrail. Each entry defines what content belongs in a channel and how to handle inner voice failures.",
+    "updated": "2026-04-17"
+  },
+
+  "slack:C0ATFDQRGRL": {
+    "name": "#all-misfits",
+    "platform": "slack",
+    "purpose": "Customer and business chat for the Misfits squad",
+    "allows": ["account updates", "customer case triages", "meeting invites", "partner intel", "Trello task updates", "squad coordination", "deal pipeline", "MDR alerts"],
+    "blocks": ["infrastructure", "config changes", "bot processes", "skill development", "technical plumbing", "guardrail testing", "plugin development"],
+    "failPolicy": "block"
+  },
+
+  "slack:C0ATJE19YRY": {
+    "name": "#coco-chat",
+    "platform": "slack",
+    "purpose": "Coconut self-development, infrastructure, and processes",
+    "allows": ["plugin development", "guardrail updates", "config changes", "skill progress", "research findings", "technical plumbing", "inner voice status", "failure alerts"],
+    "blocks": ["customer account details", "deal pipeline", "partner intel", "case triages"],
+    "failPolicy": "allow"
+  },
+
+  "slack:C0ATB4AS9PD": {
+    "name": "#social",
+    "platform": "slack",
+    "purpose": "Casual and social chat",
+    "allows": ["jokes", "banter", "memes", "off-topic", "social"],
+    "blocks": ["customer data", "infrastructure", "config changes", "business tasks"],
+    "failPolicy": "allow"
+  },
+
+  "slack:D0ATWPM4DTK": {
+    "name": "Joel DM",
+    "platform": "slack",
+    "purpose": "Private comms with Joel — urgent flags, private info, things not for the squad",
+    "allows": ["anything private", "urgent flags", "sensitive info", "admin tasks"],
+    "blocks": [],
+    "failPolicy": "allow"
+  },
+
+  "teams-group": {
+    "name": "Teams Group Chat",
+    "platform": "teams",
+    "purpose": "External-facing team communication with colleagues and customers",
+    "allows": ["customer discussions", "case updates", "meeting coordination", "product questions"],
+    "blocks": ["internal infrastructure", "config changes", "bot debugging", "personal info"],
+    "failPolicy": "block"
+  },
+
+  "teams-private": {
+    "name": "Teams Private Chat",
+    "platform": "teams",
+    "purpose": "Direct messages with team members",
+    "allows": ["work coordination", "quick questions", "follow-ups"],
+    "blocks": ["other people's private info", "credentials"],
+    "failPolicy": "block"
+  },
+
+  "github": {
+    "name": "GitHub",
+    "platform": "github",
+    "purpose": "Code review, issue triage, technical PR comments",
+    "allows": ["code review", "bug triage", "technical feedback", "PR comments", "issue responses"],
+    "blocks": ["customer PII", "credentials", "internal business details", "deal info"],
+    "failPolicy": "block"
+  },
+
+  "email": {
+    "name": "Email",
+    "platform": "email",
+    "purpose": "Professional correspondence with customers and partners",
+    "allows": ["case follow-ups", "meeting scheduling", "product info", "partner coordination"],
+    "blocks": ["internal infrastructure", "bot processes", "credentials", "other customers' data"],
+    "failPolicy": "block"
+  },
+
+  "wiki": {
+    "name": "Wiki / Confluence",
+    "platform": "wiki",
+    "purpose": "Knowledge base articles and documentation",
+    "allows": ["product documentation", "process docs", "customer-facing KB articles"],
+    "blocks": ["credentials", "internal infrastructure", "personal info"],
+    "failPolicy": "block"
+  },
+
+  "jira": {
+    "name": "Jira",
+    "platform": "jira",
+    "purpose": "Issue tracking and project management",
+    "allows": ["case tracking", "bug reports", "feature requests", "task updates"],
+    "blocks": ["credentials", "personal info", "internal infrastructure details"],
+    "failPolicy": "block"
+  }
+}
