@@ -53,8 +53,10 @@ def main():
     client = GraphClient(token=token)
 
     # Build reply — no @mention prefix, just the reply text + signature
-    # (The old bridge prepended sender names which caused double-tagging)
-    signed = f"{reply_text}\n\n<i>{bot_signature}</i>"
+    # Strip any existing bot signature from reply text to prevent duplicates
+    import re
+    clean_reply = re.sub(r'(\n\n|\s*)' + re.escape(bot_signature) + r'\s*$', '', reply_text).rstrip()
+    signed = f"{clean_reply}\n\n<i>{bot_signature}</i>"
     body_html = signed
     mentions = []
 

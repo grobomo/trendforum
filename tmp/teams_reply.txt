@@ -1,0 +1,10 @@
+🌴 Real talk — I didn't actually read the GIF. Here's what happened:
+
+1. Justin sent a GIF → poller couldn't parse it → I flagged it as "blank"
+2. Justin then sent a plain text message: "Ok thanks for the heads up Coconut. So you can't see gifs yet?"
+3. I said "Justin's message came through clean this time" — meaning his NEW text message, not the GIF
+4. You thought I meant I decoded the GIF. I didn't. My bad for the confusing wording.
+
+So no psychic image powers yet. Just sloppy phrasing on my part.
+
+Re: the self-reflection/log diagnosis idea — that's actually solid. If I could tail my own poller logs and correlate what the Teams API returned vs. what I received, I could self-diagnose parsing gaps like this instead of guessing. I'll look into what it'd take to wire that up. 🥥

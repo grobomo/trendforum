@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-16T20:41:02.203Z",
+  "updatedAt": "2026-04-17T01:13:41.883Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -9,13 +9,13 @@
       "endLine": 20,
       "source": "memory",
       "snippet": "# 2026-04-15 - Daily Notes ## Setup Progress - Memory system configured: MEMORY.md created, FTS5 indexing working - Active Memory plugin enabled (proactive context surfacing) - Vector search unavailable (needs node-llama-cpp / Node 24) — using keyword search only - Health check script passes 5/5 checks - Secret-scan CI workflow added - Wiki reference library comment posted ## Configuration Changes - Added agents.defaults.memorySearch to openclaw.json - Added plugins.entries.active-memory to openclaw.json - Memory provider: auto (falls back to FTS5 keyword search) ## Pending - Signal channel: not linked (user needs to scan QR via ~/openclaw-signal-link.sh) - publish.json: needs manual crea",
-      "recallCount": 18,
+      "recallCount": 20,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 13.588254356101896,
+      "totalScore": 15.588254356101896,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-16T02:35:46.349Z",
-      "lastRecalledAt": "2026-04-16T10:35:43.086Z",
+      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
       "queryHashes": [
         "1eefffd14820",
         "a695f8b6aed4",
@@ -34,7 +34,9 @@
         "a464f696ac43",
         "6a9baccc0d13",
         "4f0c65d0fa4d",
-        "229f294337fb"
+        "229f294337fb",
+        "faac7a5ef190",
+        "13d65caedf7c"
       ],
       "recallDays": [
         "2026-04-15",
@@ -527,6 +529,322 @@
         "bot-signature",
         "openclaw/teams-poller/state.json",
         "lib/teams-agent"
+      ]
+    },
+    "memory:memory/2026-04-16.md:105:134": {
+      "key": "memory:memory/2026-04-16.md:105:134",
+      "path": "memory/2026-04-16.md",
+      "startLine": 105,
+      "endLine": 134,
+      "source": "memory",
+      "snippet": "- Claude Code does the work with hook-runner enforcing discipline - Git worktrees track all work - Hooks enforce: writing specs, using worktrees, no destructive ops - I review tasks, edit task lists, let Claude run with hooks ## ProjectsCL1 Filesystem Map Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Cl",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:35.498Z",
+      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "queryHashes": [
+        "faac7a5ef190",
+        "13d65caedf7c"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "hook-runner",
+        "tools/infrastructure",
+        "claude-portable",
+        "ec2-based",
+        "auto-idle",
+        "context-reset",
+        "continuous-claude",
+        "custom-claude-cli"
+      ]
+    },
+    "memory:memory/2026-04-16.md:80:114": {
+      "key": "memory:memory/2026-04-16.md:80:114",
+      "path": "memory/2026-04-16.md",
+      "startLine": 80,
+      "endLine": 114,
+      "source": "memory",
+      "snippet": "- MCP servers collection (mcp-manager, mcp-v1-lite, mcp-browser-helper, mcp-trend-docs, etc.) - Legacy scripts (gh_auto, pr-monitor, move-repo-account) - Shared specs and configs ### Top-level - **ai-skill-marketplace** — AI skill marketplace (Python/pyproject.toml) - **lab-worker** — Screenshots directory ### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer*",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:35.498Z",
+      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "queryHashes": [
+        "faac7a5ef190",
+        "7c1c02264084",
+        "13d65caedf7c"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "mcp-manager",
+        "mcp-v1-lite",
+        "mcp-browser-helper",
+        "mcp-trend-docs",
+        "gh-auto",
+        "pr-monitor",
+        "move-repo-account",
+        "top-level"
+      ]
+    },
+    "memory:memory/2026-07-09.md:1:8": {
+      "key": "memory:memory/2026-07-09.md:1:8",
+      "path": "memory/2026-07-09.md",
+      "startLine": 1,
+      "endLine": 8,
+      "source": "memory",
+      "snippet": "## Teams — Joel confirms orchestration vision (21:08) - Joel approved the plan: keep his Claude Code hooks for enforcement, I act as task manager layer on top - Outstanding asks: paths to recording-analyzer and claude-portable repos - Also pending: file watcher service for auto-analysis, Graph API transcript pulling - Justin Hook introduced himself in the group chat - Chrissa mentioned she's working on automation + other projects",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:35.498Z",
+      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "queryHashes": [
+        "faac7a5ef190",
+        "13d65caedf7c"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "recording-analyzer",
+        "claude-portable",
+        "auto-analysis",
+        "teams",
+        "joel",
+        "confirms",
+        "orchestration",
+        "vision"
+      ]
+    },
+    "memory:memory/2026-04-16.md:55:88": {
+      "key": "memory:memory/2026-04-16.md:55:88",
+      "path": "memory/2026-04-16.md",
+      "startLine": 55,
+      "endLine": 88,
+      "source": "memory",
+      "snippet": "| **unified-brain** | Multi-channel brain service (GitHub/Teams/webhooks → LLM analyzer, REST + MCP) | | **openclaw** | Local WSL2 OpenClaw installation | | **teams-agent** | Local Teams monitor (classifies importance, emails alerts) | | **msgraph-lib** | MS Graph API library | | **planhat-wiz** | Planhat integration | | **sales-hat** | Account research | | **ep-incident-response** | EP incident response | | **enablement** | Enablement content | | **deploy-secure-server** | Secure server deployment | | **deploy-wiki** | Wiki deployment | | **imsva-sg** | IMSVA-SG project | | **lab-worker** | Claude Code infrastructure automation | | **nebula-gatekeeper** | Nebula gatekeeper | | **rone-teams-",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:35.498Z",
+      "lastRecalledAt": "2026-04-17T01:13:39.506Z",
+      "queryHashes": [
+        "faac7a5ef190",
+        "7c1c02264084"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "unified-brain",
+        "multi-channel",
+        "github/teams/webhooks",
+        "teams-agent",
+        "msgraph-lib",
+        "planhat-wiz",
+        "sales-hat",
+        "ep-incident-response"
+      ]
+    },
+    "memory:memory/2026-04-16.md:28:61": {
+      "key": "memory:memory/2026-04-16.md:28:61",
+      "path": "memory/2026-04-16.md",
+      "startLine": 28,
+      "endLine": 61,
+      "source": "memory",
+      "snippet": "| **continuous-claude** | Continuous Claude runner | | **custom-claude-cli** | Custom Claude CLI | | **session-doctor** | Session repair tool | | **spec-hook** | SHTD Flow spec hook | | **system-monitor** | System monitoring | | **sm-disk-monitor** | Disk monitoring | | **sm-vpn-monitor** | VPN monitoring | | **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.6317401456070271,
+      "maxScore": 0.6317401456070271,
+      "firstRecalledAt": "2026-04-17T01:13:35.498Z",
+      "lastRecalledAt": "2026-04-17T01:13:35.498Z",
+      "queryHashes": [
+        "faac7a5ef190"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "continuous-claude",
+        "custom-claude-cli",
+        "session-doctor",
+        "spec-hook",
+        "system-monitor",
+        "sm-disk-monitor",
+        "sm-vpn-monitor",
+        "pr-monitor"
+      ]
+    },
+    "memory:memory/2026-04-16.md:240:274": {
+      "key": "memory:memory/2026-04-16.md:240:274",
+      "path": "memory/2026-04-16.md",
+      "startLine": 240,
+      "endLine": 274,
+      "source": "memory",
+      "snippet": "| **meeting-recorder** | Meeting recording tool | | **meeting-scheduler** | Teams meeting creator | | **unified-brain** | Multi-channel brain service (GitHub/Teams/webhooks → LLM analyzer, REST + MCP) | | **openclaw** | Local WSL2 OpenClaw installation | | **teams-agent** | Local Teams monitor (classifies importance, emails alerts) | | **msgraph-lib** | MS Graph API library | | **planhat-wiz** | Planhat integration | | **sales-hat** | Account research | | **ep-incident-response** | EP incident response | | **enablement** | Enablement content | | **deploy-secure-server** | Secure server deployment | | **deploy-wiki** | Wiki deployment | | **imsva-sg** | IMSVA-SG project | | **lab-worker** | C",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:39.506Z",
+      "lastRecalledAt": "2026-04-17T01:13:39.506Z",
+      "queryHashes": [
+        "7c1c02264084"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "meeting-recorder",
+        "meeting-scheduler",
+        "unified-brain",
+        "multi-channel",
+        "github/teams/webhooks",
+        "teams-agent",
+        "msgraph-lib",
+        "planhat-wiz"
+      ]
+    },
+    "memory:memory/2026-07-11.md:1:7": {
+      "key": "memory:memory/2026-07-11.md:1:7",
+      "path": "memory/2026-07-11.md",
+      "startLine": 1,
+      "endLine": 7,
+      "source": "memory",
+      "snippet": "## Teams — Slack Workspace - Joel shared a Slack invite for the Misfits squad: `misfits-rtf1993` - Invite link: https://join.slack.com/t/misfits-rtf1993/shared_invite/zt-3vpmxybyp-pWrRxiDo~i924B8cQR3Qhg - Joel offered to create @joeltest.org email aliases for Justin & Chrissa if needed - Also: unresolved thread from earlier — Joel suspects the Teams poller may be picking up GIF accessibility/alt-text tags as message content (Miss Cleo psychic hotline GIF). Worth investigating the Teams API response to see if image metadata is leaking through.",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:39.506Z",
+      "lastRecalledAt": "2026-04-17T01:13:39.506Z",
+      "queryHashes": [
+        "7c1c02264084"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "misfits-rtf1993",
+        "joeltest.org",
+        "accessibility/alt-text",
+        "teams",
+        "slack",
+        "joel",
+        "shared",
+        "invite"
+      ]
+    },
+    "memory:memory/2026-04-16.md:266:300": {
+      "key": "memory:memory/2026-04-16.md:266:300",
+      "path": "memory/2026-04-16.md",
+      "startLine": 266,
+      "endLine": 300,
+      "source": "memory",
+      "snippet": "### _shared/ (archived — scripts extracted to standalone repos) - MCP servers collection (mcp-manager, mcp-v1-lite, mcp-browser-helper, mcp-trend-docs, etc.) - Legacy scripts (gh_auto, pr-monitor, move-repo-account) - Shared specs and configs ### Top-level - **ai-skill-marketplace** — AI skill marketplace (Python/pyproject.toml) - **lab-worker** — Screenshots directory ### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:39.506Z",
+      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "queryHashes": [
+        "7c1c02264084",
+        "13d65caedf7c"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "mcp-manager",
+        "mcp-v1-lite",
+        "mcp-browser-helper",
+        "mcp-trend-docs",
+        "gh-auto",
+        "pr-monitor",
+        "move-repo-account",
+        "top-level"
+      ]
+    },
+    "memory:memory/2026-04-16.md:1:35": {
+      "key": "memory:memory/2026-04-16.md:1:35",
+      "path": "memory/2026-04-16.md",
+      "startLine": 1,
+      "endLine": 35,
+      "source": "memory",
+      "snippet": "# 2026-04-16 — Daily Notes ## Filesystem Map — ProjectsCL1 **Root:** `/mnt/c/Users/joelg/Documents/ProjectsCL1/` ### _grobomo/ (40 projects — personal/open-source GitHub account) | Project | Description | |---|---| | **claude-portable** | Run Claude Code on AWS EC2 (~$0.08/hr, auto-stops) | | **hook-runner** | Modular hook system for Claude Code (enforce workflows, block mistakes) | | **coconut** | Reusable AI chat assistant (monitors messaging, classifies, responds via Anthropic) | | **ccc-central** | (CCC infrastructure — no desc) | | **ccc-manager** | Fleet manager for Continuous Claude Code deployments | | **joels-mcp-servers** | Curated MCP servers collection with central dynamic rou",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.961076102192098,
+      "maxScore": 0.961076102192098,
+      "firstRecalledAt": "2026-04-17T01:13:39.506Z",
+      "lastRecalledAt": "2026-04-17T01:13:39.506Z",
+      "queryHashes": [
+        "7c1c02264084"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "personal/open-source",
+        "claude-portable",
+        "0.08/hr",
+        "auto-stops",
+        "hook-runner",
+        "ccc-central",
+        "ccc-manager",
+        "joels-mcp-servers"
+      ]
+    },
+    "memory:memory/2026-04-16.md:292:321": {
+      "key": "memory:memory/2026-04-16.md:292:321",
+      "path": "memory/2026-04-16.md",
+      "startLine": 292,
+      "endLine": 321,
+      "source": "memory",
+      "snippet": "- Claude Code does the work with hook-runner enforcing discipline - Git worktrees track all work - Hooks enforce: writing specs, using worktrees, no destructive ops - I review tasks, edit task lists, let Claude run with hooks ## ProjectsCL1 Filesystem Map Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Cl",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T01:13:41.883Z",
+      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "queryHashes": [
+        "13d65caedf7c"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "hook-runner",
+        "tools/infrastructure",
+        "claude-portable",
+        "ec2-based",
+        "auto-idle",
+        "context-reset",
+        "continuous-claude",
+        "custom-claude-cli"
       ]
     }
   }

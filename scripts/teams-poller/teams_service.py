@@ -192,6 +192,10 @@ def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
             order_by="createdDateTime desc",
         )
     except Exception as e:
+        err_str = str(e)
+        if "401" in err_str or "expired" in err_str.lower():
+            log.error("Auth expired: %s", e)
+            raise  # Bubble up to trigger re-auth in main loop
         log.error("Failed to fetch messages: %s", e)
         return None
 
@@ -331,8 +335,8 @@ def run_service(interval: int = 5):
 
     while not _shutdown:
         try:
-            # Refresh token every 30 minutes
-            if time.time() - token_refresh_time > 1800:
+            # Refresh token every 15 minutes (tokens can expire in <30m)
+            if time.time() - token_refresh_time > 900:
                 token = tm.get_token()
                 if token:
                     client = GraphClient(token=token)
@@ -363,17 +367,20 @@ def run_service(interval: int = 5):
         except Exception as e:
             consecutive_errors += 1
             log.error("Poll error (streak=%d): %s", consecutive_errors, e)
-            if consecutive_errors > 10:
-                # Re-auth on persistent errors
+            if consecutive_errors >= 3:
+                # Force refresh on errors — don't use cached token
                 try:
+                    tm._tokens = None  # Clear cached token to force re-read
                     token = tm.get_token()
                     if token:
                         client = GraphClient(token=token)
                         token_refresh_time = time.time()
                         log.info("Re-authenticated after error streak")
                         consecutive_errors = 0
-                except Exception:
-                    pass
+                    else:
+                        log.error("Token refresh returned None — refresh token may be dead")
+                except Exception as re_err:
+                    log.error("Re-auth failed: %s", re_err)
 
         # Sleep in small increments for responsive shutdown
         for _ in range(interval * 2):
