@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-17T03:23:13.682Z",
+  "updatedAt": "2026-04-17T03:45:59.584Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -543,16 +543,17 @@
       "endLine": 134,
       "source": "memory",
       "snippet": "- Claude Code does the work with hook-runner enforcing discipline - Git worktrees track all work - Hooks enforce: writing specs, using worktrees, no destructive ops - I review tasks, edit task lists, let Claude run with hooks ## ProjectsCL1 Filesystem Map Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Cl",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.583Z",
       "queryHashes": [
         "faac7a5ef190",
-        "13d65caedf7c"
+        "13d65caedf7c",
+        "fcd5996e454e"
       ],
       "recallDays": [
         "2026-04-16"
@@ -968,16 +969,17 @@
       "endLine": 437,
       "source": "memory",
       "snippet": "- Replied with plan: Teams Graph API subscriptions for webhooks, OpenClaw native Slack plugin, reactions via Graph API - Also: Joel's broader vision — one shared OpenClaw in AWS first, expand to 3 coordinating instances later (one per squad member) - Setup script for Chrissa/Justin to deploy their own assistants - \"Be curious\" added as guiding principle per Joel's request - Follow shtd workflow (spec → hack → test → deliver) for self-management ## 23:44 — Justin Hook Emails: TrendAI Spark Conference Invites - Justin sent 3 emails inviting customers to TrendAI Spark Leadership Exchange Conference - **Event:** May 11-14, Arizona Grand Resort & Spa - **All expenses paid by TrendAI** (travel +",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:17:02.953Z",
-      "lastRecalledAt": "2026-04-17T03:23:13.681Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
       "queryHashes": [
         "b849c01bbe9d",
-        "9e8795b54859"
+        "9e8795b54859",
+        "af2c3c675cc0"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1037,17 +1039,18 @@
       "endLine": 898,
       "source": "memory",
       "snippet": "- Joel added Trello board tabs to the Misfits Teams chat - Wants me to use Trello \"todo list\" board to track my work items in real time - Completed items should move to Done column but NOT be archived (keep visible for review) - Trello is Joel's source of truth for customer status - Needs to update some boards with recent customer activity from meeting transcripts - Joel mentioned an \"Atlassian API skill\" he built — asked if it's separate from the bundled Trello skill - Trello API creds (TRELLO_API_KEY, TRELLO_TOKEN) not yet configured - Trello integration to start after Slack integration completes - Found existing Trello skill at: /home/ubu/.nvm/versions/node/v24.13.0/lib/node_modules/openc",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:24:34.133Z",
-      "lastRecalledAt": "2026-04-17T03:23:13.681Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
       "queryHashes": [
         "5ccf272b17f1",
         "9a69d93c563b",
-        "9e8795b54859"
+        "9e8795b54859",
+        "af2c3c675cc0"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1266,15 +1269,16 @@
       "endLine": 459,
       "source": "memory",
       "snippet": "## Teams - Trello Integration Request - Joel added Trello board tabs to the Misfits Teams chat - Wants me to use Trello \"todo list\" board to track my work items in real time - Completed items should move to Done column but NOT be archived (keep visible for review) - Trello is Joel's source of truth for customer status - Needs to update some boards with recent customer activity from meeting transcripts - Joel mentioned an \"Atlassian API skill\" he built — asked if it's separate from the bundled Trello skill - Trello API creds (TRELLO_API_KEY, TRELLO_TOKEN) not yet configured - Trello integration to start after Slack integration completes - Found existing Trello skill at: /home/ubu/.nvm/version",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T03:23:13.681Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
       "queryHashes": [
-        "9e8795b54859"
+        "9e8795b54859",
+        "af2c3c675cc0"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1297,15 +1301,16 @@
       "endLine": 880,
       "source": "memory",
       "snippet": "- Also: Joel's broader vision — one shared OpenClaw in AWS first, expand to 3 coordinating instances later (one per squad member) - Setup script for Chrissa/Justin to deploy their own assistants - \"Be curious\" added as guiding principle per Joel's request - Follow shtd workflow (spec → hack → test → deliver) for self-management ## 23:44 — Justin Hook Emails: TrendAI Spark Conference Invites - Justin sent 3 emails inviting customers to TrendAI Spark Leadership Exchange Conference - **Event:** May 11-14, Arizona Grand Resort & Spa - **All expenses paid by TrendAI** (travel + accommodation) - **Customers invited:** 1. Company 3 — Robert, Chuck, Tibor, Jack (from weekly cadence call) 2. Ent",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T03:23:13.681Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
       "queryHashes": [
-        "9e8795b54859"
+        "9e8795b54859",
+        "af2c3c675cc0"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1328,15 +1333,17 @@
       "endLine": 154,
       "source": "memory",
       "snippet": "- `unified-brain` — Cross-channel intelligence - `meeting-recorder`, `meeting-scheduler` — Meeting tools - `sales-hat`, `planhat-wiz`, `enablement` — Sales tools - `vpn-monitor`, `nebula-gatekeeper` — Network tools - `_shared/` — Cross-cutting (scripts, specs, MCP, TODO.md) - Root: `ai-skill-marketplace`, `lab-worker` Also found: `/mnt/c/Users/joelg/archive/ProjectsCL` (old projects) ## Orchestration Layer Decision - Joel confirmed: I (Coconut/OpenClaw) should become the orchestration layer that the dispatcher in claude-portable never became - The dispatcher could spawn workers but had no real-time visibility into Claude sessions - My advantages: can stream sub-agent output, steer",
-      "recallCount": 1,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T03:23:13.681Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
       "queryHashes": [
-        "9e8795b54859"
+        "9e8795b54859",
+        "fcd5996e454e",
+        "af2c3c675cc0"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1359,15 +1366,17 @@
       "endLine": 341,
       "source": "memory",
       "snippet": "- `unified-brain` — Cross-channel intelligence - `meeting-recorder`, `meeting-scheduler` — Meeting tools - `sales-hat`, `planhat-wiz`, `enablement` — Sales tools - `vpn-monitor`, `nebula-gatekeeper` — Network tools - `_shared/` — Cross-cutting (scripts, specs, MCP, TODO.md) - Root: `ai-skill-marketplace`, `lab-worker` Also found: `/mnt/c/Users/joelg/archive/ProjectsCL` (old projects) ## Orchestration Layer Decision - Joel confirmed: I (Coconut/OpenClaw) should become the orchestration layer that the dispatcher in claude-portable never became - The dispatcher could spawn workers but had no real-time visibility into Claude sessions - My advantages: can stream sub-agent output, steer",
-      "recallCount": 1,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T03:23:13.681Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
       "queryHashes": [
-        "9e8795b54859"
+        "9e8795b54859",
+        "fcd5996e454e",
+        "af2c3c675cc0"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1381,6 +1390,99 @@
         "sales-hat",
         "planhat-wiz",
         "vpn-monitor"
+      ]
+    },
+    "memory:memory/2026-04-16.md:761:788": {
+      "key": "memory:memory/2026-04-16.md:761:788",
+      "path": "memory/2026-04-16.md",
+      "startLine": 761,
+      "endLine": 788,
+      "source": "memory",
+      "snippet": "- `_shared/` — Cross-cutting (scripts, specs, MCP, TODO.md) - Root: `ai-skill-marketplace`, `lab-worker` Also found: `/mnt/c/Users/joelg/archive/ProjectsCL` (old projects) ## Orchestration Layer Decision - Joel confirmed: I (Coconut/OpenClaw) should become the orchestration layer that the dispatcher in claude-portable never became - The dispatcher could spawn workers but had no real-time visibility into Claude sessions - My advantages: can stream sub-agent output, steer mid-flight, check worktrees, verify deliverables - Plan: deep-read dispatcher code, map what I cover natively, identify gaps, build adapters for hook-runner workflows - Hook-runner stays untouched as enforcement layer; I a",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T03:45:59.583Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.583Z",
+      "queryHashes": [
+        "fcd5996e454e"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "cross-cutting",
+        "todo.md",
+        "ai-skill-marketplace",
+        "lab-worker",
+        "coconut/openclaw",
+        "claude-portable",
+        "real-time",
+        "sub-agent"
+      ]
+    },
+    "memory:memory/2026-04-16.md:559:583": {
+      "key": "memory:memory/2026-04-16.md:559:583",
+      "path": "memory/2026-04-16.md",
+      "startLine": 559,
+      "endLine": 583,
+      "source": "memory",
+      "snippet": "- `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Claude tooling - `gh-auto`, `github-agent`, `pr-monitor` — GitHub automation - `email-manager`, `system-monitor`, `sm-vpn-monitor`, `sm-disk-monitor` — system tools - `joels-mcp-servers`, `claude-code-skills`, `claude-code-defaults` — MCP/skills - `hackathon26`, `boothapp`, `react` — misc projects - `_tmemu/` — Trend Micro-specific (work GitHub account) - `recording-analyzer` — Meeting analysis pipeline - `teams-agent`, `msgraph-lib`, `teams-graph-api` — Teams/Graph integratio",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T03:45:59.583Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.583Z",
+      "queryHashes": [
+        "fcd5996e454e"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "hook-runner",
+        "context-reset",
+        "continuous-claude",
+        "custom-claude-cli",
+        "one-turn-claude",
+        "gh-auto",
+        "github-agent",
+        "pr-monitor"
+      ]
+    },
+    "memory:memory/2026-04-16.md:741:768": {
+      "key": "memory:memory/2026-04-16.md:741:768",
+      "path": "memory/2026-04-16.md",
+      "startLine": 741,
+      "endLine": 768,
+      "source": "memory",
+      "snippet": "Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Claude tooling - `gh-auto`, `github-agent`, `pr-monitor` — GitHub automation - `email-manager`, `system-monitor`, `sm-vpn-monitor`, `sm-disk-monitor` — system tools - `joels-mcp-servers`, `claude-code-skills`, `claude-code-defaults` — MCP/skills - `hac",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T03:45:59.583Z",
+      "lastRecalledAt": "2026-04-17T03:45:59.583Z",
+      "queryHashes": [
+        "fcd5996e454e"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "tools/infrastructure",
+        "claude-portable",
+        "ec2-based",
+        "auto-idle",
+        "hook-runner",
+        "context-reset",
+        "continuous-claude",
+        "custom-claude-cli"
       ]
     }
   }
