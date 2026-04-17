@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-17T13:47:13.562Z",
+  "updatedAt": "2026-04-17T22:53:34.366Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -689,19 +689,22 @@
       "endLine": 61,
       "source": "memory",
       "snippet": "| **continuous-claude** | Continuous Claude runner | | **custom-claude-cli** | Custom Claude CLI | | **session-doctor** | Session repair tool | | **spec-hook** | SHTD Flow spec hook | | **system-monitor** | System monitoring | | **sm-disk-monitor** | Disk monitoring | | **sm-vpn-monitor** | VPN monitoring | | **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat",
-      "recallCount": 2,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.631740145607027,
+      "totalScore": 3.631740145607027,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T03:19:23.578Z",
+      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
       "queryHashes": [
         "faac7a5ef190",
-        "c57b32db3be2"
+        "c57b32db3be2",
+        "d9f470a16900",
+        "608a082cc876"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-17"
       ],
       "conceptTags": [
         "continuous-claude",
@@ -1235,16 +1238,18 @@
       "endLine": 488,
       "source": "memory",
       "snippet": "| **ccc-central** | (CCC infrastructure — no desc) | | **ccc-manager** | Fleet manager for Continuous Claude Code deployments | | **joels-mcp-servers** | Curated MCP servers collection with central dynamic router | | **claude-code-defaults** | Claude Code default configs | | **claude-code-skills** | Claude Code skills collection | | **claude-report** | Claude reporting tool | | **v1-helper** | Vision One helper | | **v1ego** | V1EGO — Vision One Enhanced GO | | **email-manager** | Email management | | **github-agent** | GitHub agent | | **gh-auto** | GitHub automation scripts | | **auto-gsd** | Auto-GSD enforcement | | **claas** | CLaaS v2 — Claude-as-a-Service | | **context-rag** | Context",
-      "recallCount": 2,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T13:17:35.778Z",
+      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
       "queryHashes": [
         "c57b32db3be2",
-        "23b05ae52ce9"
+        "23b05ae52ce9",
+        "d9f470a16900",
+        "608a082cc876"
       ],
       "recallDays": [
         "2026-04-16",
@@ -1268,18 +1273,20 @@
       "endLine": 670,
       "source": "memory",
       "snippet": "| **hook-runner** | Modular hook system for Claude Code (enforce workflows, block mistakes) | | **coconut** | Reusable AI chat assistant (monitors messaging, classifies, responds via Anthropic) | | **ccc-central** | (CCC infrastructure — no desc) | | **ccc-manager** | Fleet manager for Continuous Claude Code deployments | | **joels-mcp-servers** | Curated MCP servers collection with central dynamic router | | **claude-code-defaults** | Claude Code default configs | | **claude-code-skills** | Claude Code skills collection | | **claude-report** | Claude reporting tool | | **v1-helper** | Vision One helper | | **v1ego** | V1EGO — Vision One Enhanced GO | | **email-manager** | Email management |",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T03:19:23.578Z",
+      "lastRecalledAt": "2026-04-17T22:53:31.419Z",
       "queryHashes": [
-        "c57b32db3be2"
+        "c57b32db3be2",
+        "d9f470a16900"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-17"
       ],
       "conceptTags": [
         "router",
@@ -1299,18 +1306,20 @@
       "endLine": 696,
       "source": "memory",
       "snippet": "| **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat export tool | | **aws-mon** | AWS monitoring | | **aws-skill** | AWS skill | | **react** | React project | | **hook-runner-worktrees** | Hook-runner worktrees | ### _tmemu/ (28 projects — Trend Micro enterprise/internal GitHub account) | Project | Description | |---|---| | **recording-analyzer** | Meeting t",
-      "recallCount": 4,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 6,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T13:18:45.861Z",
+      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
       "queryHashes": [
         "c57b32db3be2",
         "b99cf8da3cb8",
         "65314b53299e",
-        "c34abd8c6ab7"
+        "c34abd8c6ab7",
+        "d9f470a16900",
+        "608a082cc876"
       ],
       "recallDays": [
         "2026-04-16",
@@ -1334,18 +1343,21 @@
       "endLine": 244,
       "source": "memory",
       "snippet": "| **auto-gsd** | Auto-GSD enforcement | | **claas** | CLaaS v2 — Claude-as-a-Service | | **context-rag** | Context RAG | | **context-reset** | Context reset tool | | **continuous-claude** | Continuous Claude runner | | **custom-claude-cli** | Custom Claude CLI | | **session-doctor** | Session repair tool | | **spec-hook** | SHTD Flow spec hook | | **system-monitor** | System monitoring | | **sm-disk-monitor** | Disk monitoring | | **sm-vpn-monitor** | VPN monitoring | | **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text fo",
-      "recallCount": 1,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T03:19:23.578Z",
+      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
       "queryHashes": [
-        "c57b32db3be2"
+        "c57b32db3be2",
+        "d9f470a16900",
+        "608a082cc876"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-17"
       ],
       "conceptTags": [
         "auto-gsd",
@@ -1993,17 +2005,19 @@
       "endLine": 513,
       "source": "memory",
       "snippet": "| **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat export tool | | **aws-mon** | AWS monitoring | | **aws-skill** | AWS skill | | **react** | React project | | **hook-runner-worktrees** | Hook-runner worktrees | ### _tmemu/ (28 projects — Trend Micro enterprise/internal GitHub account) | Project | Description | |---|---| | **recording-analyzer** | Meeting transcript analysis (VTT/TXT, auto-detect template, modular engines) | | **meeting-recorder** | Meeting recording tool | | **meeting-schedule",
-      "recallCount": 3,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-17T13:18:45.861Z",
+      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
-        "c34abd8c6ab7"
+        "c34abd8c6ab7",
+        "d9f470a16900",
+        "608a082cc876"
       ],
       "recallDays": [
         "2026-04-17"
@@ -2017,6 +2031,37 @@
         "chat-export",
         "aws-mon",
         "aws-skill"
+      ]
+    },
+    "memory:memory/2026-04-17.md:137:163": {
+      "key": "memory:memory/2026-04-17.md:137:163",
+      "path": "memory/2026-04-17.md",
+      "startLine": 137,
+      "endLine": 163,
+      "source": "memory",
+      "snippet": "- Channel response issue (\"stopped responding to channel chats\") - Teams message was truncated (\"Chrissa brought...\") ## 14:06 — CDT Analysis Review (Teams) - Joel said \"this is on my laptop, you can read it coconutter\" re: his CDT analysis work - Found the project at ProjectsCL1/_tmemu/cdt-analyzer/imsva/ - **Case TM-03926071**: CVS Caremark IMSVA 9.1 deferred emails - Two CDTs from different cluster nodes (scanner 3 + scanner 5) - Three failure paths identified: 1. Bulk fan-out SOAP timeout (999-recipient RPhImmunize distro → imssps pool saturation) 2. Service restart window (DB-commanded shutdown, 11s gap) 3. Chronic imss_connect_timeout=1s clipping ~20 deferrals/hour -",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T22:53:34.366Z",
+      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
+      "queryHashes": [
+        "608a082cc876"
+      ],
+      "recallDays": [
+        "2026-04-17"
+      ],
+      "conceptTags": [
+        "tmemu/cdt-analyzer/imsva",
+        "tm-03926071",
+        "9.1",
+        "fan-out",
+        "999-recipient",
+        "db-commanded",
+        "imss-connect-timeout",
+        "deferrals/hour"
       ]
     }
   }
