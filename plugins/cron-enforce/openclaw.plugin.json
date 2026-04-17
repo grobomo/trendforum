@@ -1,0 +1,9 @@
+{
+  "id": "cron-enforce",
+  "name": "Cron Polling Enforcer",
+  "description": "Enforces that cron-triggered poll messages actually execute the polling script instead of being skipped or answered with HEARTBEAT_OK",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-17T04:13:13.447Z",
+  "updatedAt": "2026-04-17T04:23:53.463Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -9,13 +9,13 @@
       "endLine": 20,
       "source": "memory",
       "snippet": "# 2026-04-15 - Daily Notes ## Setup Progress - Memory system configured: MEMORY.md created, FTS5 indexing working - Active Memory plugin enabled (proactive context surfacing) - Vector search unavailable (needs node-llama-cpp / Node 24) — using keyword search only - Health check script passes 5/5 checks - Secret-scan CI workflow added - Wiki reference library comment posted ## Configuration Changes - Added agents.defaults.memorySearch to openclaw.json - Added plugins.entries.active-memory to openclaw.json - Memory provider: auto (falls back to FTS5 keyword search) ## Pending - Signal channel: not linked (user needs to scan QR via ~/openclaw-signal-link.sh) - publish.json: needs manual crea",
-      "recallCount": 26,
+      "recallCount": 27,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 21.588254356101896,
+      "totalScore": 22.588254356101896,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-16T02:35:46.349Z",
-      "lastRecalledAt": "2026-04-17T04:08:00.614Z",
+      "lastRecalledAt": "2026-04-17T04:18:05.798Z",
       "queryHashes": [
         "1eefffd14820",
         "a695f8b6aed4",
@@ -42,7 +42,8 @@
         "7a2b7881f651",
         "ccb9a5b82f2c",
         "f11be2b515fa",
-        "f77266e6483b"
+        "f77266e6483b",
+        "7ccbc07a667c"
       ],
       "recallDays": [
         "2026-04-15",
@@ -544,18 +545,19 @@
       "endLine": 134,
       "source": "memory",
       "snippet": "- Claude Code does the work with hook-runner enforcing discipline - Git worktrees track all work - Hooks enforce: writing specs, using worktrees, no destructive ops - I review tasks, edit task lists, let Claude run with hooks ## ProjectsCL1 Filesystem Map Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Cl",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T04:04:14.102Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
         "faac7a5ef190",
         "13d65caedf7c",
         "fcd5996e454e",
-        "6a86ef4ec3d9"
+        "6a86ef4ec3d9",
+        "be6aae87d152"
       ],
       "recallDays": [
         "2026-04-16"
@@ -578,18 +580,19 @@
       "endLine": 114,
       "source": "memory",
       "snippet": "- MCP servers collection (mcp-manager, mcp-v1-lite, mcp-browser-helper, mcp-trend-docs, etc.) - Legacy scripts (gh_auto, pr-monitor, move-repo-account) - Shared specs and configs ### Top-level - **ai-skill-marketplace** — AI skill marketplace (Python/pyproject.toml) - **lab-worker** — Screenshots directory ### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer*",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T04:04:14.102Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
         "faac7a5ef190",
         "7c1c02264084",
         "13d65caedf7c",
-        "6a86ef4ec3d9"
+        "6a86ef4ec3d9",
+        "be6aae87d152"
       ],
       "recallDays": [
         "2026-04-16"
@@ -612,16 +615,17 @@
       "endLine": 8,
       "source": "memory",
       "snippet": "## Teams — Joel confirms orchestration vision (21:08) - Joel approved the plan: keep his Claude Code hooks for enforcement, I act as task manager layer on top - Outstanding asks: paths to recording-analyzer and claude-portable repos - Also pending: file watcher service for auto-analysis, Graph API transcript pulling - Justin Hook introduced himself in the group chat - Chrissa mentioned she's working on automation + other projects",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
         "faac7a5ef190",
-        "13d65caedf7c"
+        "13d65caedf7c",
+        "be6aae87d152"
       ],
       "recallDays": [
         "2026-04-16"
@@ -770,16 +774,17 @@
       "endLine": 300,
       "source": "memory",
       "snippet": "### _shared/ (archived — scripts extracted to standalone repos) - MCP servers collection (mcp-manager, mcp-v1-lite, mcp-browser-helper, mcp-trend-docs, etc.) - Legacy scripts (gh_auto, pr-monitor, move-repo-account) - Shared specs and configs ### Top-level - **ai-skill-marketplace** — AI skill marketplace (Python/pyproject.toml) - **lab-worker** — Screenshots directory ### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:39.506Z",
-      "lastRecalledAt": "2026-04-17T01:13:41.883Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
         "7c1c02264084",
-        "13d65caedf7c"
+        "13d65caedf7c",
+        "be6aae87d152"
       ],
       "recallDays": [
         "2026-04-16"
@@ -865,13 +870,13 @@
       "endLine": 14,
       "source": "memory",
       "snippet": "## Teams — Slack Workspace - Joel shared a Slack invite for the Misfits squad: `misfits-rtf1993` - Invite link: https://join.slack.com/t/misfits-rtf1993/shared_invite/zt-3vpmxybyp-pWrRxiDo~i924B8cQR3Qhg - Joel offered to create @joeltest.org email aliases for Justin & Chrissa if needed - Also: unresolved thread from earlier — Joel suspects the Teams poller may be picking up GIF accessibility/alt-text tags as message content (Miss Cleo psychic hotline GIF). Worth investigating the Teams API response to see if image metadata is leaking through. ## Teams — Task Tracker Created - Joel asked for a shared task list the whole squad can update via Teams - Posted a formatted task tracker with categ",
-      "recallCount": 12,
+      "recallCount": 15,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 12,
+      "totalScore": 15,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:17:02.952Z",
-      "lastRecalledAt": "2026-04-17T04:13:13.447Z",
+      "lastRecalledAt": "2026-04-17T04:23:53.463Z",
       "queryHashes": [
         "c5099361ae91",
         "b849c01bbe9d",
@@ -884,7 +889,10 @@
         "f11be2b515fa",
         "514280b245c7",
         "0a319e9834d0",
-        "d5fe1d43f7c7"
+        "d5fe1d43f7c7",
+        "35765da94834",
+        "7ccbc07a667c",
+        "b57b0ba7f058"
       ],
       "recallDays": [
         "2026-04-16"
@@ -907,13 +915,13 @@
       "endLine": 415,
       "source": "memory",
       "snippet": "- PreToolUse/PostToolUse → Plugin SDK before_tool_call (requires building a plugin) - **Adaptation plan drafted** — build OpenClaw plugin as module loader, port enforcement-gate/spec-gate/commit-msg-check first, keep modules.yaml config format ### Webhook Server Built (Pending Tailscale Funnel) - Created scripts/webhook-server/ with server.py, subscriptions.py, setup.sh - Created systemd service webhook-server.service - Committed to git - Still blocked on Joel enabling Tailscale Funnel at admin console ### Email Activity (16:00-18:00 CDT) - DISA EES weekly update — VM access working, automation draft deadline pushed to 5/4, no tech sessions next week (James Owen PTO) - Dole QIL case TM-0",
-      "recallCount": 13,
+      "recallCount": 16,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 13,
+      "totalScore": 16,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:17:02.952Z",
-      "lastRecalledAt": "2026-04-17T04:13:13.447Z",
+      "lastRecalledAt": "2026-04-17T04:23:53.463Z",
       "queryHashes": [
         "c5099361ae91",
         "b849c01bbe9d",
@@ -927,7 +935,10 @@
         "514280b245c7",
         "0a319e9834d0",
         "f77266e6483b",
-        "d5fe1d43f7c7"
+        "d5fe1d43f7c7",
+        "35765da94834",
+        "7ccbc07a667c",
+        "b57b0ba7f058"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1015,13 +1026,13 @@
       "endLine": 920,
       "source": "memory",
       "snippet": "- Slack DM channel verified working at 21:07 CDT — Joel sent \"test\" and \"test2\", both received - Config also has: `name: coconut`, `dmPolicy: allowlist`, `allowFrom: [U0ATB4AAGJF]` (Joel's Slack user ID) - Slack channel ID for Joel DM: `D0ATWPM4DTK` - SECRETS_RELOADER error may have been transient or from earlier before tokens were set up ### Teams Service Token Refresh Bug — Root Cause & Fix - Graph API access tokens sometimes expire in under 30 minutes (observed ~10 min lifespan) - Service was only refreshing every 30 min → used dead tokens → spammed 401 errors - Error-streak re-auth (after 10 errors) was broken — read same expired token from cache instead of forcing refresh - **Fixes app",
-      "recallCount": 10,
+      "recallCount": 13,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 10,
+      "totalScore": 13,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:24:34.132Z",
-      "lastRecalledAt": "2026-04-17T04:13:13.447Z",
+      "lastRecalledAt": "2026-04-17T04:23:53.463Z",
       "queryHashes": [
         "de6a87514b7b",
         "5ccf272b17f1",
@@ -1032,7 +1043,10 @@
         "f11be2b515fa",
         "514280b245c7",
         "0a319e9834d0",
-        "d5fe1d43f7c7"
+        "d5fe1d43f7c7",
+        "7ccbc07a667c",
+        "29cfb2bca64e",
+        "b57b0ba7f058"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1055,13 +1069,13 @@
       "endLine": 898,
       "source": "memory",
       "snippet": "- Joel added Trello board tabs to the Misfits Teams chat - Wants me to use Trello \"todo list\" board to track my work items in real time - Completed items should move to Done column but NOT be archived (keep visible for review) - Trello is Joel's source of truth for customer status - Needs to update some boards with recent customer activity from meeting transcripts - Joel mentioned an \"Atlassian API skill\" he built — asked if it's separate from the bundled Trello skill - Trello API creds (TRELLO_API_KEY, TRELLO_TOKEN) not yet configured - Trello integration to start after Slack integration completes - Found existing Trello skill at: /home/ubu/.nvm/versions/node/v24.13.0/lib/node_modules/openc",
-      "recallCount": 7,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 7,
+      "totalScore": 8,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:24:34.133Z",
-      "lastRecalledAt": "2026-04-17T04:13:13.447Z",
+      "lastRecalledAt": "2026-04-17T04:23:53.463Z",
       "queryHashes": [
         "5ccf272b17f1",
         "9a69d93c563b",
@@ -1069,7 +1083,8 @@
         "af2c3c675cc0",
         "514280b245c7",
         "0a319e9834d0",
-        "d5fe1d43f7c7"
+        "d5fe1d43f7c7",
+        "b57b0ba7f058"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1092,13 +1107,13 @@
       "endLine": 860,
       "source": "memory",
       "snippet": "- **Adaptation plan drafted** — build OpenClaw plugin as module loader, port enforcement-gate/spec-gate/commit-msg-check first, keep modules.yaml config format ### Webhook Server Built (Pending Tailscale Funnel) - Created scripts/webhook-server/ with server.py, subscriptions.py, setup.sh - Created systemd service webhook-server.service - Committed to git - Still blocked on Joel enabling Tailscale Funnel at admin console ### Email Activity (16:00-18:00 CDT) - DISA EES weekly update — VM access working, automation draft deadline pushed to 5/4, no tech sessions next week (James Owen PTO) - Dole QIL case TM-03941209 — Support (Kali) asked Juan Mora for BusinessID/Activation Code, pointed to se",
-      "recallCount": 11,
+      "recallCount": 14,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 11,
+      "totalScore": 14,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:24:34.133Z",
-      "lastRecalledAt": "2026-04-17T04:13:13.447Z",
+      "lastRecalledAt": "2026-04-17T04:23:53.463Z",
       "queryHashes": [
         "5ccf272b17f1",
         "9a69d93c563b",
@@ -1110,7 +1125,10 @@
         "514280b245c7",
         "0a319e9834d0",
         "f77266e6483b",
-        "d5fe1d43f7c7"
+        "d5fe1d43f7c7",
+        "35765da94834",
+        "7ccbc07a667c",
+        "b57b0ba7f058"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1133,13 +1151,13 @@
       "endLine": 923,
       "source": "memory",
       "snippet": "1. Fix Slack (need app token from Joel) 2. Stabilize Teams poller (fixes applied) 3. No new webhook complexity yet — make existing stuff reliable first ### Email: Hank Liao PR Review Request - trend-ai-taskforce/ai-skill-marketplace#97 — adding @mention support to msgraph-tool - 8 commits, Copilot review feedback addressed - Minor style issue: importing private `_escape_html` across modules - Low priority — Joel can review when ready",
-      "recallCount": 10,
+      "recallCount": 12,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 10,
+      "totalScore": 12,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:24:34.133Z",
-      "lastRecalledAt": "2026-04-17T04:13:13.447Z",
+      "lastRecalledAt": "2026-04-17T04:23:53.463Z",
       "queryHashes": [
         "5ccf272b17f1",
         "9a69d93c563b",
@@ -1150,7 +1168,9 @@
         "9519213da86c",
         "514280b245c7",
         "0a319e9834d0",
-        "d5fe1d43f7c7"
+        "d5fe1d43f7c7",
+        "7ccbc07a667c",
+        "b57b0ba7f058"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1522,17 +1542,19 @@
       "endLine": 844,
       "source": "memory",
       "snippet": "### Known Issue: Heartbeat Polling Without Execution - Joel called me out (18:12 CDT) for sending HEARTBEAT_OK without actually running poll_all.py - This is a recurring problem — I need to always execute the poll script, not just respond - The cron instruction is explicit: \"run python3 ... poll_all.py\" — must actually execute it - Without exec tool access, I cannot run the script directly; need to flag this limitation ### Hook Adaptation to OpenClaw — Full Research Done - Read OpenClaw hooks docs thoroughly — has its own event-driven hook system - OpenClaw hook events: command:new/reset, message:received/sent, session:compact, agent:bootstrap, gateway:startup - Hooks are TypeScript handler",
-      "recallCount": 3,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:50:00.634Z",
-      "lastRecalledAt": "2026-04-17T04:08:00.614Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
         "b6141aeb674e",
         "6a86ef4ec3d9",
-        "f77266e6483b"
+        "f77266e6483b",
+        "35765da94834",
+        "29cfb2bca64e"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1555,17 +1577,19 @@
       "endLine": 397,
       "source": "memory",
       "snippet": "- context-reset/new-session.py fully read — session continuity via JSONL transcript extraction, SESSION_STATE.md, tab management, chain recording ## 23:22 — Afternoon Quiet Period & Missed Teams Reply ### Known Issue: Heartbeat Polling Without Execution - Joel called me out (18:12 CDT) for sending HEARTBEAT_OK without actually running poll_all.py - This is a recurring problem — I need to always execute the poll script, not just respond - The cron instruction is explicit: \"run python3 ... poll_all.py\" — must actually execute it - Without exec tool access, I cannot run the script directly; need to flag this limitation ### Hook Adaptation to OpenClaw — Full Research Done - Read OpenClaw hook",
-      "recallCount": 3,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:50:00.634Z",
-      "lastRecalledAt": "2026-04-17T04:08:00.614Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
         "b6141aeb674e",
         "6a86ef4ec3d9",
-        "f77266e6483b"
+        "f77266e6483b",
+        "35765da94834",
+        "29cfb2bca64e"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1588,15 +1612,16 @@
       "endLine": 379,
       "source": "memory",
       "snippet": "- Also asked about custom rules (Zoe may have created one covering 4724) - Cross-referencing wiki page with Chrissa's email for Panavision technical depth ## 22:32 — Chrissa: Wiki Page Not Deep Enough - Chrissa says the Confluence doc Joel shared isn't deep enough - Andre apparently knows about \"master level documents\" — he's going to look into it - Eric is going to do a walkthrough - Holding off on using that doc as primary reference until deeper material arrives ## 22:48 — Hook Self-Enforcement Deep Dive - Joel asked (21:52): How can hook-runner adapt to OpenClaw? I'm not bound by Claude Code hooks. - Key insight: hook-runner modules are portable JS functions with a simple contract (nu",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:50:00.634Z",
-      "lastRecalledAt": "2026-04-17T03:50:00.634Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
-        "b6141aeb674e"
+        "b6141aeb674e",
+        "29cfb2bca64e"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1619,15 +1644,16 @@
       "endLine": 823,
       "source": "memory",
       "snippet": "## 22:32 — Chrissa: Wiki Page Not Deep Enough - Chrissa says the Confluence doc Joel shared isn't deep enough - Andre apparently knows about \"master level documents\" — he's going to look into it - Eric is going to do a walkthrough - Holding off on using that doc as primary reference until deeper material arrives ## 22:48 — Hook Self-Enforcement Deep Dive - Joel asked (21:52): How can hook-runner adapt to OpenClaw? I'm not bound by Claude Code hooks. - Key insight: hook-runner modules are portable JS functions with a simple contract (null = pass, {decision: \"block\"} = block) - Adaptation approach: 1. Port module logic, not the runner — evaluate checks before acting 2. OpenClaw exec/write",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:50:00.634Z",
-      "lastRecalledAt": "2026-04-17T03:50:00.634Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
-        "b6141aeb674e"
+        "b6141aeb674e",
+        "29cfb2bca64e"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1650,15 +1676,17 @@
       "endLine": 747,
       "source": "memory",
       "snippet": "### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer** — Meeting analysis (Joel wants file watcher + Graph API transcripts) 2. **hook-runner** — Enforcement hooks (Joel wants me to use these for task orchestration) 3. **claude-portable** — AWS Claude Code (orchestration visibility problem Joel described) 4. **unified-brain** — Data layer for OpenClaw (REST + MC",
-      "recallCount": 1,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T04:04:14.102Z",
-      "lastRecalledAt": "2026-04-17T04:04:14.102Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
       "queryHashes": [
-        "6a86ef4ec3d9"
+        "6a86ef4ec3d9",
+        "29cfb2bca64e",
+        "be6aae87d152"
       ],
       "recallDays": [
         "2026-04-16"
@@ -1672,6 +1700,37 @@
         "headless-pm",
         "webscraper-planhat",
         "open-source"
+      ]
+    },
+    "memory:memory/2026-04-16.md:534:563": {
+      "key": "memory:memory/2026-04-16.md:534:563",
+      "path": "memory/2026-04-16.md",
+      "startLine": 534,
+      "endLine": 563,
+      "source": "memory",
+      "snippet": "- **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer** — Meeting analysis (Joel wants file watcher + Graph API transcripts) 2. **hook-runner** — Enforcement hooks (Joel wants me to use these for task orchestration) 3. **claude-portable** — AWS Claude Code (orchestration visibility problem Joel described) 4. **unified-brain** — Data layer for OpenClaw (REST + MCP, shared context) 5. **teams-agent** — Teams monitoring 6. **ccc-manager** — Fleet management for Claude Code ## Joel's Architecture Vision - Coconut (me/OpenClaw) acts as orchestration layer - Cla",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-17T04:18:41.781Z",
+      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
+      "queryHashes": [
+        "be6aae87d152"
+      ],
+      "recallDays": [
+        "2026-04-16"
+      ],
+      "conceptTags": [
+        "open-source",
+        "joel-ginsberg-tmemu",
+        "recording-analyzer",
+        "hook-runner",
+        "claude-portable",
+        "unified-brain",
+        "teams-agent",
+        "ccc-manager"
       ]
     }
   }
