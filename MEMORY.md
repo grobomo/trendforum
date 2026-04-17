@@ -33,9 +33,10 @@
 
 ## Skills (Ready)
 
-- brain, coding-agent, healthcheck, node-connect, skill-creator
+- coding-agent, healthcheck, node-connect, skill-creator
 - taskflow, taskflow-inbox-triage, tmux, weather
 - 44 additional skills need setup (mostly platform-specific)
+- brain skill: deprecated — unified-brain project archived (2026-04-17), replaced by Trello as unified task system
 
 ## Project Context
 

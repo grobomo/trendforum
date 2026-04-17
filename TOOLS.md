@@ -55,8 +55,12 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - Bot user ID: `U0ATFQQ4WNS`
 - Bot name: Coconut
 - Workspace: misfits-rtf1993
-- Squad channel: `#coco-chat` (`C0ATJE19YRY`) — auto-reply, no @mention needed
-- Other channels (`#social`, `#all-misfits`): monitor only, reply on @mention
+
+**Channel Routing:**
+- `#all-misfits` (`C0ATFDQRGRL`) — customer/business chat. Post account updates, email triages about customers, meeting invites, partner intel. Always respond.
+- `#coco-chat` (`C0ATJE19YRY`) — Coconut processes & infrastructure. Post polling status, skill progress, research findings (IronClaw, Hermes, etc.), config changes, technical plumbing. Always respond.
+- `#social` (`C0ATB4AS9PD`) — casual/social. Always respond.
+- Joel DM (`D0ATWPM4DTK`) — private comms with Joel. Urgent flags, private info, things not for the squad.
 
 ---
 
