@@ -162,7 +162,9 @@ def format_conversation_context(messages: list, new_msg_ids: set) -> str:
 
         marker = " ← NEW" if msg_id in new_msg_ids else ""
         bot_tag = " [you]" if is_bot else ""
-        lines.append(f"[{time_str}] {sender}{bot_tag}: {text}{marker}")
+        image_urls = msg.get("image_urls", [])
+        img_note = f" [📷 {len(image_urls)} image(s)]" if image_urls else ""
+        lines.append(f"[{time_str}] {sender}{bot_tag}: {text}{img_note}{marker}")
 
     return "\n".join(lines)
 
@@ -258,14 +260,54 @@ def poll():
     parts.append("---")
     parts.append("")
 
+    # Download images from new messages
+    image_dir = Path("/tmp/teams_images")
+    image_dir.mkdir(exist_ok=True)
+    downloaded_images = []
+    try:
+        tm = TokenManager()
+        token = tm.get_token()
+        if token:
+            import requests
+            headers = {"Authorization": f"Bearer {token}"}
+            for msg in new_messages:
+                for i, url in enumerate(msg.get("image_urls", [])):
+                    try:
+                        resp = requests.get(url, headers=headers, timeout=15)
+                        if resp.status_code == 200:
+                            ext = "png"  # Teams hostedContents are typically PNG
+                            ct = resp.headers.get("content-type", "")
+                            if "jpeg" in ct or "jpg" in ct:
+                                ext = "jpg"
+                            elif "gif" in ct:
+                                ext = "gif"
+                            fname = f"{msg['message_id'][:12]}_{i}.{ext}"
+                            fpath = image_dir / fname
+                            fpath.write_bytes(resp.content)
+                            downloaded_images.append(str(fpath))
+                            log.info("Downloaded image: %s (%d bytes)", fname, len(resp.content))
+                    except Exception as e:
+                        log.warning("Failed to download image: %s", e)
+    except Exception as e:
+        log.warning("Could not download images (auth): %s", e)
+
     if len(new_messages) == 1:
         msg = new_messages[0]
         parts.append(f"New Teams message from **{msg['sender_name']}**:")
         parts.append(msg["text"])
+        if msg.get("image_urls"):
+            parts.append(f"\n[{len(msg['image_urls'])} image(s) attached — saved to /tmp/teams_images/]")
     else:
         parts.append(f"{len(new_messages)} new Teams messages:")
         for msg in new_messages:
-            parts.append(f"- **{msg['sender_name']}**: {msg['text']}")
+            img_note = f" [{len(msg.get('image_urls', []))} image(s)]" if msg.get("image_urls") else ""
+            parts.append(f"- **{msg['sender_name']}**: {msg['text']}{img_note}")
+
+    if downloaded_images:
+        parts.append("")
+        parts.append("Downloaded images:")
+        for img_path in downloaded_images:
+            parts.append(f"  - {img_path}")
 
     parts.append("")
     parts.append("Reply to the new message(s). Your reply will be posted to the Teams chat.")
