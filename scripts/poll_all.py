@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Unified poller — runs all checks in one pass.
 
-Runs Teams inbound check, GitHub poll, and email poll.
+Runs Teams inbound check, GitHub poll, email poll, and Trello board check.
 Only produces output if something needs attention.
 Also checks Teams service health.
 
@@ -12,6 +12,7 @@ Usage:
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
@@ -50,7 +51,82 @@ email_out = run_script("Email", SCRIPT_DIR / "email-poller/poll_email.py")
 if email_out and "timed out" not in email_out:
     results.append(("EMAIL", email_out))
 
-# 4. Teams service health (lightweight)
+# 4. Trello board check
+try:
+    import keyring
+    import requests
+    api_key = keyring.get_password('openclaw', 'TRELLO_API_KEY')
+    token = keyring.get_password('openclaw', 'TRELLO_TOKEN')
+    if api_key and token:
+        # Load last-seen state
+        trello_state_file = Path.home() / '.openclaw' / 'trello-poller' / 'state.json'
+        trello_state_file.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with open(trello_state_file) as f:
+                trello_state = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            trello_state = {'known_cards': {}, 'last_check': 0}
+
+        r = requests.get(
+            'https://api.trello.com/1/boards/TyFBN1Bx/lists',
+            params={'key': api_key, 'token': token, 'cards': 'all',
+                    'card_fields': 'name,desc,dueComplete,idList,dateLastActivity'},
+            timeout=15
+        )
+        if r.status_code == 200:
+            lists = r.json()
+            known = trello_state.get('known_cards', {})
+            changes = []
+            current_cards = {}
+
+            for lst in lists:
+                for card in lst.get('cards', []):
+                    cid = card['id']
+                    current_cards[cid] = {
+                        'name': card['name'],
+                        'list': lst['name'],
+                        'dueComplete': card.get('dueComplete', False),
+                        'dateLastActivity': card.get('dateLastActivity', ''),
+                    }
+                    if cid not in known:
+                        changes.append(f"NEW card in *{lst['name']}*: {card['name']}")
+                    elif known[cid].get('list') != lst['name']:
+                        changes.append(f"MOVED *{card['name']}* from {known[cid].get('list')} → {lst['name']}")
+                    elif known[cid].get('dueComplete') != card.get('dueComplete', False):
+                        if card.get('dueComplete'):
+                            changes.append(f"COMPLETED: {card['name']}")
+                        else:
+                            changes.append(f"REOPENED: {card['name']}")
+
+            # Check for deleted cards
+            for cid, info in known.items():
+                if cid not in current_cards:
+                    changes.append(f"REMOVED: {info.get('name', 'unknown')}")
+
+            # Save state
+            trello_state['known_cards'] = current_cards
+            trello_state['last_check'] = int(time.time())
+            with open(trello_state_file, 'w') as f:
+                json.dump(trello_state, f)
+
+            if changes:
+                trello_out = '## 📋 Trello Board Changes\n\n'
+                trello_out += '\n'.join(f'- {c}' for c in changes)
+                # Also include current board snapshot
+                trello_out += '\n\n### Current Board:\n'
+                for lst in lists:
+                    cards = lst.get('cards', [])
+                    open_cards = [c for c in cards if not c.get('dueComplete')]
+                    if open_cards:
+                        trello_out += f'\n**{lst["name"]}**:\n'
+                        for card in open_cards:
+                            trello_out += f'- {card["name"]}\n'
+                results.append(('TRELLO', trello_out))
+except Exception as e:
+    # Don't let Trello errors break the whole poll
+    pass
+
+# 5. Teams service health (lightweight)
 try:
     r = subprocess.run(
         ["systemctl", "--user", "is-active", "teams-poller"],
