@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-18T02:34:36.631Z",
+  "updatedAt": "2026-04-18T02:38:46.532Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -1749,20 +1749,22 @@
       "endLine": 747,
       "source": "memory",
       "snippet": "### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer** — Meeting analysis (Joel wants file watcher + Graph API transcripts) 2. **hook-runner** — Enforcement hooks (Joel wants me to use these for task orchestration) 3. **claude-portable** — AWS Claude Code (orchestration visibility problem Joel described) 4. **unified-brain** — Data layer for OpenClaw (REST + MC",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T04:04:14.102Z",
-      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
+      "lastRecalledAt": "2026-04-18T02:38:46.532Z",
       "queryHashes": [
         "6a86ef4ec3d9",
         "29cfb2bca64e",
-        "be6aae87d152"
+        "be6aae87d152",
+        "b7eff797e7a5"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-17"
       ],
       "conceptTags": [
         "older/completed",
@@ -2078,15 +2080,16 @@
       "endLine": 111,
       "source": "memory",
       "snippet": "- Enabled `interactiveReplies: true` in Slack config - Buttons not rendering — Slack app needs Interactivity toggled on in app settings - Joel prefers inline buttons for email approval workflow ## 08:12 — Graph API Token Analysis - Decoded JWT — massive scope set including Mail.ReadWrite, Mail.Send, Calendars.ReadWrite, Sites.ReadWrite.All - App: \"Generic Personal Data Hub API\" — functional despite Joel thinking it wasn't - Email actions (archive, reply, forward) are already authorized - Wiki access via Sites.Read.All for SharePoint; Confluence needs separate Atlassian API token ## 08:06 — Wiki-API Skill Found - Located at joel-ginsberg_tmemu/skill-wiki-api on GitHub - 133 Confluence API o",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-18T02:34:36.628Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
+      "lastRecalledAt": "2026-04-18T02:36:01.017Z",
       "queryHashes": [
-        "6b224cb6c74b"
+        "6b224cb6c74b",
+        "4f8b306649ac"
       ],
       "recallDays": [
         "2026-04-17"
@@ -2140,15 +2143,16 @@
       "endLine": 123,
       "source": "memory",
       "snippet": "- Pushed via `gh auth token` — need to learn Joel's `auto_gh` tool for future pushes - Joel said: \"use auto_gh tool I made to push to remote repos\" and \"don't run gh cli directly\" - TODO: Find auto_gh location and use it instead of gh CLI ## 17:44 — Caught Up on Missed Teams Messages - Joel flagged that I missed several messages from ~16:57-17:00 - Key topics addressed: 1. **Slack security** — Chrissa raised concern about customer data in personal Slack. Agreed: no customer PII/case data in Slack, keep that in Teams. 2. **Second OpenClaw instance** — Joel wants separate instance for personal projects. Can run on different port (18790) with own workspace/config. 3. **Content rules & au",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-18T02:34:36.631Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.631Z",
+      "lastRecalledAt": "2026-04-18T02:38:46.532Z",
       "queryHashes": [
-        "6617d12cf701"
+        "6617d12cf701",
+        "b7eff797e7a5"
       ],
       "recallDays": [
         "2026-04-17"
@@ -2171,15 +2175,16 @@
       "endLine": 222,
       "source": "memory",
       "snippet": "- Also has official docs: Admin Guide, Install Guide, HA Guide, BPG, Patch 3 docs - Need to index these into the CDT analyzer skill's reference knowledge ## 16:30 — Session Outage RCA - 90-min outage (2:48-4:22 PM) — agent session hit idle timeout - Gateway stayed running, cron reminders queued but weren't processed - Posted RCA to Teams group chat with solutions - Joel approved keepalive cron (every 5 min health ping), rejected Tailscale Funnel webhooks - Keepalive cron installed, Tailscale Funnel Trello card archived ## 16:37 — Nebula Gatekeeper Research - Joel wants to deploy nebula-gatekeeper instead of second OpenClaw instance - Cloned joel-ginsberg_tmemu/nebula-gatekeeper — it's Joel",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-18T02:34:36.631Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.631Z",
+      "lastRecalledAt": "2026-04-18T02:38:46.532Z",
       "queryHashes": [
-        "6617d12cf701"
+        "6617d12cf701",
+        "b7eff797e7a5"
       ],
       "recallDays": [
         "2026-04-17"
@@ -2224,6 +2229,37 @@
         "deep-read",
         "hook-runner",
         "oversight/visibility"
+      ]
+    },
+    "memory:memory/2026-04-17.md:341:350": {
+      "key": "memory:memory/2026-04-17.md:341:350",
+      "path": "memory/2026-04-17.md",
+      "startLine": 341,
+      "endLine": 350,
+      "source": "memory",
+      "snippet": "- Added safety blocks in both `post_reply()` and `queue_reply.py` to prevent posting to read-only chats (defense in depth) - GM2 Squad 1 members: Joel, Chrissa, Justin, Andre, Mitchell Walker (SAL-NA), Scarlett Menendez (SE-NA) - Updated DATA-POLICY.md with Teams chat access policies section - Updated MEMORY.md with new chat config - Service restarted, confirmed monitoring all 5 chats **Why read-only for GM2:** This is Joel's manager/leadership group. Posting there without permission could be career-impacting. Two-layer block: service blocks at post time + queue_reply blocks at queue time. **Why auto-add for Coconut-created chats:** Joel's intent is that people he introduces to Coconut sho",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T02:38:46.532Z",
+      "lastRecalledAt": "2026-04-18T02:38:46.532Z",
+      "queryHashes": [
+        "b7eff797e7a5"
+      ],
+      "recallDays": [
+        "2026-04-17"
+      ],
+      "conceptTags": [
+        "post-reply",
+        "queue-reply.py",
+        "read-only",
+        "sal-na",
+        "se-na",
+        "data-policy.md",
+        "memory.md",
+        "manager/leadership"
       ]
     }
   }

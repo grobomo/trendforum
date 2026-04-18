@@ -4,30 +4,48 @@
   "max_message_age_seconds": 600,
   "chats": [
     {
-      "id": "19:70ce5237-91c1-4a27-997c-ef5df6c18a0e_ac04077b-2ed2-417f-9345-5d2ea1fefc32@unq.gbl.spaces",
-      "label": "Joel+Chris 1:1",
-      "access": "read-write"
-    },
-    {
       "id": "19:62ad1ba6a4d84fd5b5b21ead32d1d7ae@thread.v2",
       "label": "Coconut Private",
-      "access": "read-write"
+      "access": "read-write",
+      "section": "coconut"
+    },
+    {
+      "id": "19:70ce5237-91c1-4a27-997c-ef5df6c18a0e_ac04077b-2ed2-417f-9345-5d2ea1fefc32@unq.gbl.spaces",
+      "label": "Joel+Chrissa 1:1",
+      "access": "read-write",
+      "section": "squad"
+    },
+    {
+      "id": "19:06f865338aae48659a1ae841823733d1@thread.v2",
+      "label": "The Misfits",
+      "access": "read-write",
+      "section": "squad"
     },
     {
       "id": "19:d31f1b7114bb41249ebf983fb597d39a@thread.v2",
       "label": "Joel + Andre + Coconut",
-      "access": "read-write"
+      "access": "read-write",
+      "section": "coconut"
     },
     {
       "id": "19:bd6f4f463cc241e6bfb75bae96225a92@thread.v2",
       "label": "Coconut + Molty",
-      "access": "read-write"
+      "access": "read-write",
+      "section": "coconut"
     },
     {
       "id": "19:6eb61782a0ad47d2b330f8290de251a1@thread.v2",
       "label": "GM2 Squad 1",
       "access": "read-only",
+      "section": "squad",
       "note": "Manager group chat. NEVER post without Joel's explicit permission. Monitor only."
+    },
+    {
+      "id": "19:2e89fa83bc9f45368119f28b11a39fad@thread.v2",
+      "label": "Joel+Michael+Lorne+Javier",
+      "access": "read-only",
+      "section": "squad",
+      "note": "Small TS group chat. Monitor only, no posting without Joel's permission."
     }
   ]
 }

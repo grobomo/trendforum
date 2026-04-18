@@ -38,11 +38,14 @@
 - Teams: polling-based via scripts/poll_all.py (every 3 min), service polls every 3s
   - Multi-chat config in scripts/teams-poller/config.json with per-chat access policies
   - Coconut Private (19:62ad...@thread.v2) — read-write
-  - Joel+Chris 1:1 (19:70ce...@unq.gbl.spaces) — read-write
+  - Joel+Chrissa 1:1 (19:70ce...@unq.gbl.spaces) — read-write
+  - The Misfits (19:06f8...@thread.v2) — read-write
   - Joel+Andre+Coconut (19:d31f...@thread.v2) — read-write (created 2026-04-17)
   - Coconut+Molty (19:bd6f...@thread.v2) — read-write (created 2026-04-17)
-  - GM2 Squad 1 (19:6eb6...@thread.v2) — ⚠️ READ-ONLY (manager chat, never post without Joel's permission)
+  - GM2 Squad 1 (19:6eb6...@thread.v2) — ⚠️ READ-ONLY (manager chat)
+  - Joel+Michael+Lorne+Javier (19:2e89...@thread.v2) — ⚠️ READ-ONLY (TS group)
   - Auto-add policy: any chat Coconut creates → add to config with read-write
+  - Sections not available via Graph API (local Teams app config only)
   - Image reading: working (downloads hostedContents via Graph API)
   - Formatting: md→HTML converter applied (Molty's advice)
 - Email: polling via Graph API, summarize and flag urgent to Joel via Slack DM
