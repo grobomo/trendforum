@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-17T22:53:34.366Z",
+  "updatedAt": "2026-04-18T02:34:36.631Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -1306,20 +1306,21 @@
       "endLine": 696,
       "source": "memory",
       "snippet": "| **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat export tool | | **aws-mon** | AWS monitoring | | **aws-skill** | AWS skill | | **react** | React project | | **hook-runner-worktrees** | Hook-runner worktrees | ### _tmemu/ (28 projects — Trend Micro enterprise/internal GitHub account) | Project | Description | |---|---| | **recording-analyzer** | Meeting t",
-      "recallCount": 6,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 6,
+      "totalScore": 7,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
       "queryHashes": [
         "c57b32db3be2",
         "b99cf8da3cb8",
         "65314b53299e",
         "c34abd8c6ab7",
         "d9f470a16900",
-        "608a082cc876"
+        "608a082cc876",
+        "6b224cb6c74b"
       ],
       "recallDays": [
         "2026-04-16",
@@ -1514,18 +1515,20 @@
       "endLine": 788,
       "source": "memory",
       "snippet": "- `_shared/` — Cross-cutting (scripts, specs, MCP, TODO.md) - Root: `ai-skill-marketplace`, `lab-worker` Also found: `/mnt/c/Users/joelg/archive/ProjectsCL` (old projects) ## Orchestration Layer Decision - Joel confirmed: I (Coconut/OpenClaw) should become the orchestration layer that the dispatcher in claude-portable never became - The dispatcher could spawn workers but had no real-time visibility into Claude sessions - My advantages: can stream sub-agent output, steer mid-flight, check worktrees, verify deliverables - Plan: deep-read dispatcher code, map what I cover natively, identify gaps, build adapters for hook-runner workflows - Hook-runner stays untouched as enforcement layer; I a",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:45:59.583Z",
-      "lastRecalledAt": "2026-04-17T03:45:59.583Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.631Z",
       "queryHashes": [
-        "fcd5996e454e"
+        "fcd5996e454e",
+        "6617d12cf701"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-17"
       ],
       "conceptTags": [
         "cross-cutting",
@@ -1873,17 +1876,18 @@
       "endLine": 806,
       "source": "memory",
       "snippet": "- Also: Dole case TM-03943850 (P3) got an update — legitimate emails blocked by Correlated Intelligence, backend team reviewing ## Email: Dole Case TM-03943850 Update - P3 — not urgent - Carlos Leon reacted to Ivan Belga's update - Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.net/wiki/x/9gHbVw) — behind auth wall, couldn't fetch - Joel says it's useful for Panavision XDR comparison questions - Chrissa emailed Mark (Patterson) a",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-17T13:18:45.861Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
-        "c34abd8c6ab7"
+        "c34abd8c6ab7",
+        "6b224cb6c74b"
       ],
       "recallDays": [
         "2026-04-17"
@@ -1906,17 +1910,18 @@
       "endLine": 174,
       "source": "memory",
       "snippet": "- Goal: become the orchestration layer that dispatcher/claude-portable never became - Architecture target: Podman on AlmaLinux EC2, NIST CSF 2.0 hardened - Also: Dole case TM-03943850 (P3) got an update — legitimate emails blocked by Correlated Intelligence, backend team reviewing ## Email: Dole Case TM-03943850 Update - P3 — not urgent - Carlos Leon reacted to Ivan Belga's update - Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-17T13:18:45.861Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
-        "c34abd8c6ab7"
+        "c34abd8c6ab7",
+        "6b224cb6c74b"
       ],
       "recallDays": [
         "2026-04-17"
@@ -1939,17 +1944,18 @@
       "endLine": 361,
       "source": "memory",
       "snippet": "- Goal: become the orchestration layer that dispatcher/claude-portable never became - Architecture target: Podman on AlmaLinux EC2, NIST CSF 2.0 hardened - Also: Dole case TM-03943850 (P3) got an update — legitimate emails blocked by Correlated Intelligence, backend team reviewing ## Email: Dole Case TM-03943850 Update - P3 — not urgent - Carlos Leon reacted to Ivan Belga's update - Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-17T13:18:45.861Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
-        "c34abd8c6ab7"
+        "c34abd8c6ab7",
+        "6b224cb6c74b"
       ],
       "recallDays": [
         "2026-04-17"
@@ -1972,17 +1978,18 @@
       "endLine": 622,
       "source": "memory",
       "snippet": "- Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.net/wiki/x/9gHbVw) — behind auth wall, couldn't fetch - Joel says it's useful for Panavision XDR comparison questions - Chrissa emailed Mark (Patterson) about Log Inspection Rule 1002795: - Event ID 4724 (password reset attempt) NOT covered by default sub-rules - 4738 (account changed) IS covered, so admin password resets get partial signal - 4724 is in multi-agency Priority L",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-17T13:18:45.861Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
-        "c34abd8c6ab7"
+        "c34abd8c6ab7",
+        "6b224cb6c74b"
       ],
       "recallDays": [
         "2026-04-17"
@@ -2062,6 +2069,161 @@
         "db-commanded",
         "imss-connect-timeout",
         "deferrals/hour"
+      ]
+    },
+    "memory:memory/2026-04-17.md:84:111": {
+      "key": "memory:memory/2026-04-17.md:84:111",
+      "path": "memory/2026-04-17.md",
+      "startLine": 84,
+      "endLine": 111,
+      "source": "memory",
+      "snippet": "- Enabled `interactiveReplies: true` in Slack config - Buttons not rendering — Slack app needs Interactivity toggled on in app settings - Joel prefers inline buttons for email approval workflow ## 08:12 — Graph API Token Analysis - Decoded JWT — massive scope set including Mail.ReadWrite, Mail.Send, Calendars.ReadWrite, Sites.ReadWrite.All - App: \"Generic Personal Data Hub API\" — functional despite Joel thinking it wasn't - Email actions (archive, reply, forward) are already authorized - Wiki access via Sites.Read.All for SharePoint; Confluence needs separate Atlassian API token ## 08:06 — Wiki-API Skill Found - Located at joel-ginsberg_tmemu/skill-wiki-api on GitHub - 133 Confluence API o",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T02:34:36.628Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
+      "queryHashes": [
+        "6b224cb6c74b"
+      ],
+      "recallDays": [
+        "2026-04-17"
+      ],
+      "conceptTags": [
+        "mail.readwrite",
+        "mail.send",
+        "calendars.readwrite",
+        "sites.readwrite.all",
+        "sites.read.all",
+        "wiki-api",
+        "enabled",
+        "interactivereplies"
+      ]
+    },
+    "memory:memory/2026-04-17.md:216:240": {
+      "key": "memory:memory/2026-04-17.md:216:240",
+      "path": "memory/2026-04-17.md",
+      "startLine": 216,
+      "endLine": 240,
+      "source": "memory",
+      "snippet": "- Joel asked for rule hardening (immutable files, git hooks, checksum canary) - Joel chose Option C for MFA: push notification via Entra ID + Microsoft Authenticator - Domain: joeltest.org — need to confirm if Entra ID tenant exists - Trello card needed for this ## 16:45 — Email: Company 3 Follow-up - Robert Romero got scanner working with Service Gateway but via port 80, no TLS, no API key - \"I don't understand why it works, but it works\" — possible unintended behavior / security concern - Wants to discuss Monday, asks if Andre can join - Flagged to Joel via Slack DM ## Key Contacts Learned - Syed Saifullah — Ford, bi-weekly sync organizer - Robert Romero — Company 3, Senior Director Core",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T02:34:36.631Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.631Z",
+      "queryHashes": [
+        "6617d12cf701"
+      ],
+      "recallDays": [
+        "2026-04-17"
+      ],
+      "conceptTags": [
+        "gateway",
+        "joeltest.org",
+        "follow-up",
+        "bi-weekly",
+        "joel",
+        "asked",
+        "rule",
+        "hardening"
+      ]
+    },
+    "memory:memory/2026-04-17.md:105:123": {
+      "key": "memory:memory/2026-04-17.md:105:123",
+      "path": "memory/2026-04-17.md",
+      "startLine": 105,
+      "endLine": 123,
+      "source": "memory",
+      "snippet": "- Pushed via `gh auth token` — need to learn Joel's `auto_gh` tool for future pushes - Joel said: \"use auto_gh tool I made to push to remote repos\" and \"don't run gh cli directly\" - TODO: Find auto_gh location and use it instead of gh CLI ## 17:44 — Caught Up on Missed Teams Messages - Joel flagged that I missed several messages from ~16:57-17:00 - Key topics addressed: 1. **Slack security** — Chrissa raised concern about customer data in personal Slack. Agreed: no customer PII/case data in Slack, keep that in Teams. 2. **Second OpenClaw instance** — Joel wants separate instance for personal projects. Can run on different port (18790) with own workspace/config. 3. **Content rules & au",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T02:34:36.631Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.631Z",
+      "queryHashes": [
+        "6617d12cf701"
+      ],
+      "recallDays": [
+        "2026-04-17"
+      ],
+      "conceptTags": [
+        "auto-gh",
+        "57-17",
+        "pii/case",
+        "workspace/config",
+        "pushed",
+        "via",
+        "auth",
+        "token"
+      ]
+    },
+    "memory:memory/2026-04-17.md:195:222": {
+      "key": "memory:memory/2026-04-17.md:195:222",
+      "path": "memory/2026-04-17.md",
+      "startLine": 195,
+      "endLine": 222,
+      "source": "memory",
+      "snippet": "- Also has official docs: Admin Guide, Install Guide, HA Guide, BPG, Patch 3 docs - Need to index these into the CDT analyzer skill's reference knowledge ## 16:30 — Session Outage RCA - 90-min outage (2:48-4:22 PM) — agent session hit idle timeout - Gateway stayed running, cron reminders queued but weren't processed - Posted RCA to Teams group chat with solutions - Joel approved keepalive cron (every 5 min health ping), rejected Tailscale Funnel webhooks - Keepalive cron installed, Tailscale Funnel Trello card archived ## 16:37 — Nebula Gatekeeper Research - Joel wants to deploy nebula-gatekeeper instead of second OpenClaw instance - Cloned joel-ginsberg_tmemu/nebula-gatekeeper — it's Joel",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T02:34:36.631Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.631Z",
+      "queryHashes": [
+        "6617d12cf701"
+      ],
+      "recallDays": [
+        "2026-04-17"
+      ],
+      "conceptTags": [
+        "gateway",
+        "90-min",
+        "48-4",
+        "nebula-gatekeeper",
+        "has",
+        "official",
+        "docs",
+        "admin"
+      ]
+    },
+    "memory:memory/2026-04-16.md:581:603": {
+      "key": "memory:memory/2026-04-16.md:581:603",
+      "path": "memory/2026-04-16.md",
+      "startLine": 581,
+      "endLine": 603,
+      "source": "memory",
+      "snippet": "- Joel confirmed: I (Coconut/OpenClaw) should become the orchestration layer that the dispatcher in claude-portable never became - The dispatcher could spawn workers but had no real-time visibility into Claude sessions - My advantages: can stream sub-agent output, steer mid-flight, check worktrees, verify deliverables - Plan: deep-read dispatcher code, map what I cover natively, identify gaps, build adapters for hook-runner workflows - Hook-runner stays untouched as enforcement layer; I add oversight/visibility on top ## Teams Chat Update (21:49 CDT) - Joel wants me to deep-dive ALL projects before planning anything - Key directive: context-reset/new-session.py is important to understand -",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T02:34:36.631Z",
+      "lastRecalledAt": "2026-04-18T02:34:36.631Z",
+      "queryHashes": [
+        "6617d12cf701"
+      ],
+      "recallDays": [
+        "2026-04-17"
+      ],
+      "conceptTags": [
+        "coconut/openclaw",
+        "claude-portable",
+        "real-time",
+        "sub-agent",
+        "mid-flight",
+        "deep-read",
+        "hook-runner",
+        "oversight/visibility"
       ]
     }
   }

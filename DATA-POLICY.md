@@ -95,6 +95,27 @@ Every outbound message from Coconut that involves data classification judgment i
 
 ---
 
+## Teams Chat Access Policies
+
+The Teams poller supports per-chat access modes defined in `scripts/teams-poller/config.json`:
+
+| Access Mode | Behavior |
+|---|---|
+| **read-write** | Poll + respond normally. Used for Coconut-created chats and private chats. |
+| **read-only** | Poll and monitor only. **NEVER post without Joel's explicit permission.** Relay important items to Joel via Slack DM. |
+
+### Current Chat Config:
+- **Coconut Private** — read-write
+- **Joel+Chris 1:1** — read-write
+- **Joel + Andre + Coconut** — read-write
+- **Coconut + Molty** — read-write
+- **GM2 Squad 1** — ⚠️ READ-ONLY (manager group chat)
+
+### Auto-add Policy:
+Any group chat Coconut creates (e.g., with Andre, Molty, or other colleagues at Joel's request) should be added to config.json with `read-write` access automatically. Those people expect to be able to talk to Coconut.
+
+---
+
 ## Review
 
 - Joel reviews audit log periodically (or on demand)
@@ -103,4 +124,4 @@ Every outbound message from Coconut that involves data classification judgment i
 
 ---
 
-_Created by Coconut with Joel's approval. Last updated: 2025-07-14_
+_Created by Coconut with Joel's approval. Last updated: 2026-04-17_

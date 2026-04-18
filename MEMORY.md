@@ -35,11 +35,14 @@
   - All channels: requireMention: false (always respond)
 - GitHub bridge: live — polls all joel-ginsberg_tmemu repos
   - Service: openclaw-bridge (systemd, BindsTo openclaw-gateway)
-- Teams: polling-based via scripts/poll_all.py (every 3 min)
-  - Private chat: 19:62ad1ba6a4d84fd5b5b21ead32d1d7ae@thread.v2
-  - Joel+Chris group: 19:70ce...@unq.gbl.spaces
-  - Coconut+Molty chat: 19:bd6f4f46...@thread.v2 (created 2026-04-17)
-  - Joel+Andre+Coconut: 19:d31f1b71...@thread.v2 (created 2026-04-17)
+- Teams: polling-based via scripts/poll_all.py (every 3 min), service polls every 3s
+  - Multi-chat config in scripts/teams-poller/config.json with per-chat access policies
+  - Coconut Private (19:62ad...@thread.v2) — read-write
+  - Joel+Chris 1:1 (19:70ce...@unq.gbl.spaces) — read-write
+  - Joel+Andre+Coconut (19:d31f...@thread.v2) — read-write (created 2026-04-17)
+  - Coconut+Molty (19:bd6f...@thread.v2) — read-write (created 2026-04-17)
+  - GM2 Squad 1 (19:6eb6...@thread.v2) — ⚠️ READ-ONLY (manager chat, never post without Joel's permission)
+  - Auto-add policy: any chat Coconut creates → add to config with read-write
   - Image reading: working (downloads hostedContents via Graph API)
   - Formatting: md→HTML converter applied (Molty's advice)
 - Email: polling via Graph API, summarize and flag urgent to Joel via Slack DM

@@ -181,10 +181,21 @@ def read_and_clear_outbound() -> dict | None:
 _shutdown = False
 
 
-def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
-    """Single poll cycle. Returns prompt text if new messages found."""
-    chat_id = config.get("chat_id", "")
+def _get_chat_config(config: dict, chat_id: str) -> dict | None:
+    """Look up per-chat config from the chats[] array."""
+    for c in config.get("chats", []):
+        if c.get("id") == chat_id:
+            return c
+    return None
+
+
+def poll_once(client: GraphClient, config: dict, state: dict, chat_id: str = None) -> str | None:
+    """Single poll cycle for one chat. Returns prompt text if new messages found."""
+    chat_id = chat_id or config.get("chat_id", "")
     bot_signature = config.get("bot_signature", BOT_SIGNATURE)
+    chat_cfg = _get_chat_config(config, chat_id)
+    chat_label = chat_cfg.get("label", "unknown") if chat_cfg else "unknown"
+    access = chat_cfg.get("access", "read-write") if chat_cfg else "read-write"
 
     try:
         raw_messages = teams.get_chat_messages(
@@ -208,7 +219,10 @@ def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
     parsed.reverse()
 
     # Find new messages
-    last_time = state.get("last_processed_time", "1970-01-01T00:00:00Z")
+    # Use per-chat state keys so chats don't interfere with each other
+    per_chat_key = f"chat:{chat_id}"
+    chat_state = state.get(per_chat_key, {})
+    last_time = chat_state.get("last_processed_time", state.get("last_processed_time", "1970-01-01T00:00:00Z"))
     processed_set = set(state.get("processed_ids", []))
     now = time.time()
 
@@ -250,14 +264,18 @@ def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
         for msg in new_messages:
             parts.append(f"- **{msg['sender_name']}**: {msg['text']}")
 
-    # Tag which chat this is from
-    chat_label = "private" if chat_id == config.get("private_chat_id") else "group"
-    parts.extend([
-        "",
-        f"[Chat: {chat_label}]",
-        "Reply to the new message(s). Your reply will be posted to the Teams chat.",
-        "If the messages don't need a reply (casual banter, already answered, etc.), respond with just: TEAMS_NO_REPLY",
-    ])
+    # Tag which chat and access mode this is from
+    parts.append("")
+    parts.append(f"[Chat: {chat_label} | Access: {access}]")
+
+    if access == "read-only":
+        note = chat_cfg.get("note", "")
+        parts.append(f"⚠️ READ-ONLY CHAT — Do NOT reply to this chat. {note}")
+        parts.append("Summarize or flag anything important to Joel via Slack DM instead.")
+        parts.append("Respond with: TEAMS_NO_REPLY")
+    else:
+        parts.append("Reply to the new message(s). Your reply will be posted to the Teams chat.")
+        parts.append("If the messages don't need a reply (casual banter, already answered, etc.), respond with just: TEAMS_NO_REPLY")
 
     prompt = "\n".join(parts)
 
@@ -267,10 +285,13 @@ def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
 
     all_timestamps = [m["timestamp"] for m in parsed if m["timestamp"]]
     if all_timestamps:
-        state["last_processed_time"] = max(all_timestamps)
+        chat_state["last_processed_time"] = max(all_timestamps)
+        state[per_chat_key] = chat_state
 
     state["pending_reply"] = {
         "chat_id": chat_id,
+        "chat_label": chat_label,
+        "access": access,
         "senders": [
             {"name": m["sender_name"], "id": m.get("sender_id", "")}
             for m in new_messages
@@ -283,14 +304,22 @@ def poll_once(client: GraphClient, config: dict, state: dict) -> str | None:
 
 
 def post_reply(client: GraphClient, config: dict, reply_text: str, target_chat_id: str = None):
-    """Post a reply to Teams."""
+    """Post a reply to Teams. Blocks posting to read-only chats."""
     chat_id = target_chat_id or config.get("chat_id", "")
     bot_signature = config.get("bot_signature", BOT_SIGNATURE)
+
+    # SAFETY: check access policy before posting
+    chat_cfg = _get_chat_config(config, chat_id)
+    if chat_cfg and chat_cfg.get("access") == "read-only":
+        log.warning("BLOCKED: attempted post to read-only chat '%s' (%s)",
+                    chat_cfg.get("label", "?"), chat_id[:30])
+        return
 
     signed = f"{reply_text}\n\n<i>{bot_signature}</i>"
     try:
         teams.send_chat_message(client, chat_id, signed)
-        log.info("Posted reply to Teams chat %s", chat_id[:30])
+        log.info("Posted reply to Teams chat %s (%s)", 
+                 chat_cfg.get("label", "?") if chat_cfg else "?", chat_id[:30])
     except Exception as e:
         log.error("Failed to post reply: %s", e)
 
@@ -300,10 +329,16 @@ def run_service(interval: int = 5):
     global _shutdown
 
     config = load_config()
-    chat_id = config.get("chat_id", "")
-    if not chat_id:
-        log.error("No chat_id in config.json")
-        sys.exit(1)
+    chat_configs = config.get("chats", [])
+    if not chat_configs:
+        # Legacy fallback
+        chat_id = config.get("chat_id", "")
+        if not chat_id:
+            log.error("No chats[] or chat_id in config.json")
+            sys.exit(1)
+        chat_configs = [{"id": chat_id, "label": "default", "access": "read-write"}]
+    log.info("Monitoring %d chat(s): %s", len(chat_configs),
+             ", ".join(f"{c.get('label','?')} ({c.get('access','rw')})" for c in chat_configs))
 
     # Write PID file
     QUEUE_DIR.mkdir(parents=True, exist_ok=True)
@@ -343,14 +378,17 @@ def run_service(interval: int = 5):
                     token_refresh_time = time.time()
                     log.info("Token refreshed")
 
-            # Poll both chats for new messages
-            chat_ids = [config.get("chat_id", "")]
-            private_id = config.get("private_chat_id", "")
-            if private_id:
-                chat_ids.append(private_id)
+            # Poll all configured chats
+            chat_configs = config.get("chats", [])
+            if not chat_configs:
+                # Legacy fallback: single chat_id
+                chat_configs = [{"id": config.get("chat_id", ""), "label": "default", "access": "read-write"}]
 
-            for cid in chat_ids:
-                prompt = poll_once(client, {**config, "chat_id": cid}, state)
+            for chat_cfg in chat_configs:
+                cid = chat_cfg.get("id", "")
+                if not cid:
+                    continue
+                prompt = poll_once(client, config, state, chat_id=cid)
                 if prompt:
                     write_inbound(prompt, state.get("pending_reply"))
 
