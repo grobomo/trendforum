@@ -14,7 +14,7 @@ Define what content is allowed in each communication channel to prevent customer
 |-------|-------------|----------|
 | **PUBLIC** | Non-sensitive, general knowledge | Product docs, public URLs, general Trend Micro info |
 | **INTERNAL** | Squad coordination, non-sensitive | Meeting times, task assignments, skill progress, config changes |
-| **INTERNAL-INFRA** | Internal Trend Micro processes, tools, infrastructure | Customer console access methods, remote-in procedures, internal tooling workflows, support infrastructure details |
+| **INTERNAL-INFRA** | Internal Trend Micro processes, tools, infrastructure | Customer console access methods, remote-in procedures, internal tooling workflows, support infrastructure details, **internal wiki research results** (file paths, CLI commands, config structures, QA automation code, architecture internals from Confluence) |
 | **CUSTOMER** | Customer-identifiable or account-specific | Customer names, case numbers, PII, account intel, MDR alerts, meeting transcripts |
 | **PERSONAL** | Joel's personal projects, non-work | Side projects, personal dev, unrelated automation |
 
@@ -49,7 +49,7 @@ Define what content is allowed in each communication channel to prevent customer
 
 ### Slack — Joel DM
 - ✅ PUBLIC, INTERNAL
-- ❌ INTERNAL-INFRA — **No internal processes/infrastructure discussion.** Redirect to Teams.
+- ❌ INTERNAL-INFRA — **No internal processes/infrastructure discussion.** This includes: internal wiki/Confluence research results, product file paths, CLI commands, config file contents, QA automation code, and architecture internals. Post high-level summary in Slack, detailed findings to Teams.
 - ⚠️ CUSTOMER — **Limited.** Urgent flags only, same rules as #all-misfits
 - ✅ PERSONAL (Joel-only context)
 - **Rationale:** Private channel with primary operator
@@ -127,4 +127,7 @@ Any group chat Coconut creates (e.g., with Andre, Molty, or other colleagues at 
 
 ---
 
-_Created by Coconut with Joel's approval. Last updated: 2026-04-17_
+_Created by Coconut with Joel's approval. Last updated: 2026-04-18_
+
+### Incident Log
+- **2026-04-18 01:24 CDT** — Posted detailed DDEI wiki research (file paths, CLI export commands, config structure, QA automation code) to Slack DM. Joel flagged as INTERNAL-INFRA. Message deleted, summary reposted. Policy updated to explicitly include wiki research results in INTERNAL-INFRA classification.
