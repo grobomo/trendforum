@@ -14,6 +14,7 @@ Define what content is allowed in each communication channel to prevent customer
 |-------|-------------|----------|
 | **PUBLIC** | Non-sensitive, general knowledge | Product docs, public URLs, general Trend Micro info |
 | **INTERNAL** | Squad coordination, non-sensitive | Meeting times, task assignments, skill progress, config changes |
+| **INTERNAL-INFRA** | Internal Trend Micro processes, tools, infrastructure | Customer console access methods, remote-in procedures, internal tooling workflows, support infrastructure details |
 | **CUSTOMER** | Customer-identifiable or account-specific | Customer names, case numbers, PII, account intel, MDR alerts, meeting transcripts |
 | **PERSONAL** | Joel's personal projects, non-work | Side projects, personal dev, unrelated automation |
 
@@ -29,13 +30,14 @@ Define what content is allowed in each communication channel to prevent customer
 
 ### Slack — #all-misfits
 - ✅ PUBLIC, INTERNAL
+- ❌ INTERNAL-INFRA — **No internal processes/infrastructure discussion.** Redirect to Teams.
 - ⚠️ CUSTOMER — **Limited.** General account references OK (e.g., "EP meeting went well"). No PII, case numbers, customer emails, or sensitive account details.
 - ❌ PERSONAL
 - **Rationale:** Joel's personal Slack workspace — not enterprise-managed. Keep customer specifics in Teams.
 
 ### Slack — #coco-chat
 - ✅ PUBLIC, INTERNAL
-- ❌ CUSTOMER, PERSONAL
+- ❌ INTERNAL-INFRA, CUSTOMER, PERSONAL
 - **Purpose:** Coconut infrastructure, polling status, skill progress, config changes
 - **Rationale:** Technical plumbing channel — no customer data belongs here
 
@@ -47,6 +49,7 @@ Define what content is allowed in each communication channel to prevent customer
 
 ### Slack — Joel DM
 - ✅ PUBLIC, INTERNAL
+- ❌ INTERNAL-INFRA — **No internal processes/infrastructure discussion.** Redirect to Teams.
 - ⚠️ CUSTOMER — **Limited.** Urgent flags only, same rules as #all-misfits
 - ✅ PERSONAL (Joel-only context)
 - **Rationale:** Private channel with primary operator
