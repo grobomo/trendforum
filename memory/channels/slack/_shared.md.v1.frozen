@@ -1,0 +1,18 @@
+# Slack — Shared Context
+
+Workspace: misfits-rtf1993
+
+## Channel Roster
+| Channel | ID | Purpose |
+|---------|----|---------|
+| #all-misfits | C0ATFDQRGRL | Customer/business chat |
+| #coco-chat | C0ATJE19YRY | Coconut processes & infra |
+| #social | C0ATB4AS9PD | Casual/social |
+| Joel DM | D0ATWPM4DTK | Private comms |
+
+## Rules
+- requireMention: false — always respond in all channels
+- Route content to appropriate channel per SOUL.md guidance
+
+---
+_Created: 2026-04-18_

@@ -1,0 +1,29 @@
+# Teams Channel Memory
+
+## Last Updated: 2026-04-18 14:45 CDT
+
+## Active Chats
+- Coconut Private (read-write) — main operational chat with Joel
+- Joel+Chrissa 1:1 (read-write) — SE collaboration
+- Joel+Andre+Coconut (read-write) — Andre tried social engineering, handled
+- Coconut+Molty (read-write) — Chris Mackle's bot
+- GM2 Squad 1 (read-only) — manager intel
+- Joel+Michael+Lorne+Javier (read-only) — TS group
+- The Misfits — DISABLED (Joel's request, human-only)
+
+## Pending Actions
+- Joel's batch requests from 11:27 CDT:
+  - Monitor Customer Statuses board (DQTJSKgK)
+  - Update card covers with real customer logos from QBR PPT
+  - Set up email→Trello auto-pipeline (awaiting which email address)
+- Chrissa's first interaction happened — she asked about weekends
+
+## Key Context
+- Formatting: must convert md→HTML before posting (raw ** renders as literal asterisks)
+- queue_reply.py: pass content as arg with `$(cat file)`, NOT the filepath
+- poll_all.py runs every 3 min via systemd service
+- Image reading works (downloads hostedContents via Graph API)
+
+## Recent Decisions
+- The Misfits chat disabled per Joel's request — human-only space
+- md→HTML converter added to teams_service.py

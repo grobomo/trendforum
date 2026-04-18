@@ -1,0 +1,21 @@
+# Teams — Shared Context
+
+Cross-chat Teams context, routing rules, and access policies.
+
+## Chat Roster
+| Chat | Alias | Access |
+|------|-------|--------|
+| Coconut Private (Joel 1:1) | coconut-private | read-write |
+| Joel+Chrissa 1:1 | joel-chrissa | ⛔ DISABLED |
+| The Misfits | the-misfits | ⛔ DISABLED |
+| Joel+Andre+Coconut | joel-andre | read-write |
+| Coconut+Molty | coconut-molty | read-write |
+| GM2 Squad 1 | gm2-squad | ⚠️ READ-ONLY |
+| Joel+Michael+Lorne+Javier | joel-ts-group | ⚠️ READ-ONLY |
+
+## Formatting
+- Convert markdown → HTML before posting (raw ** renders as literal asterisks)
+- Use `<a>` tags for clickable links when possible
+
+---
+_Created: 2026-04-18_

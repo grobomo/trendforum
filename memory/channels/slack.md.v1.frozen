@@ -1,0 +1,21 @@
+# Slack Channel Memory
+
+## Last Updated: 2026-04-18 14:45 CDT
+
+## Active Threads
+- #coco-chat — Designing comm channel architecture with Joel. Per-channel memory + Trello Comm Status board.
+- #all-misfits — Answered unified brain gaps question. Trello is better for tasks, gap is automated intel-to-task pipeline.
+
+## Pending Actions
+- NousResearch red flags research (Crunchbase failed, need alt sources)
+- Fix narration leaking in Joel DM (NO_REPLY, GITHUB_NO_REPLY showing as sent messages)
+
+## Key Context
+- All channels: requireMention=false (always respond)
+- Joel wants concise messages, topic-separated
+- Don't wrap Trello links in pipe labels (causes Slack hangs)
+
+## Recent Decisions
+- Unified brain scrapped → Trello is the new backbone
+- Created channel-state.json for startup catch-up
+- Building per-channel memory + Trello Comm Status dashboard

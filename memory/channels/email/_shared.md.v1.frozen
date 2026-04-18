@@ -1,0 +1,12 @@
+# Email — Shared Context
+
+Polling via Graph API. Summarize and flag urgent to Joel via Slack DM.
+
+## Rules
+- Always include proof: log excerpts, screenshots, API results
+- Always provide clear next steps with documentation
+- NEVER send L3 docs to customers without explicit MFA from Joel
+- Prioritize customer-facing issues and P1/P2 cases
+
+---
+_Created: 2026-04-18_

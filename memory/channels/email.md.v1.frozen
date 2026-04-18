@@ -1,0 +1,24 @@
+# Email Channel Memory
+
+## Last Updated: 2026-04-18 14:45 CDT
+
+## Pending
+- EP V1 draft email v2 in Joel's Outlook Drafts — awaiting explicit yes/no approval
+  - Subject: "EP Vision One — Disconnected AWS Account Analysis & Recommendations"
+  - To: Dan Toresi
+  - Includes Oct 3 2024 freeze date, 13 active vs 6 decommissioned breakdown
+
+## Email Guidelines (Permanent)
+- Always include proof: log excerpts, screenshots, API results
+- Always provide clear next steps with documentation (Online Help, Admin Guides, Install Guides w/ page refs, KB articles)
+- NEVER send L3 docs (500-1000 pg internal PDFs) to customers without MFA from Joel
+- L3 docs are for Trend Micro support, RD, and TrendAI only
+
+## Recent
+- Azure Lab Cost Monitor email — routine, $17.32/day saved by VM shutdown, no action
+- EP email guidelines from Joel logged permanently
+
+## Key Context
+- Polling via Graph API cron
+- Entra ID app "Coconut Policy Guard" on joeltest.org
+- Client secret expires 2026-07-16 (need auto-renew flow)

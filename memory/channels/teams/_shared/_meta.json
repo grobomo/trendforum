@@ -1,0 +1,19 @@
+{
+  "last_promoted": "2026-04-18T22:25:00-05:00",
+  "cross_ref_counts": {
+    "ghost-triggers": 3,
+    "async-context-starved": 1
+  },
+  "cell_last_modified": {
+    "coconut-private": "2026-04-18T22:00:00-05:00",
+    "coconut-molty": "2026-04-18T22:23:00-05:00",
+    "joel-andre": "2026-04-17T00:00:00-05:00",
+    "gm2-squad": "2026-04-17T00:00:00-05:00",
+    "joel-ts-group": "2026-04-17T00:00:00-05:00"
+  },
+  "promotion_threshold": {
+    "cross_ref_min": 3,
+    "message_count_min": 30,
+    "age_days_min": 7
+  }
+}

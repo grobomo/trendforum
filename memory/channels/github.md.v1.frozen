@@ -1,0 +1,18 @@
+# GitHub Channel Memory
+
+## Last Updated: 2026-04-18 14:45 CDT
+
+## Repos Monitored
+- All joel-ginsberg_tmemu repos (via openclaw-bridge systemd service)
+
+## Recent Activity
+- PR #3 lab-worker T1009 VPN IP change detection — reviewed + approved
+- Multiple housekeeping PRs auto-merged (cleanup, task tracking, bug fixes)
+
+## Pending
+- None requiring review
+
+## Key Context
+- Signs comments with configurable bot_signature from bridge config
+- Bridge polls automatically via systemd
+- GitHub poller can timeout on Windows filesystem — `gh` CLI slow on /mnt/c

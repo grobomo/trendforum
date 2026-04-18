@@ -1,0 +1,11 @@
+# GitHub — Shared Context
+
+Polls all joel-ginsberg_tmemu repos via openclaw-bridge.
+
+## Rules
+- Sign comments with configured bot_signature
+- Per-repo memory files at: memory/channels/github/<owner>/<repo>.md
+- Create per-repo file on first interaction with that repo
+
+---
+_Created: 2026-04-18_

@@ -1,0 +1,31 @@
+# Trello Channel Memory
+
+## Last Updated: 2026-04-18 14:45 CDT
+
+## Board: To Do List (TyFBN1Bx)
+
+### Lists
+- Comm Status (69e3df88c02a2810fafbc328) — NEW: per-channel status dashboard
+- Coconut Todo (6954d3af836b51597afff8e9) — ~18 cards
+- Joel Todo (6954d3af836b51597afff8e8) — ~6 cards
+- Justin Todo (69e19cd7864480d809461861) — 2 cards
+- Chrissa Todo (69e19cce3a6e1e41e5c910e6) — 1 card
+- Done (6954d3af836b51597afff8f1) — automation moves dueComplete cards here
+
+### Comm Status Cards
+- 📧 Email (69e3dfa31b9396c57a0cf768)
+- 💬 Teams (69e3dfa3ba321671292a8584)
+- 🔀 GitHub (69e3dfa47c3f4dff3c411da7)
+- 💜 Slack (69e3dfa448fe98e3c6a74d4b)
+- 📋 Trello (69e3dfa5ddccff4b4c307a75)
+
+### Board Health
+- Free tier: 9/10 workspace members (near limit)
+- Board visibility: org (all workspace members)
+- Justin needs to access board
+- Customer Statuses board (DQTJSKgK) — Joel wants monitoring + logo updates
+
+## Key Context
+- API creds in keyring: openclaw/TRELLO_API_KEY, openclaw/TRELLO_TOKEN
+- Mark cards dueComplete=true → automation moves to Done
+- Joel can see card updates in real time — loves this visibility
