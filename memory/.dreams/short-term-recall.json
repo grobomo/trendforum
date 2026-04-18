@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-18T06:25:00.326Z",
+  "updatedAt": "2026-04-18T08:47:32.325Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -1755,22 +1755,24 @@
       "endLine": 747,
       "source": "memory",
       "snippet": "### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer** — Meeting analysis (Joel wants file watcher + Graph API transcripts) 2. **hook-runner** — Enforcement hooks (Joel wants me to use these for task orchestration) 3. **claude-portable** — AWS Claude Code (orchestration visibility problem Joel described) 4. **unified-brain** — Data layer for OpenClaw (REST + MC",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T04:04:14.102Z",
-      "lastRecalledAt": "2026-04-18T02:38:46.532Z",
+      "lastRecalledAt": "2026-04-18T08:47:32.325Z",
       "queryHashes": [
         "6a86ef4ec3d9",
         "29cfb2bca64e",
         "be6aae87d152",
-        "b7eff797e7a5"
+        "b7eff797e7a5",
+        "3274e507a5d7"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "older/completed",
@@ -1790,18 +1792,20 @@
       "endLine": 563,
       "source": "memory",
       "snippet": "- **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer** — Meeting analysis (Joel wants file watcher + Graph API transcripts) 2. **hook-runner** — Enforcement hooks (Joel wants me to use these for task orchestration) 3. **claude-portable** — AWS Claude Code (orchestration visibility problem Joel described) 4. **unified-brain** — Data layer for OpenClaw (REST + MCP, shared context) 5. **teams-agent** — Teams monitoring 6. **ccc-manager** — Fleet management for Claude Code ## Joel's Architecture Vision - Coconut (me/OpenClaw) acts as orchestration layer - Cla",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T04:18:41.781Z",
-      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
+      "lastRecalledAt": "2026-04-18T08:47:32.325Z",
       "queryHashes": [
-        "be6aae87d152"
+        "be6aae87d152",
+        "3274e507a5d7"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-18"
       ],
       "conceptTags": [
         "open-source",
