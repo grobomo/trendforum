@@ -24,7 +24,7 @@ def run_script(name, script_path):
     try:
         r = subprocess.run(
             [sys.executable, str(script_path)],
-            capture_output=True, text=True, timeout=30,
+            capture_output=True, text=True, timeout=60,
         )
         output = r.stdout.strip()
         if output:

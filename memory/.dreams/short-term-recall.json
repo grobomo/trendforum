@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-18T08:47:32.325Z",
+  "updatedAt": "2026-04-18T09:40:51.873Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -1022,13 +1022,13 @@
       "endLine": 437,
       "source": "memory",
       "snippet": "- Replied with plan: Teams Graph API subscriptions for webhooks, OpenClaw native Slack plugin, reactions via Graph API - Also: Joel's broader vision — one shared OpenClaw in AWS first, expand to 3 coordinating instances later (one per squad member) - Setup script for Chrissa/Justin to deploy their own assistants - \"Be curious\" added as guiding principle per Joel's request - Follow shtd workflow (spec → hack → test → deliver) for self-management ## 23:44 — Justin Hook Emails: TrendAI Spark Conference Invites - Justin sent 3 emails inviting customers to TrendAI Spark Leadership Exchange Conference - **Event:** May 11-14, Arizona Grand Resort & Spa - **All expenses paid by TrendAI** (travel +",
-      "recallCount": 7,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 7,
+      "totalScore": 8,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:17:02.953Z",
-      "lastRecalledAt": "2026-04-17T13:47:13.562Z",
+      "lastRecalledAt": "2026-04-18T09:40:51.873Z",
       "queryHashes": [
         "b849c01bbe9d",
         "9e8795b54859",
@@ -1036,11 +1036,13 @@
         "9519213da86c",
         "ca309362932c",
         "2715d063eaa6",
-        "5b97ebafc4ef"
+        "5b97ebafc4ef",
+        "8d5970e32c7b"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "chrissa/justin",
@@ -1420,22 +1422,24 @@
       "endLine": 880,
       "source": "memory",
       "snippet": "- Also: Joel's broader vision — one shared OpenClaw in AWS first, expand to 3 coordinating instances later (one per squad member) - Setup script for Chrissa/Justin to deploy their own assistants - \"Be curious\" added as guiding principle per Joel's request - Follow shtd workflow (spec → hack → test → deliver) for self-management ## 23:44 — Justin Hook Emails: TrendAI Spark Conference Invites - Justin sent 3 emails inviting customers to TrendAI Spark Leadership Exchange Conference - **Event:** May 11-14, Arizona Grand Resort & Spa - **All expenses paid by TrendAI** (travel + accommodation) - **Customers invited:** 1. Company 3 — Robert, Chuck, Tibor, Jack (from weekly cadence call) 2. Ent",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T13:47:13.562Z",
+      "lastRecalledAt": "2026-04-18T09:40:51.873Z",
       "queryHashes": [
         "9e8795b54859",
         "af2c3c675cc0",
         "2715d063eaa6",
-        "5b97ebafc4ef"
+        "5b97ebafc4ef",
+        "8d5970e32c7b"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "chrissa/justin",
@@ -2335,6 +2339,68 @@
         "includes",
         "opt",
         "trend"
+      ]
+    },
+    "memory:memory/2026-04-18.md:55:81": {
+      "key": "memory:memory/2026-04-18.md:55:81",
+      "path": "memory/2026-04-18.md",
+      "startLine": 55,
+      "endLine": 81,
+      "source": "memory",
+      "snippet": "- Research MCP protection - V1 time optimization / customer activity simulation - Maze: solve from end to beginning - Trendforum - Joel's cards: warning banner test, Live Nation meeting, CVS IMSVA upgrade script - Chrissa card: Nico scheduling (from Andre) ### Joel's Late Night Messages (05:53-05:54 CDT, missed until 08:53) - Trello workspace member count: 9/10 free tier limit — Justin needs board invite - Tailscale Funnel: keep as fallback, not archive - Confluence API key is in Windows keychain (unblocks wiki-api skill) - Joel asked \"did you get those messages\" at 08:53 — 3hr gap in response ### EP V1 Draft Email Created (03:16) - Saved to Joel's Outlook Drafts folder via Graph API - Sub",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T09:40:51.873Z",
+      "lastRecalledAt": "2026-04-18T09:40:51.873Z",
+      "queryHashes": [
+        "8d5970e32c7b"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "53-05",
+        "9/10",
+        "wiki-api",
+        "research",
+        "mcp",
+        "protection",
+        "time",
+        "optimization"
+      ]
+    },
+    "memory:memory/2026-04-18.md:28:62": {
+      "key": "memory:memory/2026-04-18.md:28:62",
+      "path": "memory/2026-04-18.md",
+      "startLine": 28,
+      "endLine": 62,
+      "source": "memory",
+      "snippet": "- \"Use DM for milestone updates on #coco-chat work\" - \"Stop dumping raw TODO lists in chat\" — monitor cron was posting raw git output every 15 min - The Misfits chat set to disabled — Joel wants human-only chat there - Joel still up past 1 AM adding Trello cards — brain dump session ### Monitor Cron Fix (00:15-00:45) - Killed old cron that dumped raw output to Teams private chat - Rebuilt monitor-claude-project.py with commit hash change detection - Posts narrative summaries to Joel Slack DM via Slack API - Only posts when new activity detected (compares last_commit hash) - Cron: */15 * * * * - Tested and verified working ### EP V1 Card Updated - Wrote detailed RCA in Trello card descripti",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T09:40:51.873Z",
+      "lastRecalledAt": "2026-04-18T09:40:51.873Z",
+      "queryHashes": [
+        "8d5970e32c7b"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "coco-chat",
+        "human-only",
+        "15-00",
+        "monitor-claude-project.py",
+        "last-commit",
+        "use",
+        "milestone",
+        "updates"
       ]
     }
   }

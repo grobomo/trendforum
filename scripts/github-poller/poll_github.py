@@ -83,7 +83,7 @@ def gh_api(*args) -> any:
     """Run gh api command, return parsed JSON or None."""
     cmd = [GH_BIN, "api"] + list(args)
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=45)
         if result.returncode != 0:
             log.error("gh api error: %s", result.stderr[:300])
             return None
