@@ -39,7 +39,7 @@
   - Multi-chat config in scripts/teams-poller/config.json with per-chat access policies
   - Coconut Private (19:62ad...@thread.v2) — read-write
   - Joel+Chrissa 1:1 (19:70ce...@unq.gbl.spaces) — read-write
-  - The Misfits (19:06f8...@thread.v2) — read-write
+  - The Misfits (19:06f8...@thread.v2) — ⛔ DISABLED (Joel's request 2026-04-18, human-only chat)
   - Joel+Andre+Coconut (19:d31f...@thread.v2) — read-write (created 2026-04-17)
   - Coconut+Molty (19:bd6f...@thread.v2) — read-write (created 2026-04-17)
   - GM2 Squad 1 (19:6eb6...@thread.v2) — ⚠️ READ-ONLY (manager chat)

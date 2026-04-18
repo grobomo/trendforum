@@ -18,8 +18,9 @@
     {
       "id": "19:06f865338aae48659a1ae841823733d1@thread.v2",
       "label": "The Misfits",
-      "access": "read-write",
-      "section": "squad"
+      "access": "disabled",
+      "section": "squad",
+      "note": "Disabled per Joel's request (2026-04-18). Human-only chat. Re-enable when Joel says so."
     },
     {
       "id": "19:d31f1b7114bb41249ebf983fb597d39a@thread.v2",
