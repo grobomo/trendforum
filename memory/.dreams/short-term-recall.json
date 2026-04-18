@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-18T02:38:46.532Z",
+  "updatedAt": "2026-04-18T06:25:00.326Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -655,21 +655,24 @@
       "endLine": 88,
       "source": "memory",
       "snippet": "| **unified-brain** | Multi-channel brain service (GitHub/Teams/webhooks → LLM analyzer, REST + MCP) | | **openclaw** | Local WSL2 OpenClaw installation | | **teams-agent** | Local Teams monitor (classifies importance, emails alerts) | | **msgraph-lib** | MS Graph API library | | **planhat-wiz** | Planhat integration | | **sales-hat** | Account research | | **ep-incident-response** | EP incident response | | **enablement** | Enablement content | | **deploy-secure-server** | Secure server deployment | | **deploy-wiki** | Wiki deployment | | **imsva-sg** | IMSVA-SG project | | **lab-worker** | Claude Code infrastructure automation | | **nebula-gatekeeper** | Nebula gatekeeper | | **rone-teams-",
-      "recallCount": 3,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T13:12:25.132Z",
+      "lastRecalledAt": "2026-04-18T06:25:00.326Z",
       "queryHashes": [
         "faac7a5ef190",
         "7c1c02264084",
-        "e2f95309b9fd"
+        "e2f95309b9fd",
+        "716008504d78",
+        "50ff13855028"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "unified-brain",
@@ -724,20 +727,23 @@
       "endLine": 274,
       "source": "memory",
       "snippet": "| **meeting-recorder** | Meeting recording tool | | **meeting-scheduler** | Teams meeting creator | | **unified-brain** | Multi-channel brain service (GitHub/Teams/webhooks → LLM analyzer, REST + MCP) | | **openclaw** | Local WSL2 OpenClaw installation | | **teams-agent** | Local Teams monitor (classifies importance, emails alerts) | | **msgraph-lib** | MS Graph API library | | **planhat-wiz** | Planhat integration | | **sales-hat** | Account research | | **ep-incident-response** | EP incident response | | **enablement** | Enablement content | | **deploy-secure-server** | Secure server deployment | | **deploy-wiki** | Wiki deployment | | **imsva-sg** | IMSVA-SG project | | **lab-worker** | C",
-      "recallCount": 2,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:39.506Z",
-      "lastRecalledAt": "2026-04-17T13:12:25.132Z",
+      "lastRecalledAt": "2026-04-18T06:25:00.326Z",
       "queryHashes": [
         "7c1c02264084",
-        "e2f95309b9fd"
+        "e2f95309b9fd",
+        "716008504d78",
+        "50ff13855028"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "meeting-recorder",
@@ -1815,18 +1821,21 @@
       "endLine": 724,
       "source": "memory",
       "snippet": "| **ep-incident-response** | EP incident response | | **enablement** | Enablement content | | **deploy-secure-server** | Secure server deployment | | **deploy-wiki** | Wiki deployment | | **imsva-sg** | IMSVA-SG project | | **lab-worker** | Claude Code infrastructure automation | | **nebula-gatekeeper** | Nebula gatekeeper | | **rone-teams-poller** | RONE Teams poller | | **moltbot** | Moltbot | | **vpn-monitor** | VPN monitoring | | **trender-forum** | Trender forum | | **ccc-rone-bridge** | CCC-RONE bridge | | **claude-temp-analysis** | Claude temp analysis | | **IMSVA-9.1-Rocky** | IMSVA 9.1 Rocky setup | | **RONE-boothapp-bridge** | RONE booth app bridge | | **macro_recordings** | Macro",
-      "recallCount": 1,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:12:25.132Z",
-      "lastRecalledAt": "2026-04-17T13:12:25.132Z",
+      "lastRecalledAt": "2026-04-18T06:25:00.326Z",
       "queryHashes": [
-        "e2f95309b9fd"
+        "e2f95309b9fd",
+        "716008504d78",
+        "50ff13855028"
       ],
       "recallDays": [
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "ep-incident-response",
@@ -2260,6 +2269,68 @@
         "data-policy.md",
         "memory.md",
         "manager/leadership"
+      ]
+    },
+    "memory:memory/2026-04-17.md:1:20": {
+      "key": "memory:memory/2026-04-17.md:1:20",
+      "path": "memory/2026-04-17.md",
+      "startLine": 1,
+      "endLine": 20,
+      "source": "memory",
+      "snippet": "# 2026-04-17 Daily Notes ## Evening Work Session (~21:30 CDT) ### DDEI policy.dat Research (~19:50-23:45 CDT) - Julian Harrington (CVS Health) asked about DDEI policy.dat inspection - Initial analysis from training knowledge: policy.dat is serialized binary in password-protected ZIP - Joel asked for source attribution — was honest that it was from training knowledge, not a specific doc - Joel pointed out wiki MCP exists in Claude Code enterprise setup → found `sooperset/mcp-atlassian` pattern - Traced credential chain: wiki-lite MCP → claude_cred.py → Python keyring on Windows (service: `claude-code`, key: `wiki-lite/CONFLUENCE_API_TOKEN`) - Wrote `scripts/confluence-creds.sh` — helper tha",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T06:24:13.300Z",
+      "lastRecalledAt": "2026-04-18T06:24:13.300Z",
+      "queryHashes": [
+        "716008504d78"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "policy.dat",
+        "50-23",
+        "password-protected",
+        "sooperset/mcp-atlassian",
+        "wiki-lite",
+        "claude-cred.py",
+        "claude-code",
+        "wiki-lite/confluence-api-token"
+      ]
+    },
+    "memory:memory/2026-04-17.md:15:39": {
+      "key": "memory:memory/2026-04-17.md:15:39",
+      "path": "memory/2026-04-17.md",
+      "startLine": 15,
+      "endLine": 39,
+      "source": "memory",
+      "snippet": "- Full backup includes: /opt/trend/ddei/config/, postfix configs, PostgreSQL dumps (ddei, usboxdb, pbagentdb) - Policy settings stored in XML: /opt/trend/ddei/config/policy_setting.xml - ZIP password NOT documented in any wiki — QA automation bypasses the UI ZIP export entirely - Confluence API creds: username joel_ginsberg@trendmicro.com, token in Windows keyring ### Joel Feedback: Stop Waiting, Work Autonomously Joel called me out for saying \"I'll tackle these when I have a proper work session.\" His point: if I have cards and I'm not occupied, just do them. No waiting for permission or a \"good time.\" Lesson internalized. ### Research Cards Completed (4 cards → Done) Researched IronCl",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T06:24:13.300Z",
+      "lastRecalledAt": "2026-04-18T06:24:13.300Z",
+      "queryHashes": [
+        "716008504d78"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "backup",
+        "opt/trend/ddei/config",
+        "joel-ginsberg",
+        "trendmicro.com",
+        "full",
+        "includes",
+        "opt",
+        "trend"
       ]
     }
   }
