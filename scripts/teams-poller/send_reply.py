@@ -8,11 +8,49 @@ Usage:
 
 import sys
 import os
+import re
 
 # Add script dir for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from poll_teams import load_config, load_state, save_state, BOT_SIGNATURE
+
+
+def md_to_html(text):
+    """Convert common markdown to Teams-compatible HTML."""
+    lines = text.split('\n')
+    html_lines = []
+    in_code_block = False
+    for line in lines:
+        # Code block fences
+        if line.strip().startswith('```'):
+            if in_code_block:
+                html_lines.append('</pre>')
+                in_code_block = False
+            else:
+                html_lines.append('<pre>')
+                in_code_block = True
+            continue
+        if in_code_block:
+            html_lines.append(line)
+            continue
+        # Bold: **text** → <strong>text</strong>
+        line = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', line)
+        # Italic: *text* → <em>text</em> (but not inside <strong>)
+        line = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<em>\1</em>', line)
+        # Inline code: `text` → <code>text</code>
+        line = re.sub(r'`(.+?)`', r'<code>\1</code>', line)
+        # Bullet lists: • or - at start
+        if re.match(r'^\s*[•\-]\s+', line):
+            line = re.sub(r'^\s*[•\-]\s+', '• ', line)
+        # Empty line → paragraph break
+        if line.strip() == '':
+            html_lines.append('<br>')
+        else:
+            html_lines.append(line)
+    if in_code_block:
+        html_lines.append('</pre>')
+    return '<br>'.join(html_lines)
 
 MSGRAPH_LIB = os.path.expanduser("~/lib/teams-agent")
 if MSGRAPH_LIB not in sys.path:
@@ -54,9 +92,10 @@ def main():
 
     # Build reply — no @mention prefix, just the reply text + signature
     # Strip any existing bot signature from reply text to prevent duplicates
-    import re
     clean_reply = re.sub(r'(\n\n|\s*)' + re.escape(bot_signature) + r'\s*$', '', reply_text).rstrip()
-    signed = f"{clean_reply}\n\n<i>{bot_signature}</i>"
+    # Convert markdown to Teams-compatible HTML
+    reply_html = md_to_html(clean_reply)
+    signed = f"{reply_html}<br><br><i>{bot_signature}</i>"
     body_html = signed
     mentions = []
 
