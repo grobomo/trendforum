@@ -89,7 +89,9 @@ try:
                         'dateLastActivity': card.get('dateLastActivity', ''),
                     }
                     if cid not in known:
-                        changes.append(f"NEW card in *{lst['name']}*: {card['name']}")
+                        # Don't report date card as new
+                        if cid != '69e5386452efe00168682d3f':
+                            changes.append(f"NEW card in *{lst['name']}*: {card['name']}")
                     elif known[cid].get('list') != lst['name']:
                         changes.append(f"MOVED *{card['name']}* from {known[cid].get('list')} → {lst['name']}")
                     elif known[cid].get('dueComplete') != card.get('dueComplete', False):
@@ -122,6 +124,23 @@ try:
                         for card in open_cards:
                             trello_out += f'- {card["name"]}\n'
                 results.append(('TRELLO', trello_out))
+        # Auto-update date card (temporal anchor)
+        try:
+            from datetime import datetime
+            today_str = datetime.now().strftime('%A, %B %d, %Y')
+            date_card_id = '69e5386452efe00168682d3f'
+            expected_name = f'📅 Today: {today_str}'
+            current_name = current_cards.get(date_card_id, {}).get('name', '')
+            if current_name != expected_name:
+                requests.put(
+                    f'https://api.trello.com/1/cards/{date_card_id}',
+                    params={'key': api_key, 'token': token,
+                            'name': expected_name, 'pos': 'top'},
+                    timeout=10
+                )
+        except Exception:
+            pass
+
 except Exception as e:
     # Don't let Trello errors break the whole poll
     pass
