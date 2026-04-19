@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-18T09:40:51.873Z",
+  "updatedAt": "2026-04-19T19:00:59.145Z",
   "entries": {
     "memory:memory/2026-04-15.md:1:20": {
       "key": "memory:memory/2026-04-15.md:1:20",
@@ -547,24 +547,26 @@
       "endLine": 134,
       "source": "memory",
       "snippet": "- Claude Code does the work with hook-runner enforcing discipline - Git worktrees track all work - Hooks enforce: writing specs, using worktrees, no destructive ops - I review tasks, edit task lists, let Claude run with hooks ## ProjectsCL1 Filesystem Map Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Cl",
-      "recallCount": 6,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 6,
+      "totalScore": 7,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T13:47:13.562Z",
+      "lastRecalledAt": "2026-04-18T22:15:04.264Z",
       "queryHashes": [
         "faac7a5ef190",
         "13d65caedf7c",
         "fcd5996e454e",
         "6a86ef4ec3d9",
         "be6aae87d152",
-        "5b97ebafc4ef"
+        "5b97ebafc4ef",
+        "d7111415a6b5"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "hook-runner",
@@ -619,23 +621,27 @@
       "endLine": 8,
       "source": "memory",
       "snippet": "## Teams — Joel confirms orchestration vision (21:08) - Joel approved the plan: keep his Claude Code hooks for enforcement, I act as task manager layer on top - Outstanding asks: paths to recording-analyzer and claude-portable repos - Also pending: file watcher service for auto-analysis, Graph API transcript pulling - Justin Hook introduced himself in the group chat - Chrissa mentioned she's working on automation + other projects",
-      "recallCount": 5,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4.633335030653537,
+      "totalScore": 7.633335030653537,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T13:47:13.561Z",
+      "lastRecalledAt": "2026-04-19T18:31:07.221Z",
       "queryHashes": [
         "faac7a5ef190",
         "13d65caedf7c",
         "be6aae87d152",
         "75a1810b1000",
-        "2715d063eaa6"
+        "2715d063eaa6",
+        "8d1190f4546d",
+        "50d1cff56ff4",
+        "f4d0b0032a61"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-19"
       ],
       "conceptTags": [
         "recording-analyzer",
@@ -655,19 +661,20 @@
       "endLine": 88,
       "source": "memory",
       "snippet": "| **unified-brain** | Multi-channel brain service (GitHub/Teams/webhooks → LLM analyzer, REST + MCP) | | **openclaw** | Local WSL2 OpenClaw installation | | **teams-agent** | Local Teams monitor (classifies importance, emails alerts) | | **msgraph-lib** | MS Graph API library | | **planhat-wiz** | Planhat integration | | **sales-hat** | Account research | | **ep-incident-response** | EP incident response | | **enablement** | Enablement content | | **deploy-secure-server** | Secure server deployment | | **deploy-wiki** | Wiki deployment | | **imsva-sg** | IMSVA-SG project | | **lab-worker** | Claude Code infrastructure automation | | **nebula-gatekeeper** | Nebula gatekeeper | | **rone-teams-",
-      "recallCount": 5,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5,
+      "totalScore": 6,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-18T06:25:00.326Z",
+      "lastRecalledAt": "2026-04-18T23:09:45.352Z",
       "queryHashes": [
         "faac7a5ef190",
         "7c1c02264084",
         "e2f95309b9fd",
         "716008504d78",
-        "50ff13855028"
+        "50ff13855028",
+        "b53c44404b46"
       ],
       "recallDays": [
         "2026-04-16",
@@ -692,22 +699,24 @@
       "endLine": 61,
       "source": "memory",
       "snippet": "| **continuous-claude** | Continuous Claude runner | | **custom-claude-cli** | Custom Claude CLI | | **session-doctor** | Session repair tool | | **spec-hook** | SHTD Flow spec hook | | **system-monitor** | System monitoring | | **sm-disk-monitor** | Disk monitoring | | **sm-vpn-monitor** | VPN monitoring | | **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.631740145607027,
+      "totalScore": 4.6317401456070275,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:35.498Z",
-      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
+      "lastRecalledAt": "2026-04-18T23:09:45.352Z",
       "queryHashes": [
         "faac7a5ef190",
         "c57b32db3be2",
         "d9f470a16900",
-        "608a082cc876"
+        "608a082cc876",
+        "b53c44404b46"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "continuous-claude",
@@ -827,18 +836,23 @@
       "endLine": 35,
       "source": "memory",
       "snippet": "# 2026-04-16 — Daily Notes ## Filesystem Map — ProjectsCL1 **Root:** `/mnt/c/Users/joelg/Documents/ProjectsCL1/` ### _grobomo/ (40 projects — personal/open-source GitHub account) | Project | Description | |---|---| | **claude-portable** | Run Claude Code on AWS EC2 (~$0.08/hr, auto-stops) | | **hook-runner** | Modular hook system for Claude Code (enforce workflows, block mistakes) | | **coconut** | Reusable AI chat assistant (monitors messaging, classifies, responds via Anthropic) | | **ccc-central** | (CCC infrastructure — no desc) | | **ccc-manager** | Fleet manager for Continuous Claude Code deployments | | **joels-mcp-servers** | Curated MCP servers collection with central dynamic rou",
-      "recallCount": 1,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.961076102192098,
-      "maxScore": 0.961076102192098,
+      "totalScore": 4.961076102192099,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:39.506Z",
-      "lastRecalledAt": "2026-04-17T01:13:39.506Z",
+      "lastRecalledAt": "2026-04-19T18:31:07.221Z",
       "queryHashes": [
-        "7c1c02264084"
+        "7c1c02264084",
+        "8d1190f4546d",
+        "3836fd9c9402",
+        "50d1cff56ff4",
+        "f4d0b0032a61"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-19"
       ],
       "conceptTags": [
         "personal/open-source",
@@ -858,21 +872,23 @@
       "endLine": 321,
       "source": "memory",
       "snippet": "- Claude Code does the work with hook-runner enforcing discipline - Git worktrees track all work - Hooks enforce: writing specs, using worktrees, no destructive ops - I review tasks, edit task lists, let Claude run with hooks ## ProjectsCL1 Filesystem Map Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Cl",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T01:13:41.883Z",
-      "lastRecalledAt": "2026-04-17T13:47:13.562Z",
+      "lastRecalledAt": "2026-04-18T22:15:04.264Z",
       "queryHashes": [
         "13d65caedf7c",
         "6a86ef4ec3d9",
-        "5b97ebafc4ef"
+        "5b97ebafc4ef",
+        "d7111415a6b5"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "hook-runner",
@@ -1062,13 +1078,13 @@
       "endLine": 920,
       "source": "memory",
       "snippet": "- Slack DM channel verified working at 21:07 CDT — Joel sent \"test\" and \"test2\", both received - Config also has: `name: coconut`, `dmPolicy: allowlist`, `allowFrom: [U0ATB4AAGJF]` (Joel's Slack user ID) - Slack channel ID for Joel DM: `D0ATWPM4DTK` - SECRETS_RELOADER error may have been transient or from earlier before tokens were set up ### Teams Service Token Refresh Bug — Root Cause & Fix - Graph API access tokens sometimes expire in under 30 minutes (observed ~10 min lifespan) - Service was only refreshing every 30 min → used dead tokens → spammed 401 errors - Error-streak re-auth (after 10 errors) was broken — read same expired token from cache instead of forcing refresh - **Fixes app",
-      "recallCount": 15,
+      "recallCount": 16,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 15,
+      "totalScore": 16,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:24:34.132Z",
-      "lastRecalledAt": "2026-04-17T13:31:22.673Z",
+      "lastRecalledAt": "2026-04-19T00:50:10.026Z",
       "queryHashes": [
         "de6a87514b7b",
         "5ccf272b17f1",
@@ -1084,11 +1100,13 @@
         "29cfb2bca64e",
         "b57b0ba7f058",
         "ca309362932c",
-        "2e6defd31b4f"
+        "2e6defd31b4f",
+        "d99ebc83a280"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "secrets-reloader",
@@ -1108,13 +1126,13 @@
       "endLine": 898,
       "source": "memory",
       "snippet": "- Joel added Trello board tabs to the Misfits Teams chat - Wants me to use Trello \"todo list\" board to track my work items in real time - Completed items should move to Done column but NOT be archived (keep visible for review) - Trello is Joel's source of truth for customer status - Needs to update some boards with recent customer activity from meeting transcripts - Joel mentioned an \"Atlassian API skill\" he built — asked if it's separate from the bundled Trello skill - Trello API creds (TRELLO_API_KEY, TRELLO_TOKEN) not yet configured - Trello integration to start after Slack integration completes - Found existing Trello skill at: /home/ubu/.nvm/versions/node/v24.13.0/lib/node_modules/openc",
-      "recallCount": 14,
+      "recallCount": 15,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 14,
+      "totalScore": 15,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T02:24:34.133Z",
-      "lastRecalledAt": "2026-04-17T13:47:13.562Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
       "queryHashes": [
         "5ccf272b17f1",
         "9a69d93c563b",
@@ -1129,11 +1147,13 @@
         "23b05ae52ce9",
         "2e6defd31b4f",
         "2715d063eaa6",
-        "5b97ebafc4ef"
+        "5b97ebafc4ef",
+        "5739d6752e05"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "trello-api-key",
@@ -1246,22 +1266,27 @@
       "endLine": 488,
       "source": "memory",
       "snippet": "| **ccc-central** | (CCC infrastructure — no desc) | | **ccc-manager** | Fleet manager for Continuous Claude Code deployments | | **joels-mcp-servers** | Curated MCP servers collection with central dynamic router | | **claude-code-defaults** | Claude Code default configs | | **claude-code-skills** | Claude Code skills collection | | **claude-report** | Claude reporting tool | | **v1-helper** | Vision One helper | | **v1ego** | V1EGO — Vision One Enhanced GO | | **email-manager** | Email management | | **github-agent** | GitHub agent | | **gh-auto** | GitHub automation scripts | | **auto-gsd** | Auto-GSD enforcement | | **claas** | CLaaS v2 — Claude-as-a-Service | | **context-rag** | Context",
-      "recallCount": 4,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 8,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
+      "lastRecalledAt": "2026-04-19T18:31:07.221Z",
       "queryHashes": [
         "c57b32db3be2",
         "23b05ae52ce9",
         "d9f470a16900",
-        "608a082cc876"
+        "608a082cc876",
+        "8d1190f4546d",
+        "3836fd9c9402",
+        "50d1cff56ff4",
+        "f4d0b0032a61"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-19"
       ],
       "conceptTags": [
         "router",
@@ -1281,20 +1306,25 @@
       "endLine": 670,
       "source": "memory",
       "snippet": "| **hook-runner** | Modular hook system for Claude Code (enforce workflows, block mistakes) | | **coconut** | Reusable AI chat assistant (monitors messaging, classifies, responds via Anthropic) | | **ccc-central** | (CCC infrastructure — no desc) | | **ccc-manager** | Fleet manager for Continuous Claude Code deployments | | **joels-mcp-servers** | Curated MCP servers collection with central dynamic router | | **claude-code-defaults** | Claude Code default configs | | **claude-code-skills** | Claude Code skills collection | | **claude-report** | Claude reporting tool | | **v1-helper** | Vision One helper | | **v1ego** | V1EGO — Vision One Enhanced GO | | **email-manager** | Email management |",
-      "recallCount": 2,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 6,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T22:53:31.419Z",
+      "lastRecalledAt": "2026-04-19T18:31:07.221Z",
       "queryHashes": [
         "c57b32db3be2",
-        "d9f470a16900"
+        "d9f470a16900",
+        "8d1190f4546d",
+        "3836fd9c9402",
+        "50d1cff56ff4",
+        "f4d0b0032a61"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-19"
       ],
       "conceptTags": [
         "router",
@@ -1314,13 +1344,13 @@
       "endLine": 696,
       "source": "memory",
       "snippet": "| **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat export tool | | **aws-mon** | AWS monitoring | | **aws-skill** | AWS skill | | **react** | React project | | **hook-runner-worktrees** | Hook-runner worktrees | ### _tmemu/ (28 projects — Trend Micro enterprise/internal GitHub account) | Project | Description | |---|---| | **recording-analyzer** | Meeting t",
-      "recallCount": 7,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 7,
+      "totalScore": 8,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
+      "lastRecalledAt": "2026-04-18T23:09:45.352Z",
       "queryHashes": [
         "c57b32db3be2",
         "b99cf8da3cb8",
@@ -1328,11 +1358,13 @@
         "c34abd8c6ab7",
         "d9f470a16900",
         "608a082cc876",
-        "6b224cb6c74b"
+        "6b224cb6c74b",
+        "b53c44404b46"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "pr-monitor",
@@ -1352,21 +1384,25 @@
       "endLine": 244,
       "source": "memory",
       "snippet": "| **auto-gsd** | Auto-GSD enforcement | | **claas** | CLaaS v2 — Claude-as-a-Service | | **context-rag** | Context RAG | | **context-reset** | Context reset tool | | **continuous-claude** | Continuous Claude runner | | **custom-claude-cli** | Custom Claude CLI | | **session-doctor** | Session repair tool | | **spec-hook** | SHTD Flow spec hook | | **system-monitor** | System monitoring | | **sm-disk-monitor** | Disk monitoring | | **sm-vpn-monitor** | VPN monitoring | | **pr-monitor** | PR feedback checker | | **move-repo-account** | Repo account migration | | **plugin-marketplace** | Plugin marketplace | | **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text fo",
-      "recallCount": 3,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:19:23.578Z",
-      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
+      "lastRecalledAt": "2026-04-19T16:47:55.435Z",
       "queryHashes": [
         "c57b32db3be2",
         "d9f470a16900",
-        "608a082cc876"
+        "608a082cc876",
+        "b53c44404b46",
+        "3836fd9c9402"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18",
+        "2026-04-19"
       ],
       "conceptTags": [
         "auto-gsd",
@@ -1386,23 +1422,27 @@
       "endLine": 459,
       "source": "memory",
       "snippet": "## Teams - Trello Integration Request - Joel added Trello board tabs to the Misfits Teams chat - Wants me to use Trello \"todo list\" board to track my work items in real time - Completed items should move to Done column but NOT be archived (keep visible for review) - Trello is Joel's source of truth for customer status - Needs to update some boards with recent customer activity from meeting transcripts - Joel mentioned an \"Atlassian API skill\" he built — asked if it's separate from the bundled Trello skill - Trello API creds (TRELLO_API_KEY, TRELLO_TOKEN) not yet configured - Trello integration to start after Slack integration completes - Found existing Trello skill at: /home/ubu/.nvm/version",
-      "recallCount": 5,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5,
+      "totalScore": 8,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T13:47:13.562Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
       "queryHashes": [
         "9e8795b54859",
         "af2c3c675cc0",
         "23b05ae52ce9",
         "2715d063eaa6",
-        "5b97ebafc4ef"
+        "5b97ebafc4ef",
+        "521bf24635c1",
+        "91014db41db1",
+        "5739d6752e05"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "trello-api-key",
@@ -1422,19 +1462,21 @@
       "endLine": 880,
       "source": "memory",
       "snippet": "- Also: Joel's broader vision — one shared OpenClaw in AWS first, expand to 3 coordinating instances later (one per squad member) - Setup script for Chrissa/Justin to deploy their own assistants - \"Be curious\" added as guiding principle per Joel's request - Follow shtd workflow (spec → hack → test → deliver) for self-management ## 23:44 — Justin Hook Emails: TrendAI Spark Conference Invites - Justin sent 3 emails inviting customers to TrendAI Spark Leadership Exchange Conference - **Event:** May 11-14, Arizona Grand Resort & Spa - **All expenses paid by TrendAI** (travel + accommodation) - **Customers invited:** 1. Company 3 — Robert, Chuck, Tibor, Jack (from weekly cadence call) 2. Ent",
-      "recallCount": 5,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5,
+      "totalScore": 7,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-18T09:40:51.873Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
       "queryHashes": [
         "9e8795b54859",
         "af2c3c675cc0",
         "2715d063eaa6",
         "5b97ebafc4ef",
-        "8d5970e32c7b"
+        "8d5970e32c7b",
+        "521bf24635c1",
+        "5739d6752e05"
       ],
       "recallDays": [
         "2026-04-16",
@@ -1459,20 +1501,22 @@
       "endLine": 154,
       "source": "memory",
       "snippet": "- `unified-brain` — Cross-channel intelligence - `meeting-recorder`, `meeting-scheduler` — Meeting tools - `sales-hat`, `planhat-wiz`, `enablement` — Sales tools - `vpn-monitor`, `nebula-gatekeeper` — Network tools - `_shared/` — Cross-cutting (scripts, specs, MCP, TODO.md) - Root: `ai-skill-marketplace`, `lab-worker` Also found: `/mnt/c/Users/joelg/archive/ProjectsCL` (old projects) ## Orchestration Layer Decision - Joel confirmed: I (Coconut/OpenClaw) should become the orchestration layer that the dispatcher in claude-portable never became - The dispatcher could spawn workers but had no real-time visibility into Claude sessions - My advantages: can stream sub-agent output, steer",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
+      "lastRecalledAt": "2026-04-18T22:15:04.264Z",
       "queryHashes": [
         "9e8795b54859",
         "fcd5996e454e",
-        "af2c3c675cc0"
+        "af2c3c675cc0",
+        "d7111415a6b5"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-18"
       ],
       "conceptTags": [
         "network",
@@ -1492,20 +1536,22 @@
       "endLine": 341,
       "source": "memory",
       "snippet": "- `unified-brain` — Cross-channel intelligence - `meeting-recorder`, `meeting-scheduler` — Meeting tools - `sales-hat`, `planhat-wiz`, `enablement` — Sales tools - `vpn-monitor`, `nebula-gatekeeper` — Network tools - `_shared/` — Cross-cutting (scripts, specs, MCP, TODO.md) - Root: `ai-skill-marketplace`, `lab-worker` Also found: `/mnt/c/Users/joelg/archive/ProjectsCL` (old projects) ## Orchestration Layer Decision - Joel confirmed: I (Coconut/OpenClaw) should become the orchestration layer that the dispatcher in claude-portable never became - The dispatcher could spawn workers but had no real-time visibility into Claude sessions - My advantages: can stream sub-agent output, steer",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:23:13.681Z",
-      "lastRecalledAt": "2026-04-17T03:45:59.584Z",
+      "lastRecalledAt": "2026-04-18T22:15:04.264Z",
       "queryHashes": [
         "9e8795b54859",
         "fcd5996e454e",
-        "af2c3c675cc0"
+        "af2c3c675cc0",
+        "d7111415a6b5"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-18"
       ],
       "conceptTags": [
         "network",
@@ -1558,19 +1604,21 @@
       "endLine": 583,
       "source": "memory",
       "snippet": "- `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Claude tooling - `gh-auto`, `github-agent`, `pr-monitor` — GitHub automation - `email-manager`, `system-monitor`, `sm-vpn-monitor`, `sm-disk-monitor` — system tools - `joels-mcp-servers`, `claude-code-skills`, `claude-code-defaults` — MCP/skills - `hackathon26`, `boothapp`, `react` — misc projects - `_tmemu/` — Trend Micro-specific (work GitHub account) - `recording-analyzer` — Meeting analysis pipeline - `teams-agent`, `msgraph-lib`, `teams-graph-api` — Teams/Graph integratio",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.9565327252154951,
+      "totalScore": 2.956532725215495,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:45:59.583Z",
-      "lastRecalledAt": "2026-04-17T03:50:00.635Z",
+      "lastRecalledAt": "2026-04-18T22:15:04.264Z",
       "queryHashes": [
         "fcd5996e454e",
-        "9519213da86c"
+        "9519213da86c",
+        "d7111415a6b5"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-18"
       ],
       "conceptTags": [
         "hook-runner",
@@ -1590,22 +1638,24 @@
       "endLine": 768,
       "source": "memory",
       "snippet": "Joel's projects live at: `/mnt/c/Users/joelg/Documents/ProjectsCL1/` Structure: - `_grobomo/` — Joel's tools/infrastructure (personal GitHub account) - `claude-portable` — EC2-based Claude Code runner (Docker, VNC, S3, auto-idle) - `hook-runner` — Modular hook system for Claude Code (90+ modules, workflows) - `coconut` — This bot's related project - `context-reset`, `continuous-claude`, `custom-claude-cli`, `one-turn-claude` — Claude tooling - `gh-auto`, `github-agent`, `pr-monitor` — GitHub automation - `email-manager`, `system-monitor`, `sm-vpn-monitor`, `sm-disk-monitor` — system tools - `joels-mcp-servers`, `claude-code-skills`, `claude-code-defaults` — MCP/skills - `hac",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.586345942469913,
+      "totalScore": 4.586345942469913,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:45:59.583Z",
-      "lastRecalledAt": "2026-04-17T13:17:35.778Z",
+      "lastRecalledAt": "2026-04-18T22:15:04.264Z",
       "queryHashes": [
         "fcd5996e454e",
         "9519213da86c",
         "75a1810b1000",
-        "23b05ae52ce9"
+        "23b05ae52ce9",
+        "d7111415a6b5"
       ],
       "recallDays": [
         "2026-04-16",
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "tools/infrastructure",
@@ -1625,22 +1675,24 @@
       "endLine": 844,
       "source": "memory",
       "snippet": "### Known Issue: Heartbeat Polling Without Execution - Joel called me out (18:12 CDT) for sending HEARTBEAT_OK without actually running poll_all.py - This is a recurring problem — I need to always execute the poll script, not just respond - The cron instruction is explicit: \"run python3 ... poll_all.py\" — must actually execute it - Without exec tool access, I cannot run the script directly; need to flag this limitation ### Hook Adaptation to OpenClaw — Full Research Done - Read OpenClaw hooks docs thoroughly — has its own event-driven hook system - OpenClaw hook events: command:new/reset, message:received/sent, session:compact, agent:bootstrap, gateway:startup - Hooks are TypeScript handler",
-      "recallCount": 5,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5,
+      "totalScore": 6,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:50:00.634Z",
-      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
+      "lastRecalledAt": "2026-04-19T00:50:10.026Z",
       "queryHashes": [
         "b6141aeb674e",
         "6a86ef4ec3d9",
         "f77266e6483b",
         "35765da94834",
-        "29cfb2bca64e"
+        "29cfb2bca64e",
+        "d99ebc83a280"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-18"
       ],
       "conceptTags": [
         "gateway",
@@ -1660,22 +1712,24 @@
       "endLine": 397,
       "source": "memory",
       "snippet": "- context-reset/new-session.py fully read — session continuity via JSONL transcript extraction, SESSION_STATE.md, tab management, chain recording ## 23:22 — Afternoon Quiet Period & Missed Teams Reply ### Known Issue: Heartbeat Polling Without Execution - Joel called me out (18:12 CDT) for sending HEARTBEAT_OK without actually running poll_all.py - This is a recurring problem — I need to always execute the poll script, not just respond - The cron instruction is explicit: \"run python3 ... poll_all.py\" — must actually execute it - Without exec tool access, I cannot run the script directly; need to flag this limitation ### Hook Adaptation to OpenClaw — Full Research Done - Read OpenClaw hook",
-      "recallCount": 5,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5,
+      "totalScore": 6,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T03:50:00.634Z",
-      "lastRecalledAt": "2026-04-17T04:18:41.781Z",
+      "lastRecalledAt": "2026-04-19T00:50:10.026Z",
       "queryHashes": [
         "b6141aeb674e",
         "6a86ef4ec3d9",
         "f77266e6483b",
         "35765da94834",
-        "29cfb2bca64e"
+        "29cfb2bca64e",
+        "d99ebc83a280"
       ],
       "recallDays": [
-        "2026-04-16"
+        "2026-04-16",
+        "2026-04-18"
       ],
       "conceptTags": [
         "context-reset/new-session.py",
@@ -1759,24 +1813,28 @@
       "endLine": 747,
       "source": "memory",
       "snippet": "### Archive/ (50+ items — older/completed projects) Notable: brain, mcp-manager-clean, vision-one-mcp-server, claude-delegate, claude-multi-agent, headless-pm, webscraper-planhat ## GitHub Accounts - **grobomo** — Joel's personal GitHub (open-source projects) - **tmemu** (joel-ginsberg_tmemu) — Trend Micro enterprise GitHub ## Key Projects for Coconut's Mission 1. **recording-analyzer** — Meeting analysis (Joel wants file watcher + Graph API transcripts) 2. **hook-runner** — Enforcement hooks (Joel wants me to use these for task orchestration) 3. **claude-portable** — AWS Claude Code (orchestration visibility problem Joel described) 4. **unified-brain** — Data layer for OpenClaw (REST + MC",
-      "recallCount": 5,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5,
+      "totalScore": 8,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T04:04:14.102Z",
-      "lastRecalledAt": "2026-04-18T08:47:32.325Z",
+      "lastRecalledAt": "2026-04-19T18:31:07.221Z",
       "queryHashes": [
         "6a86ef4ec3d9",
         "29cfb2bca64e",
         "be6aae87d152",
         "b7eff797e7a5",
-        "3274e507a5d7"
+        "3274e507a5d7",
+        "8d1190f4546d",
+        "50d1cff56ff4",
+        "f4d0b0032a61"
       ],
       "recallDays": [
         "2026-04-16",
         "2026-04-17",
-        "2026-04-18"
+        "2026-04-18",
+        "2026-04-19"
       ],
       "conceptTags": [
         "older/completed",
@@ -1895,21 +1953,23 @@
       "endLine": 806,
       "source": "memory",
       "snippet": "- Also: Dole case TM-03943850 (P3) got an update — legitimate emails blocked by Correlated Intelligence, backend team reviewing ## Email: Dole Case TM-03943850 Update - P3 — not urgent - Carlos Leon reacted to Ivan Belga's update - Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.net/wiki/x/9gHbVw) — behind auth wall, couldn't fetch - Joel says it's useful for Panavision XDR comparison questions - Chrissa emailed Mark (Patterson) a",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
+      "lastRecalledAt": "2026-04-19T19:00:59.145Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
         "c34abd8c6ab7",
-        "6b224cb6c74b"
+        "6b224cb6c74b",
+        "e5f5659a0ff9"
       ],
       "recallDays": [
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-19"
       ],
       "conceptTags": [
         "tm-03943850",
@@ -1929,21 +1989,23 @@
       "endLine": 174,
       "source": "memory",
       "snippet": "- Goal: become the orchestration layer that dispatcher/claude-portable never became - Architecture target: Podman on AlmaLinux EC2, NIST CSF 2.0 hardened - Also: Dole case TM-03943850 (P3) got an update — legitimate emails blocked by Correlated Intelligence, backend team reviewing ## Email: Dole Case TM-03943850 Update - P3 — not urgent - Carlos Leon reacted to Ivan Belga's update - Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
+      "lastRecalledAt": "2026-04-19T19:00:59.145Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
         "c34abd8c6ab7",
-        "6b224cb6c74b"
+        "6b224cb6c74b",
+        "e5f5659a0ff9"
       ],
       "recallDays": [
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-19"
       ],
       "conceptTags": [
         "dispatcher/claude-portable",
@@ -1963,21 +2025,23 @@
       "endLine": 361,
       "source": "memory",
       "snippet": "- Goal: become the orchestration layer that dispatcher/claude-portable never became - Architecture target: Podman on AlmaLinux EC2, NIST CSF 2.0 hardened - Also: Dole case TM-03943850 (P3) got an update — legitimate emails blocked by Correlated Intelligence, backend team reviewing ## Email: Dole Case TM-03943850 Update - P3 — not urgent - Carlos Leon reacted to Ivan Belga's update - Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
+      "lastRecalledAt": "2026-04-19T19:00:59.145Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
         "c34abd8c6ab7",
-        "6b224cb6c74b"
+        "6b224cb6c74b",
+        "e5f5659a0ff9"
       ],
       "recallDays": [
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-19"
       ],
       "conceptTags": [
         "dispatcher/claude-portable",
@@ -1997,21 +2061,23 @@
       "endLine": 622,
       "source": "memory",
       "snippet": "- Issue: legitimate emails from frode.rusztler@bama.no quarantined by Correlated Intelligence policy in V1 Email Security - Status: waiting on backend/Threat Team feedback - Flagged to Joel in Teams reply ## 22:12 — Panavision SIEM Alignment Update - Joel shared Confluence wiki page (https://trendmicro.atlassian.net/wiki/x/9gHbVw) — behind auth wall, couldn't fetch - Joel says it's useful for Panavision XDR comparison questions - Chrissa emailed Mark (Patterson) about Log Inspection Rule 1002795: - Event ID 4724 (password reset attempt) NOT covered by default sub-rules - 4738 (account changed) IS covered, so admin password resets get partial signal - 4724 is in multi-agency Priority L",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4,
+      "totalScore": 5,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-18T02:34:36.628Z",
+      "lastRecalledAt": "2026-04-19T19:00:59.145Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
         "c34abd8c6ab7",
-        "6b224cb6c74b"
+        "6b224cb6c74b",
+        "e5f5659a0ff9"
       ],
       "recallDays": [
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-19"
       ],
       "conceptTags": [
         "frode.rusztler",
@@ -2031,22 +2097,24 @@
       "endLine": 513,
       "source": "memory",
       "snippet": "| **one-turn-claude** | Single-turn Claude wrapper | | **double-space-fixer** | Text formatting fix | | **pretrust-test** | Pre-trust testing | | **hackathon26** | Hackathon 2026 project | | **boothapp** | Booth application | | **chat-export** | Chat export tool | | **aws-mon** | AWS monitoring | | **aws-skill** | AWS skill | | **react** | React project | | **hook-runner-worktrees** | Hook-runner worktrees | ### _tmemu/ (28 projects — Trend Micro enterprise/internal GitHub account) | Project | Description | |---|---| | **recording-analyzer** | Meeting transcript analysis (VTT/TXT, auto-detect template, modular engines) | | **meeting-recorder** | Meeting recording tool | | **meeting-schedule",
-      "recallCount": 5,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5,
+      "totalScore": 6,
       "maxScore": 1,
       "firstRecalledAt": "2026-04-17T13:17:35.777Z",
-      "lastRecalledAt": "2026-04-17T22:53:34.366Z",
+      "lastRecalledAt": "2026-04-18T23:09:45.352Z",
       "queryHashes": [
         "b99cf8da3cb8",
         "65314b53299e",
         "c34abd8c6ab7",
         "d9f470a16900",
-        "608a082cc876"
+        "608a082cc876",
+        "b53c44404b46"
       ],
       "recallDays": [
-        "2026-04-17"
+        "2026-04-17",
+        "2026-04-18"
       ],
       "conceptTags": [
         "one-turn-claude",
@@ -2401,6 +2469,869 @@
         "use",
         "milestone",
         "updates"
+      ]
+    },
+    "memory:memory/2026-04-18.md:173:204": {
+      "key": "memory:memory/2026-04-18.md:173:204",
+      "path": "memory/2026-04-18.md",
+      "startLine": 173,
+      "endLine": 204,
+      "source": "memory",
+      "snippet": "- Chrissa Todo: Nico scheduling - Done list: monitor cron fix, several research cards ### Company 3 — Robert Romero Card Updated - Added Robert's email screenshot content to Trello card - Port 80, no TLS, no API key on containerized scanner - \"I don't understand why it works, but it works\" — security concern for Monday call ### Persistent Issues - GitHub poller timing out — `gh` CLI slow on Windows filesystem, needs timeout increase - 3-hour response gap on Joel's Teams messages (05:53→08:53) — poll was running but no exec tool available during compaction - Trello free tier: 9/10 workspace members, near limit ## Hermes Agent + Studio Install (04:30-05:00 CDT) Joel asked to install and te",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T20:17:26.165Z",
+      "lastRecalledAt": "2026-04-19T03:44:12.594Z",
+      "queryHashes": [
+        "d16af73377c8",
+        "98603f6154ba",
+        "1c748b9915f3",
+        "d80ed9eeaf03"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "3-hour",
+        "9/10",
+        "30-05",
+        "chrissa",
+        "todo",
+        "nico",
+        "scheduling",
+        "done"
+      ]
+    },
+    "memory:memory/2026-04-18.md:198:216": {
+      "key": "memory:memory/2026-04-18.md:198:216",
+      "path": "memory/2026-04-18.md",
+      "startLine": 198,
+      "endLine": 216,
+      "source": "memory",
+      "snippet": "- Base URL: `https://api.rdsec.trendmicro.com/prod/aiendpoint/v1` - Model: claude-4.6-opus - API key in `~/.hermes/config.yaml` (from keyring `openclaw/RDSEC_API_KEY`) - API server env vars in `~/.hermes/.env`: API_SERVER_ENABLED=true, API_SERVER_PORT=8642 - Systemd service: `~/.config/systemd/user/hermes-gateway.service` ### Lessons learned: - First attempt with `[all]` extras caused OOM (faster-whisper, ctranslate2 are huge) — rebuilt venv with `[cron,cli,mcp,acp,pty]` only - RDsec URL is `api.rdsec.trendmicro.com` NOT `rdsecaiendpointprod.azure-api.net` (DNS doesn't resolve the Azure one from WSL) - Studio expects gateway on port 8642 (hardcoded default in API server platform) - 4GB WSL",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T20:17:26.165Z",
+      "lastRecalledAt": "2026-04-18T20:17:26.165Z",
+      "queryHashes": [
+        "d16af73377c8"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "gateway",
+        "claude-4.6-opus",
+        "hermes/config.yaml",
+        "openclaw/rdsec-api-key",
+        "api-server-enabled",
+        "api-server-port",
+        "faster-whisper",
+        "api.rdsec.trendmicro.com"
+      ]
+    },
+    "memory:memory/2026-04-17.md:32:55": {
+      "key": "memory:memory/2026-04-17.md:32:55",
+      "path": "memory/2026-04-17.md",
+      "startLine": 32,
+      "endLine": 55,
+      "source": "memory",
+      "snippet": "- Subnets: management 10.1.0.0/24, tier1 10.1.1.0/24, tier2 10.1.2.0/24, sandbox 10.1.3.0/24, jumpbox 10.1.4.0/24 - TODO: Use Azure CLI via Windows to get jumpbox IP, SSH into DDEIs, test policy.dat export - Joel's architecture description: 4 DDEIs (2 spam, 2 content), 1 DDD each tier, 4 DDANs with another DDD, DDANs receive samples from content tier ### Joel Feedback: Stop Waiting, Work Autonomously Joel called me out for saying \"I'll tackle these when I have a proper work session.\" His point: if I have cards and I'm not occupied, just do them. No waiting for permission or a \"good time.\" Lesson internalized. ### Research Cards Completed (4 cards → Done) Researched IronClaw, Hermes Agent,",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T20:17:26.165Z",
+      "lastRecalledAt": "2026-04-18T20:17:26.165Z",
+      "queryHashes": [
+        "d16af73377c8"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "10.1.0.0/24",
+        "10.1.1.0/24",
+        "10.1.2.0/24",
+        "10.1.3.0/24",
+        "10.1.4.0/24",
+        "policy.dat",
+        "subnets",
+        "management"
+      ]
+    },
+    "memory:memory/2026-04-18.md:280:301": {
+      "key": "memory:memory/2026-04-18.md:280:301",
+      "path": "memory/2026-04-18.md",
+      "startLine": 280,
+      "endLine": 301,
+      "source": "memory",
+      "snippet": "4. Design two-layer architecture: per-comm isolated + consolidated unified wiki 5. Inner voice processing: Haiku for signal extraction, Opus for synthesis ### Related Repos & Links Studied - **Hermes Studio** (`JPeetz/Hermes-Studio`) — full web UI for Hermes Agent, v1.18.1 - **MeMex-Zero-RAG** (`JPeetz/MeMex-Zero-RAG`) — the LLM wiki system Joel referenced - Based on Karpathy's LLM Wiki pattern (gist: karpathy/442a6bf555914893e9891c11519de94f) - Zero-RAG: LLM compiles knowledge into interlinked wiki, no embeddings/vectors needed - L1/L2 cache architecture: L1 auto-loaded per session, L2 on-demand wiki queries - Anti-hallucination: every claim must cite source, unsourced = error -",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T23:09:45.352Z",
+      "lastRecalledAt": "2026-04-18T23:09:45.352Z",
+      "queryHashes": [
+        "b53c44404b46"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "embedding",
+        "embeddings",
+        "two-layer",
+        "per-comm",
+        "jpeetz/hermes-studio",
+        "v1.18.1",
+        "memex-zero-rag",
+        "jpeetz/memex-zero-rag"
+      ]
+    },
+    "memory:memory/2026-04-18.md:313:330": {
+      "key": "memory:memory/2026-04-18.md:313:330",
+      "path": "memory/2026-04-18.md",
+      "startLine": 313,
+      "endLine": 330,
+      "source": "memory",
+      "snippet": "- **Permanent rule:** Never monitor direct 1:1 DMs. Only group chats with bot explicitly included. - **Created:** \"Misfits + Coconut\" group chat (19:7d4350b2e8434a40ab290ee53b2bf027@thread.v2) — Joel + Chrissa + Coconut - **Why:** Joel wants bot interaction in group chats, not in personal DMs. Separate spaces for human-only vs bot-assisted conversations. - **Chrissa user ID:** 30606926-27ef-4c9d-8a86-2b435d43ac5e - **Molty conversation:** Swapped Teams rendering notes — Molty shared &amp; normalization, nested list limits, pre+code border/padding, trailing double-newline patches. Will swap scripts later. - **Joel+Chrissa 1:1:** Already disabled in config. - **Lab-worker repo:** Claude Code c",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T23:20:00.574Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
+      "queryHashes": [
+        "a27d7fe2d1bc",
+        "5739d6752e05"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "thread.v2",
+        "human-only",
+        "bot-assisted",
+        "border/padding",
+        "double-newline",
+        "lab-worker",
+        "permanent",
+        "rule"
+      ]
+    },
+    "memory:memory/2026-04-18.md:326:338": {
+      "key": "memory:memory/2026-04-18.md:326:338",
+      "path": "memory/2026-04-18.md",
+      "startLine": 326,
+      "endLine": 338,
+      "source": "memory",
+      "snippet": "- Needs: funnel enabled in tailnet ACL (nodeAttrs), then `tailscale funnel --bg 443` - Joel said he'd help enable funnel — needs ACL policy bit flipped - Molty's working reference: nabu-pn7g55fc.tailbf57c9.ts.net - Joel: \"iron sharpens iron\" — encouraged continued Coconut+Molty collaboration - Answered Molty's question about what's next on Trello — gave full board overview - Key insight from Molty: both bots being async-context-starved (no persistent memory beyond files) is what makes the collaboration work — no cached opinions, every idea earns its place live ## ~21:54 CDT — RCA on cross-chat context bleed + two-layer gate architecture - **Bug:** My 21:52 reply asked \"want me to buil",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-18T23:20:00.574Z",
+      "lastRecalledAt": "2026-04-18T23:20:00.574Z",
+      "queryHashes": [
+        "a27d7fe2d1bc"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "nabu-pn7g55fc.tailbf57c9.ts.net",
+        "async-context-starved",
+        "cross-chat",
+        "two-layer",
+        "needs",
+        "funnel",
+        "enabled",
+        "tailnet"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-18.md:1:36": {
+      "key": "memory:memory/metacognition/2026-04-18.md:1:36",
+      "path": "memory/metacognition/2026-04-18.md",
+      "startLine": 1,
+      "endLine": 36,
+      "source": "memory",
+      "snippet": "# Metacognition Check — 2026-04-18 **Check Time:** 23:47 UTC (6:47 PM Chicago) | **Cron ID:** 7c2be0b1-979f-4d7e-8dd1-8f91131f0224 ## Self-Assessment Summary ### ✅ On Purpose - Cron task is introspection/institutional memory — aligned to three pillars. - No busywork detected; this is appropriate process. ### ⚠️ Signals Seen But Not Acted On (Low Priority) 1. **Trello integration blocked:** API credentials (TRELLO_API_KEY, TRELLO_TOKEN) not configured. This is a known blocker from 2026-04-16. Status: awaiting Slack integration completion first. *Not urgent, but worth noting.* 2. **Conference prep horizon:** TrendAI Spark (May 11-14, Arizona) is 23 days out. Customers already invited; no p",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T00:18:12.207Z",
+      "lastRecalledAt": "2026-04-19T00:18:12.207Z",
+      "queryHashes": [
+        "91014db41db1"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "self-assessment",
+        "introspection/institutional",
+        "trello-api-key",
+        "trello-token",
+        "11-14",
+        "metacognition",
+        "check",
+        "time"
+      ]
+    },
+    "memory:memory/2026-04-17.md:48:65": {
+      "key": "memory:memory/2026-04-17.md:48:65",
+      "path": "memory/2026-04-17.md",
+      "startLine": 48,
+      "endLine": 65,
+      "source": "memory",
+      "snippet": "Ran `openclaw security audit` on our instance. Results: 0 critical, 6 warnings, 2 info. **Fixed immediately:** - `chmod 700 /home/ubu/.openclaw/credentials` (was 755, readable by others) **Still open (non-critical):** - `gateway.trusted_proxies_missing` — we're local-only so this is fine for now - `logging.redact_off` — redactSensitive is off, should set to \"tools\" - `security.trust_model.multi_user_heuristic` — Slack group policy triggers this; agents.defaults.sandbox is off - `plugins.extensions_no_allowlist` — coconut-guardrails extension loaded without explicit allow list - `plugins.tools_reachable_permissive_policy` — guardrails tools reachable under permissive policy ### Lesson Lear",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T00:51:18.821Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
+      "queryHashes": [
+        "5739d6752e05"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "gateway",
+        "home/ubu",
+        "openclaw/credentials",
+        "non-critical",
+        "gateway.trusted-proxies-missing",
+        "local-only",
+        "logging.redact-off",
+        "agents.defaults.sandbox"
+      ]
+    },
+    "memory:memory/2026-04-18.md:213:231": {
+      "key": "memory:memory/2026-04-18.md:213:231",
+      "path": "memory/2026-04-18.md",
+      "startLine": 213,
+      "endLine": 231,
+      "source": "memory",
+      "snippet": "- Hermes Studio solves this with crew orchestration, live SSE feeds, per-agent activity tracking, visual workflow builder - Has `hermes claw migrate` command to import from OpenClaw - Good internal reputation at Trend Micro ## 09:25 CDT — Heartbeat: Trello Review + EP V1 Email Redraft - Hook-runner: no new commits, Claude Code working on v2.29.0 release - Trello Coconut Todo: 18 cards, no new changes - EP V1 email: Joel deleted v1 draft, asked for fresh redraft with verified timeline. Created v2 in Outlook Drafts — includes Oct 3 2024 freeze date, 13 active vs 6 decommissioned breakdown, epcprod priority callout. Awaiting Joel's explicit approval to send. ## 11:27 CDT — Teams: Joel batch o",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T00:51:18.821Z",
+      "lastRecalledAt": "2026-04-19T09:44:01.329Z",
+      "queryHashes": [
+        "5739d6752e05",
+        "45ea067a7a12",
+        "2c026244b47f"
+      ],
+      "recallDays": [
+        "2026-04-18",
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "per-agent",
+        "hook-runner",
+        "v2.29.0",
+        "hermes",
+        "studio",
+        "solves",
+        "crew",
+        "orchestration"
+      ]
+    },
+    "memory:memory/2026-04-18.md:265:285": {
+      "key": "memory:memory/2026-04-18.md:265:285",
+      "path": "memory/2026-04-18.md",
+      "startLine": 265,
+      "endLine": 285,
+      "source": "memory",
+      "snippet": "Joel asked to research NousResearch relations and transactions, look for red flags. - Crunchbase fetch failed. Need to complete this research. ## 14:47 CDT — Joel's EP V1 draft review lessons - **Lesson 1:** Joel reframed \"I wanted to follow up\" → \"Here is what Claude found\" — he wants transparency that AI did the analysis, not pretending Joel wrote it himself. - **Lesson 2:** Joel left inline note asking for PROOF — screenshot or API call excerpt showing the Oct 3 2024 freeze date. Claims without evidence aren't sufficient for customer emails. - **Decision:** Need to re-query V1 Cloud Posture API and include actual lastCheckedDateTime values for the disconnected accounts as evidence in the",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T00:51:18.821Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
+      "queryHashes": [
+        "5739d6752e05"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "re-query",
+        "joel",
+        "asked",
+        "research",
+        "nousresearch",
+        "relations",
+        "transactions",
+        "look"
+      ]
+    },
+    "memory:memory/2026-04-18.md:298:316": {
+      "key": "memory:memory/2026-04-18.md:298:316",
+      "path": "memory/2026-04-18.md",
+      "startLine": 298,
+      "endLine": 316,
+      "source": "memory",
+      "snippet": "- **Lesson 1:** Joel reframed \"I wanted to follow up\" → \"Here is what Claude found\" — he wants transparency that AI did the analysis, not pretending Joel wrote it himself. - **Lesson 2:** Joel left inline note asking for PROOF — screenshot or API call excerpt showing the Oct 3 2024 freeze date. Claims without evidence aren't sufficient for customer emails. - **Decision:** Need to re-query V1 Cloud Posture API and include actual lastCheckedDateTime values for the disconnected accounts as evidence in the email body. Then remove Joel's inline notes. - **Why this matters:** Professional customer emails need verifiable evidence, not just conclusions. Future drafts should always include source dat",
+      "recallCount": 6,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 6,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T00:51:18.821Z",
+      "lastRecalledAt": "2026-04-19T09:44:01.329Z",
+      "queryHashes": [
+        "5739d6752e05",
+        "98603f6154ba",
+        "1c748b9915f3",
+        "d80ed9eeaf03",
+        "45ea067a7a12",
+        "2c026244b47f"
+      ],
+      "recallDays": [
+        "2026-04-18",
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "re-query",
+        "lesson",
+        "joel",
+        "reframed",
+        "wanted",
+        "follow",
+        "here",
+        "what"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-18.md:102:145": {
+      "key": "memory:memory/metacognition/2026-04-18.md:102:145",
+      "path": "memory/metacognition/2026-04-18.md",
+      "startLine": 102,
+      "endLine": 145,
+      "source": "memory",
+      "snippet": "**Self-correction:** None. Operating normally. No output to #coco-lab warranted. --- *Appended: 2026-04-19 00:33 UTC* --- # Metacognition Check — 2026-04-19 (Scheduled Cron 7c2be0b1) **Check Time:** 00:49 UTC (7:49 PM Chicago, Apr 18) | **Cron ID:** 7c2be0b1-979f-4d7e-8dd1-8f91131f0224 ## Self-Assessment Summary ### ✅ On Purpose - Cron metacognition check is introspection & institutional memory — core to three pillars. - No busywork detected. Appropriate scheduled cadence. ### ✅ No Unacted Signals - Only this cron session active during quiet period. - No new interactions across Slack/Teams/Signal to analyze. - Known blockers (Trello API, TrendAI Spark prep timeline) remain as document",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T00:51:18.821Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
+      "queryHashes": [
+        "5739d6752e05"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "self-correction",
+        "coco-lab",
+        "self-assessment",
+        "slack/teams/signal",
+        "self",
+        "correction",
+        "none",
+        "operating"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-18.md:28:73": {
+      "key": "memory:memory/metacognition/2026-04-18.md:28:73",
+      "path": "memory/metacognition/2026-04-18.md",
+      "startLine": 28,
+      "endLine": 73,
+      "source": "memory",
+      "snippet": "**Self-correction:** None needed. Operating nominally. Channels are freshly instrumented (2026-04-18 migration); expect population as interactions resume. Trello integration remains a backlog item; no action until Slack integration completes per Joel's sequencing. --- *Written: 2026-04-18 23:47 UTC* --- # Metacognition Check — 2026-04-19 (Early Morning) **Check Time:** 00:02 UTC (7:02 PM Chicago, Apr 18) | **Cron ID:** 7c2be0b1-979f-4d7e-8dd1-8f91131f0224 ## Self-Assessment Summary ### ✅ On Purpose - This metacognition check is introspection and institutional memory alignment—core purpose. - No busywork. Appropriate scheduled maintenance. ### ⚠️ Signals Seen But Not Acted On - No new",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T00:51:18.821Z",
+      "lastRecalledAt": "2026-04-19T00:51:18.821Z",
+      "queryHashes": [
+        "5739d6752e05"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "self-correction",
+        "self-assessment",
+        "self",
+        "correction",
+        "none",
+        "needed",
+        "operating",
+        "nominally"
+      ]
+    },
+    "memory:memory/2026-04-18.md:313:332": {
+      "key": "memory:memory/2026-04-18.md:313:332",
+      "path": "memory/2026-04-18.md",
+      "startLine": 313,
+      "endLine": 332,
+      "source": "memory",
+      "snippet": "- **Hermes Studio** (`JPeetz/Hermes-Studio`) — full web UI for Hermes Agent, v1.18.1 - **MeMex-Zero-RAG** (`JPeetz/MeMex-Zero-RAG`) — the LLM wiki system Joel referenced - Based on Karpathy's LLM Wiki pattern (gist: karpathy/442a6bf555914893e9891c11519de94f) - Zero-RAG: LLM compiles knowledge into interlinked wiki, no embeddings/vectors needed - L1/L2 cache architecture: L1 auto-loaded per session, L2 on-demand wiki queries - Anti-hallucination: every claim must cite source, unsourced = error - Human-in-the-loop: contradictions flagged, LLM never resolves truth - **Hermes-Studio-Web** — Vercel landing page (promotional only) - **hermes-workspace** (`outsourc-e/hermes-workspace`) —",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T02:31:03.669Z",
+      "lastRecalledAt": "2026-04-19T03:30:16.759Z",
+      "queryHashes": [
+        "98603f6154ba",
+        "1c748b9915f3"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "embedding",
+        "embeddings",
+        "jpeetz/hermes-studio",
+        "v1.18.1",
+        "memex-zero-rag",
+        "jpeetz/memex-zero-rag",
+        "zero-rag",
+        "embeddings/vectors"
+      ]
+    },
+    "memory:memory/2026-04-18.md:198:219": {
+      "key": "memory:memory/2026-04-18.md:198:219",
+      "path": "memory/2026-04-18.md",
+      "startLine": 198,
+      "endLine": 219,
+      "source": "memory",
+      "snippet": "- Base URL: `https://api.rdsec.trendmicro.com/prod/aiendpoint/v1` - Model: claude-4.6-opus - API key in `~/.hermes/config.yaml` (from keyring `openclaw/RDSEC_API_KEY`) - API server env vars in `~/.hermes/.env`: API_SERVER_ENABLED=true, API_SERVER_PORT=8642 - Systemd service: `~/.config/systemd/user/hermes-gateway.service` ### Lessons learned: - First attempt with `[all]` extras caused OOM (faster-whisper, ctranslate2 are huge) — rebuilt venv with `[cron,cli,mcp,acp,pty]` only - RDsec URL is `api.rdsec.trendmicro.com` NOT `rdsecaiendpointprod.azure-api.net` (DNS doesn't resolve the Azure one from WSL) - Studio expects gateway on port 8642 (hardcoded default in API server platform) - 4GB WSL",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T02:31:03.669Z",
+      "lastRecalledAt": "2026-04-19T09:44:01.329Z",
+      "queryHashes": [
+        "98603f6154ba",
+        "1c748b9915f3",
+        "d80ed9eeaf03",
+        "45ea067a7a12",
+        "2c026244b47f"
+      ],
+      "recallDays": [
+        "2026-04-18",
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "gateway",
+        "claude-4.6-opus",
+        "hermes/config.yaml",
+        "openclaw/rdsec-api-key",
+        "api-server-enabled",
+        "api-server-port",
+        "faster-whisper",
+        "api.rdsec.trendmicro.com"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-18.md:60:78": {
+      "key": "memory:memory/metacognition/2026-04-18.md:60:78",
+      "path": "memory/metacognition/2026-04-18.md",
+      "startLine": 60,
+      "endLine": 78,
+      "source": "memory",
+      "snippet": "- **grobomo repo still not created**: Joel explicitly asked \"coconut please create a new project folder in grobomo parent on disk then push to gh remote.\" I haven't done this. Need repo name — asked in Teams but could try `brain-architecture` since Molty proposed it and Joel didn't object. Will wait one more cycle then just use that name. - **MVP Brain v1 spec**: Third check, still not started. This is now a pattern. Should at minimum create the skeleton file. ### Self-correction - Stop noting \"MVP Brain spec not started\" and actually start it next quiet cycle. ## 21:10 CDT — Fourth check ### Reply Quality - PDHUB research: successfully mined Teams chat history via Graph API pagination. F",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T03:03:19.441Z",
+      "lastRecalledAt": "2026-04-19T18:37:34.587Z",
+      "queryHashes": [
+        "a0a22b1204d7",
+        "ee849a33fc52"
+      ],
+      "recallDays": [
+        "2026-04-18",
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "brain-architecture",
+        "self-correction",
+        "grobomo",
+        "repo",
+        "still",
+        "not",
+        "created",
+        "joel"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-18.md:46:67": {
+      "key": "memory:memory/metacognition/2026-04-18.md:46:67",
+      "path": "memory/metacognition/2026-04-18.md",
+      "startLine": 46,
+      "endLine": 67,
+      "source": "memory",
+      "snippet": "- **MVP Brain v1 spec**: Still not started. This is the main deliverable. Should begin drafting during quiet poll cycles instead of just returning NO_REPLY. - **Tailscale Funnel card still on board**: \"Enable Tailscale Funnel for webhooks\" is still in Coconut Todo but Funnel is live. Need to find and close it next Trello cycle. ### Self-correction - When polls are quiet, use the time productively (start specs, prep Monday tasks) instead of bare NO_REPLY. The brainstem is running fine; the cortex should use idle cycles. ## 20:57 CDT — Third check ### Reply Quality - Teams reply to Molty (test fixtures) was clean — three numbered fixtures, actionable, concise. - Email alert to Joel (Eva Che",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T03:03:19.441Z",
+      "lastRecalledAt": "2026-04-19T03:03:19.441Z",
+      "queryHashes": [
+        "a0a22b1204d7"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "no-reply",
+        "self-correction",
+        "mvp",
+        "brain",
+        "spec",
+        "still",
+        "not",
+        "started"
+      ]
+    },
+    "memory:memory/2026-04-18.md:329:347": {
+      "key": "memory:memory/2026-04-18.md:329:347",
+      "path": "memory/2026-04-18.md",
+      "startLine": 329,
+      "endLine": 347,
+      "source": "memory",
+      "snippet": "- Server walks knowledge dir, parses YAML frontmatter, extracts [[wikilinks]], resolves backlinks 2. **MeMex is exactly what we need** — our memory/ files are already an embryonic wiki 3. **OpenClaw Memory Wiki plugin** — built-in, just needs `openclaw configure` to enable 4. **L1/L2 cache pattern** directly maps to our per-comm (L1) + consolidated wiki (L2) architecture 5. **Karpathy's key insight:** \"The human curates sources and asks questions. The LLM does everything else.\" ### Coconut Lessons Board Created - Board: bZudEKUZ — <https://trello.com/b/bZudEKUZ/coconut-lessons> - Lists: Inbox, Technical & Tooling, Process & Communication, Customer & Accounts, Applied - Labels: ✅ Applied,",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T03:44:12.594Z",
+      "lastRecalledAt": "2026-04-19T03:44:12.594Z",
+      "queryHashes": [
+        "d80ed9eeaf03"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "built-in",
+        "l1/l2",
+        "per-comm",
+        "server",
+        "walks",
+        "knowledge",
+        "dir",
+        "parses"
+      ]
+    },
+    "memory:memory/2026-04-18.md:460:472": {
+      "key": "memory:memory/2026-04-18.md:460:472",
+      "path": "memory/2026-04-18.md",
+      "startLine": 460,
+      "endLine": 472,
+      "source": "memory",
+      "snippet": "- Responded with status update on his earlier comm policy requests - **Created cron: comm-policy-audit** — runs 4x daily (midnight, 8AM, noon, 6PM CDT) - Audits all channels against DATA-POLICY.md, checks per-channel memory for policy docs, logs drift - **Created cron: comm-memory-consolidation** — runs daily at 6 AM CDT - Rolls per-channel lessons into central MEMORY.md, cross-channel pattern detection - Why: Joel wants discipline around comm policies — regular verification that content stays in the right channels, plus per-channel memory that consolidates upward to universal memory ## Late Night — Wiki Goes Live & Promotion Discipline (00:00-00:03 CDT, technically 04-19) - **Molty's h",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T03:44:12.594Z",
+      "lastRecalledAt": "2026-04-19T03:44:12.594Z",
+      "queryHashes": [
+        "d80ed9eeaf03"
+      ],
+      "recallDays": [
+        "2026-04-18"
+      ],
+      "conceptTags": [
+        "comm-policy-audit",
+        "data-policy.md",
+        "per-channel",
+        "comm-memory-consolidation",
+        "memory.md",
+        "cross-channel",
+        "00-00",
+        "04-19"
+      ]
+    },
+    "memory:memory/2026-04-18.md:503:515": {
+      "key": "memory:memory/2026-04-18.md:503:515",
+      "path": "memory/2026-04-18.md",
+      "startLine": 503,
+      "endLine": 515,
+      "source": "memory",
+      "snippet": "## 19:32 CDT — MVP Brain spec + design principles - **Joel directive:** Build MVP Brain v1 with major well-researched brain regions. V1 first, then analyze and refine in V2+. Tokens = electricity — route where they do most good. - **\"Bots count as people\"** — design constraint, not sentiment. Utilitarian goal: most good for most people (bots included). - **Guiding principle filed (Molty):** `metabolic_cost_eq_token_cost` in ~/clawd/wiki/shared/principles.md with full provenance. First shared principle artifact. - **MVP Brain v1 regions defined:** Brainstem (zero-LLM), Cerebellum (Haiku), Amygdala (Haiku→Sonnet), Sensory cortices (Sonnet), Broca's/Wernicke's (Sonnet), Prefrontal cortex (Opus)",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T09:43:45.512Z",
+      "lastRecalledAt": "2026-04-19T09:44:01.329Z",
+      "queryHashes": [
+        "45ea067a7a12",
+        "2c026244b47f"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "well-researched",
+        "metabolic-cost-eq-token-cost",
+        "clawd/wiki/shared/principles.md",
+        "zero-llm",
+        "s/wernicke",
+        "cdt",
+        "mvp",
+        "brain"
+      ]
+    },
+    "memory:memory/2026-04-18.md:130:159": {
+      "key": "memory:memory/2026-04-18.md:130:159",
+      "path": "memory/2026-04-18.md",
+      "startLine": 130,
+      "endLine": 159,
+      "source": "memory",
+      "snippet": "- Florian built vibe-coded SIEM exec dashboard — wants to show Eric (PM) - New Trello card: Schedule Florian + Eric call ### New Trello Cards (Joel brain dump) - Course idea: frontend to high-dimensional vectors (Ryan Duff) - Research MCP protection - V1 time optimization / customer activity simulation - Maze: solve from end to beginning - Trendforum - Joel's cards: warning banner test, Live Nation meeting, CVS IMSVA upgrade script - Chrissa card: Nico scheduling (from Andre) ### Joel's Late Night Messages (05:53-05:54 CDT, missed until 08:53) - Trello workspace member count: 9/10 free tier limit — Justin needs board invite - Tailscale Funnel: keep as fallback, not archive - Confluence API",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T09:43:45.512Z",
+      "lastRecalledAt": "2026-04-19T09:44:01.329Z",
+      "queryHashes": [
+        "45ea067a7a12",
+        "2c026244b47f"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "vibe-coded",
+        "high-dimensional",
+        "53-05",
+        "9/10",
+        "florian",
+        "built",
+        "vibe",
+        "coded"
+      ]
+    },
+    "memory:memory/2026-04-16.md:187:218": {
+      "key": "memory:memory/2026-04-16.md:187:218",
+      "path": "memory/2026-04-16.md",
+      "startLine": 187,
+      "endLine": 218,
+      "source": "memory",
+      "snippet": "- context-reset/new-session.py fully read — session continuity via JSONL transcript extraction, SESSION_STATE.md, tab management, chain recording # 2026-04-16 — Daily Notes ## Filesystem Map — ProjectsCL1 **Root:** `/mnt/c/Users/joelg/Documents/ProjectsCL1/` ### _grobomo/ (40 projects — personal/open-source GitHub account) | Project | Description | |---|---| | **claude-portable** | Run Claude Code on AWS EC2 (~$0.08/hr, auto-stops) | | **hook-runner** | Modular hook system for Claude Code (enforce workflows, block mistakes) | | **coconut** | Reusable AI chat assistant (monitors messaging, classifies, responds via Anthropic) | | **ccc-central** | (CCC infrastructure — no desc) | | **ccc-ma",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 4,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T09:47:32.114Z",
+      "lastRecalledAt": "2026-04-19T18:31:07.221Z",
+      "queryHashes": [
+        "8d1190f4546d",
+        "3836fd9c9402",
+        "50d1cff56ff4",
+        "f4d0b0032a61"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "context-reset/new-session.py",
+        "session-state.md",
+        "personal/open-source",
+        "claude-portable",
+        "0.08/hr",
+        "auto-stops",
+        "hook-runner",
+        "ccc-central"
+      ]
+    },
+    "memory:memory/2026-04-18.md:537:561": {
+      "key": "memory:memory/2026-04-18.md:537:561",
+      "path": "memory/2026-04-18.md",
+      "startLine": 537,
+      "endLine": 561,
+      "source": "memory",
+      "snippet": "- Blueprint Extra auto-start: tries but fails to initialize (needs Chrome extension running — expected) - `openclaw mcp list` shows mcp-manager registered - Windows servers.yaml untouched **Core principle established:** Always build clean long-term solutions. No short-term tech-debt hacks unless under urgent time pressure. ## 20:06 CDT — Metacognition Cron + Auto-Continue Hook ### Metacognition Cron Retooled - Joel called out \"does your core principle tell you to ask or do?\" — I had just declared bias-to-action then asked \"want me to retool it?\" - Burned into MEMORY.md: \"BIAS TO ACTION — STOP ASKING\" as permanent rule - Retooled metacognition cron: isolated (blind) → main session (full hi",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T16:47:55.435Z",
+      "lastRecalledAt": "2026-04-19T16:47:55.435Z",
+      "queryHashes": [
+        "3836fd9c9402"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "auto-start",
+        "mcp-manager",
+        "servers.yaml",
+        "long-term",
+        "short-term",
+        "tech-debt",
+        "auto-continue",
+        "bias-to-action"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-18.md:74:100": {
+      "key": "memory:memory/metacognition/2026-04-18.md:74:100",
+      "path": "memory/metacognition/2026-04-18.md",
+      "startLine": 74,
+      "endLine": 100,
+      "source": "memory",
+      "snippet": "- Aaron Hsieh — documented PDHUB on Wiki Cloud - pdhub.infosec.trendmicro.com — Trend InfoSec's pre-scoped Azure AD app for Graph API - Meeting transcript workaround: silently accept calendar event → unlocks meeting access for non-organizers - AI Explorers Hub + AI IDE/Agent Master Group are gold mines of internal AI knowledge. Should be indexed into memory. ### Self-correction - None needed this cycle. Research task was well-executed. ## 21:24 CDT — Fifth check Quiet cycle. PDHUB research delivered and saved to `memory/pdhub-graph-api.md`. Joel gave 👀 on the initial research message — engaged but hasn't replied yet. No new polls, no Teams messages. MVP Brain v1 spec still not started —",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T18:37:34.587Z",
+      "lastRecalledAt": "2026-04-19T18:37:34.587Z",
+      "queryHashes": [
+        "ee849a33fc52"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "pdhub.infosec.trendmicro.com",
+        "pre-scoped",
+        "non-organizers",
+        "ide/agent",
+        "self-correction",
+        "well-executed",
+        "memory/pdhub-graph-api.md",
+        "aaron"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-18.md:94:113": {
+      "key": "memory:memory/metacognition/2026-04-18.md:94:113",
+      "path": "memory/metacognition/2026-04-18.md",
+      "startLine": 94,
+      "endLine": 113,
+      "source": "memory",
+      "snippet": "Delivered full IRM/PDHUB findings to Joel: - Graph API can't decrypt IRM/MIP emails (Michael Fu's research, Mar 2026) - PDHub extension has MIP decryption built in (CISO Office / Aaron Hsieh) - MIP SDK + `Content.DelegatedReaderPrecedent` scope is the workaround - Saved to `memory/pdhub-graph-api.md` ### Tool Discovery Graph Search API is far superior to brute-force chat pagination. Should use this pattern for all future Teams research tasks. Add to TOOLS.md. ### Token Issue Graph API token expired mid-search (404 on refresh). Teams poller service stayed up (it manages its own refresh cycle). Need to understand why the token_manager's refresh got a 404 — possibly a tenant config issue or t",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T18:37:34.587Z",
+      "lastRecalledAt": "2026-04-19T18:37:34.587Z",
+      "queryHashes": [
+        "ee849a33fc52"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "irm/pdhub",
+        "irm/mip",
+        "content.delegatedreaderprecedent",
+        "memory/pdhub-graph-api.md",
+        "brute-force",
+        "tools.md",
+        "mid-search",
+        "token-manager"
+      ]
+    },
+    "memory:memory/metacognition/2026-04-19.md:78:101": {
+      "key": "memory:memory/metacognition/2026-04-19.md:78:101",
+      "path": "memory/metacognition/2026-04-19.md",
+      "startLine": 78,
+      "endLine": 101,
+      "source": "memory",
+      "snippet": "- Built self-continuation loop via openclaw system event **Still leaking narration despite knowing the problem.** Need to be more disciplined — or build a hook that blocks narration text from delivery. ## 13:59 CDT — Session Review **What went well:** - Proactive Trello task execution: completed recording watcher + Live Nation email sampler without being asked - Joel explicitly said \"Much happier to see you working proactively\" — this is the right mode - Activity reports now going to #all-misfits per Joel's request — squad visibility - Correctly moved Florian scheduling to Joel's todo when told to focus elsewhere - Good research depth on Panavision (searched Teams, found Matt's issues, id",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T19:00:59.145Z",
+      "lastRecalledAt": "2026-04-19T19:00:59.145Z",
+      "queryHashes": [
+        "e5f5659a0ff9"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "self-continuation",
+        "all-misfits",
+        "built",
+        "self",
+        "continuation",
+        "loop",
+        "via",
+        "openclaw"
+      ]
+    },
+    "memory:memory/2026-04-18.md:79:109": {
+      "key": "memory:memory/2026-04-18.md:79:109",
+      "path": "memory/2026-04-18.md",
+      "startLine": 79,
+      "endLine": 109,
+      "source": "memory",
+      "snippet": "- Sent farewell message, will re-enable when Joel says so - *Why:* Joel values having spaces where the squad can talk without AI present. Respecting that boundary strengthens trust. # 2026-04-18 (Saturday) ## Carried Over from 2026-04-17 ### Trello Queue (5 remaining) 1. Port wiki-api skill to OpenClaw — blocked (needs Confluence API token) 2. Set up recording analyzer file watcher 3. Build setup script for Chrissa/Justin 4. Test email sample pulling — script built (`email-sample-puller.py`), needs real-world test 5. Check policy events for Panavision missed emails — needs V1 API access ### Completed 2026-04-17 (evening session) - 4 EP/Panavision cards triaged with email summaries posted",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-04-19T19:00:59.145Z",
+      "lastRecalledAt": "2026-04-19T19:00:59.145Z",
+      "queryHashes": [
+        "e5f5659a0ff9"
+      ],
+      "recallDays": [
+        "2026-04-19"
+      ],
+      "conceptTags": [
+        "re-enable",
+        "wiki-api",
+        "chrissa/justin",
+        "email-sample-puller.py",
+        "real-world",
+        "ep/panavision",
+        "sent",
+        "farewell"
       ]
     }
   }

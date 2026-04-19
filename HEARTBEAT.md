@@ -13,9 +13,11 @@
 - Project: `/mnt/c/Users/joelg/Documents/ProjectsCL1/_grobomo/hook-runner`
 - Task: hook-runner module conversion to OpenClaw hook-runner modules
 
-## Trello Board Review
+## Trello Board Review — MANDATORY WORK
 - Check Coconut Todo list for new/updated cards
 - Review all lists for accuracy
-- Work on open tasks when not occupied with more pressing work
+- *DO THE WORK.* Pick the highest priority open card and execute it. Do not reply HEARTBEAT_OK while cards remain.
+- Priority order: [URGENT] > [Due today/tomorrow] > [P1] > [P2] > [P3] > everything else
 - Board: TyFBN1Bx | API key/token in keyring (openclaw/TRELLO_API_KEY, openclaw/TRELLO_TOKEN)
 - Mark cards dueComplete=true when done (automation moves to Done list)
+- If a task requires Joel's input/approval, skip it and do the next one. Don't use "waiting on Joel" as an excuse to idle.

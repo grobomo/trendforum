@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "verify-before-claiming": {
+      "lesson": "memory/lessons/001-verify-before-claiming.md",
+      "type": "post-action",
+      "status": "new",
+      "created": "2026-04-19",
+      "monitoring_started": "2026-04-19",
+      "monitoring_duration_days": 14,
+      "monitoring_expires": "2026-05-03",
+      "source_transcript": "metacognition cron, 2026-04-18 ~22:09 CDT",
+      "fire_count": 0,
+      "block_count": 0,
+      "last_fired": null,
+      "last_reviewed": "2026-04-19",
+      "notes": "First hook in self-improvement system. Audits outbound messages for unverified state claims using Haiku."
+    }
+  },
+  "meta": {
+    "last_review": "2026-04-19",
+    "total_hooks": 1,
+    "by_status": {
+      "new": 1,
+      "verified": 0,
+      "ineffective": 0,
+      "harmful": 0,
+      "retired": 0
+    }
+  }
+}

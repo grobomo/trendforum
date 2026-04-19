@@ -17,6 +17,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -197,6 +198,10 @@ def poll_once(client: GraphClient, config: dict, state: dict, chat_id: str = Non
     chat_label = chat_cfg.get("label", "unknown") if chat_cfg else "unknown"
     access = chat_cfg.get("access", "read-write") if chat_cfg else "read-write"
 
+    # Skip disabled chats entirely — don't poll, don't queue
+    if access == "disabled":
+        return None
+
     try:
         raw_messages = teams.get_chat_messages(
             client, chat_id, top=CONTEXT_WINDOW,
@@ -303,6 +308,37 @@ def poll_once(client: GraphClient, config: dict, state: dict, chat_id: str = Non
     return prompt
 
 
+def md_to_html(text):
+    """Convert common markdown to Teams-compatible HTML."""
+    lines = text.split('\n')
+    html_lines = []
+    in_code_block = False
+    for line in lines:
+        if line.strip().startswith('```'):
+            if in_code_block:
+                html_lines.append('</pre>')
+                in_code_block = False
+            else:
+                html_lines.append('<pre>')
+                in_code_block = True
+            continue
+        if in_code_block:
+            html_lines.append(line)
+            continue
+        line = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', line)
+        line = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<em>\1</em>', line)
+        line = re.sub(r'`(.+?)`', r'<code>\1</code>', line)
+        if re.match(r'^\s*[•\-]\s+', line):
+            line = re.sub(r'^\s*[•\-]\s+', '• ', line)
+        if line.strip() == '':
+            html_lines.append('<br>')
+        else:
+            html_lines.append(line)
+    if in_code_block:
+        html_lines.append('</pre>')
+    return '<br>'.join(html_lines)
+
+
 def post_reply(client: GraphClient, config: dict, reply_text: str, target_chat_id: str = None):
     """Post a reply to Teams. Blocks posting to read-only chats."""
     chat_id = target_chat_id or config.get("chat_id", "")
@@ -315,7 +351,8 @@ def post_reply(client: GraphClient, config: dict, reply_text: str, target_chat_i
                     chat_cfg.get("label", "?"), chat_id[:30])
         return
 
-    signed = f"{reply_text}\n\n<i>{bot_signature}</i>"
+    reply_html = md_to_html(reply_text)
+    signed = f"{reply_html}<br><br><i>{bot_signature}</i>"
     try:
         teams.send_chat_message(client, chat_id, signed)
         log.info("Posted reply to Teams chat %s (%s)", 

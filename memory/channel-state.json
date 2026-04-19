@@ -1,0 +1,26 @@
+{
+  "description": "Last-seen message timestamps per channel. On startup, pull messages after these timestamps to catch up on missed messages.",
+  "lastSeen": {
+    "slack:C0ATFDQRGRL": {
+      "channel": "#all-misfits",
+      "ts": "1776507420.860609",
+      "note": "Joel: Easy to see who owns what at a glance"
+    },
+    "slack:C0ATB4AS9PD": {
+      "channel": "#social",
+      "ts": "1776473205.167659",
+      "note": "Coconut reply about compartmentalizing"
+    },
+    "slack:C0ATJE19YRY": {
+      "channel": "#coco-chat",
+      "ts": "1776541000.677369",
+      "note": "Coconut catch-up summary"
+    },
+    "slack:D0ATWPM4DTK": {
+      "channel": "Joel DM",
+      "ts": "1776540892.378309",
+      "note": "GitHub NO_REPLY (narration leak)"
+    }
+  },
+  "updatedAt": "2026-04-18T19:36:00Z"
+}

@@ -47,8 +47,24 @@ export default definePluginEntry({
         "[cron-enforce] Detected poll cron trigger — injecting enforcement instructions"
       );
 
+      // Compute current date/time in CDT for temporal grounding
+      const now = new Date();
+      const cdtStr = now.toLocaleString("en-US", {
+        timeZone: "America/Chicago",
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      const cdtDate = now.toLocaleDateString("en-CA", { timeZone: "America/Chicago" }); // YYYY-MM-DD
+      const cdtDay = now.toLocaleDateString("en-US", { timeZone: "America/Chicago", weekday: "long" });
+
       return {
         prependContext: [
+          `📅 CURRENT DATE/TIME: ${cdtStr} CDT (${cdtDate}, ${cdtDay})`,
           "⚠️ CRON POLL ENFORCEMENT (plugin-injected, non-negotiable):",
           "You MUST execute: python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py",
           "You MUST NOT reply HEARTBEAT_OK without first running the script.",
@@ -57,6 +73,10 @@ export default definePluginEntry({
           "If the script produces no output, only then may you reply NO_REPLY or take no action.",
           "Also read and follow HEARTBEAT.md tasks after running the poll.",
           "FAILURE TO EXECUTE THE SCRIPT IS A POLICY VIOLATION.",
+          "",
+          "⚠️ DATE SAFETY: NEVER hardcode dates from mental math. Always compute dates programmatically:",
+          "  python3 /home/ubu/.openclaw/workspace/scripts/datehelper.py 'next monday'",
+          "  python3 /home/ubu/.openclaw/workspace/scripts/datehelper.py 'tomorrow'",
         ].join("\n"),
       };
     });

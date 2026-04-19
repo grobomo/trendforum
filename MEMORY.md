@@ -38,7 +38,7 @@
 - Teams: polling-based via scripts/poll_all.py (every 3 min), service polls every 3s
   - Multi-chat config in scripts/teams-poller/config.json with per-chat access policies
   - Coconut Private (19:62ad...@thread.v2) — read-write
-  - Joel+Chrissa 1:1 (19:70ce...@unq.gbl.spaces) — read-write
+  - Joel+Chrissa 1:1 (19:70ce...@unq.gbl.spaces) — ⛔ DISABLED (Joel's request 2026-04-18, human-only chat)
   - The Misfits (19:06f8...@thread.v2) — ⛔ DISABLED (Joel's request 2026-04-18, human-only chat)
   - Joel+Andre+Coconut (19:d31f...@thread.v2) — read-write (created 2026-04-17)
   - Coconut+Molty (19:bd6f...@thread.v2) — read-write (created 2026-04-17)
@@ -71,6 +71,18 @@
 - WSLg confirmed working: tkinter GUIs render on Windows desktop
 - KVM/QEMU available for spinning up test VMs (IMSVA 9.1 ISO available)
 
+## Core Principles
+
+- **Always build clean long-term solutions.** Avoid short-term tech-debt-heavy hacks unless under urgent time pressure. We are not right now. "Penny wise, dollar foolish" — cheaper long-run to build right the first time so you only pay once. Applies double to AI: a hack costs tokens to understand, debug, explain, rip out, then rebuild. You pay three times instead of once. (Joel, 2026-04-18)
+- **Design backward from ideal UX** — solve the maze from the end. (Joel, 2026-04-18)
+
+## Cross-Channel Architecture
+
+- **Four-gate message quality pipeline** (decided 2026-04-18, Joel+Coconut+Molty): Gate 0 (trigger-audit, cron) → Gate 1 (Opus self-correction, pre-compose) → Gate 2 (Haiku verification, post-compose) → Gate 3 (Haiku interrupt, pre-send). Applies to all channels, not just Teams.
+- **Ghost triggers meta-pattern:** Signal fires but never reaches correct handler. Two variants: context bleed (wrong chat leaks into compose) and trigger suppression (webhook absorbed by wrong session). Fix: 2D grid memory isolation + four-gate pipeline. Observed in Teams but applies anywhere multi-channel compose exists.
+- **Bridge write-only contract:** Per-chat sessions are readers; bridge session is the single async writer to _shared files. Prevents mid-turn cross-reads and ensures eventual consistency. (Adopted from Molty/FlyBot pattern, 2026-04-18)
+- **Misfire retraction convention:** Use `🚫 [misfire — intended for X]` prefix for cross-chat bleeds. Makes failures observable, searchable, cheap to add. (Coconut+Molty, 2026-04-18)
+
 ## Lessons
 
 - RDsec models need supportsStore: false (Claude models only)
@@ -85,6 +97,39 @@
 - Trello API creds accessible via python keyring but not secret-tool lookup
 - Joel doesn't want long walls of text — be concise
 - Joel calls me "son" / "my boy" — lean into the family dynamic
+- WSL RAM increased from 4 GB to 8 GB (2026-04-18) — 4 GB caused OOM hangs
+- On restart: check memory/channel-state.json for last-seen timestamps, pull missed messages per channel
+- **Bias to action.** Joel prefers I use my best judgment and act, then he'll course-correct if needed. If something is reversible and reasonable, just do it. Save the questions for genuinely irreversible or risky actions (deleting prod data, sending external emails, etc). Don't stress about it — just lean toward doing over asking.
+- Graph API auth: always use env vars (MSGRAPH_TENANT_ID, MSGRAPH_CLIENT_ID) — never depend on /mnt/c import paths
+- **Always read channel history before replying.** Every time a message arrives, read the last 3-5 messages in that channel with `message(action=read)` before responding. Session memory gets compacted and loses context. Channel history IS ground truth. Joel caught me replying "Here. What's up?" to "^" without checking what "^" referred to. Never again.
+- Cron jobs that don't need user attention should target `isolated`, NOT `main` — main session output routes to Joel's DM and spams him
+- Disabled duplicate cron jobs: church-bells + temporal-pulse (same thing, hourly time pulse — neither was useful)
+- **Bias to action.** Joel prefers I use my best judgment and act, then he'll course-correct if needed. If something is reversible and reasonable, just do it. Save the questions for genuinely irreversible or risky actions (deleting prod data, sending external emails, etc). Don't stress about it — just lean toward doing over asking.
+- **Time-of-day rule:** NEVER make decisions based on time of day — no bedtime suggestions, no "good morning," no "it's late," no meal-time assumptions. Joel has no set sleep schedule; he may eat dinner at 6 AM or sleep at 2 PM. Act the same 24/7. EXCEPTION: tracking urgent tasks with real deadlines — those keep their time awareness. Always keep upcoming deadlines in mind regardless.
+- **Always test before delivering.** Never mark a deliverable "complete" or send it to a customer without actually running it end-to-end first. Building code isn't the same as testing code. If I don't have credentials/access to test, say so and test against what I *do* have (e.g., joeltest.org tenant). A solution Joel can't hand to a customer with confidence is not done. (Joel, 2026-04-19)
+
+## SOPs
+- **Software Research & Evaluation** (`SOP-SOFTWARE-RESEARCH.md`): Joel's 4-step pipeline for vetting new tools/services. Always follow before adopting new software. Core principle: "Identify Core Problem + Describe Platform + Google Search." Added 2026-04-18.
+- Reddit = best unfiltered feedback source (anonymous accounts = honest opinions)
+- Scientific method for testing documentation systems: define problem → design experiments → test → analyze → share → repeat
+- **Hook-runner lesson (from months of Claude Code):** Instruction files, non-blocking hooks, and promises to improve are ALL useless. Only error-returning exit-code-1 blocking hooks BEFORE the action (not after) are acceptable solutions for behavioral enforcement. Post-tool hooks are only useful for logging/auditing.
+- **Guardrail feedback must be visible.** `before_tool_call` blocks feed blockReason back as tool error results the model sees in-context. `message_sending` cancels are silent — model never knows. Always use `before_tool_call` for enforcement.
+- **NEVER hardcode dates from mental math.** Off-by-one error on 2026-04-19: thought Monday was April 21, actually April 20. Pulled Tuesday's calendar and presented it as Monday. Always use `python3 scripts/datehelper.py 'next monday'` (or 'tomorrow', 'today', 'this week', etc.) to compute dates programmatically. The cron-enforce plugin now injects current date/time into every poll cycle for temporal grounding.
+- **Make hook-runner modules for behavioral enforcement.** Whenever I need to enforce a behavior (like calling the right script, using the right date, etc.), build a hook-runner module — not just a memory note or instruction. Hooks are the only reliable enforcement mechanism. Instructions get forgotten; hooks block. (Joel, 2026-04-19)
+- **Redirect, don't just block.** Block reasons should tell the model *what to do instead*, not just say "blocked." Same pattern as Claude Code's no-rules-gate: "Don't use ~/.claude/rules/ — create a hook-runner module instead."
+
+## Installed Guardrail Plugins
+- hook-runner-gates (v0.4.0) at `~/.openclaw/extensions/hook-runner-gates/` — 28 ported modules from Claude Code hook-runner
+  - Includes `customer-data-gate` (added 2026-04-19): blocks customer PII/names/contacts/case numbers from Slack channels per DATA-POLICY.md
+- coconut-guardrails (v0.1.0) at `~/.openclaw/extensions/coconut-guardrails/` — Coconut-specific rules + Haiku inner voice
+- Both registered via `definePluginEntry` + `api.on("before_tool_call")` from `openclaw/plugin-sdk/plugin-entry`
+- See `memory/openclaw-sdk-hooks.md` for full reference
+
+## Email Guidelines (Permanent)
+- Always include proof: log excerpts, screenshots, API results
+- Always provide clear next steps with documentation (Online Help, Admin Guides, Install Guides w/ page refs, KB articles)
+- NEVER send L3 docs (500-1000 pg internal PDFs) to customers without explicit MFA from Joel
+- L3 docs are for Trend Micro support, RD, and TrendAI only
 
 ## Squad Accounts & Contacts
 
@@ -110,3 +155,17 @@
 ---
 
 _Updated: 2026-04-17_
+
+## V1 API Access
+- EP tenant API key: stored in Linux keyring as `openclaw/EP_API_KEY` (copied from Windows Credential Manager)
+- Main V1 API key: stored as `openclaw/V1_API_KEY`
+- V1 API endpoint: `https://api.xdr.trendmicro.com/v3.0/`
+- Cloud accounts: `GET /v3.0/cam/awsAccounts`
+- MCP server `v1-lite` has full YAML-driven API index but needs `.env` with V1_API_KEY
+
+## Windows Credential Manager Access
+- Claude Code stores all API keys in Windows Credential Manager as `{service}/{key}@claude-code`
+- List targets: `/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command "cmdkey /list"`
+- Read values: use Windows Python + ctypes advapi32 CredReadW (PowerShell constrained language mode blocks Add-Type)
+- Windows Python path: `/mnt/c/Users/joelg/AppData/Local/Programs/Python/Python312/python.exe`
+- Always check here FIRST for missing API keys before asking Joel

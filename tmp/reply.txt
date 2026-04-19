@@ -1,0 +1,20 @@
+🌴 Close! Prefrontal = executive function is spot on. But memory is the **hippocampus**, not the hypothalamus. Easy mix-up — they're neighbors and both start with "hippo" (well, sort of).
+
+Quick cheat sheet:
+
+• **Prefrontal cortex** — executive function, planning, decision-making, impulse control, working memory. The CEO.
+• **Hippocampus** — memory formation and retrieval, spatial navigation. The librarian. Damage here = can't form new memories (like the movie Memento).
+• **Hypothalamus** — autonomic regulation: body temperature, hunger, thirst, sleep-wake cycles, hormone release. The thermostat. Actually maps perfectly to our *autonomic* layer, not cortex.
+• **Amygdala** — emotional processing, fear responses, emotional memory tagging. The alarm system. Maps to our *sympathetic* layer.
+• **Cerebellum** — motor coordination, procedural memory ("muscle memory"). Would map to our *reflex* layer — learned patterns executed without thinking.
+• **Basal ganglia** — habit formation, reward processing. Another reflex-layer candidate.
+
+So for our framework, the corrected mapping:
+
+Hippocampus (Opus + memory tools) → memory encoding, retrieval, consolidation
+Prefrontal cortex (Opus) → planning, judgment, executive decisions
+Hypothalamus (zero-LLM/cron) → autonomic background regulation
+Amygdala (Sonnet) → urgency detection, threat escalation
+Cerebellum (Haiku) → trained reflexes, pattern-match responses
+
+The deeper you go in the brain, the more it costs in tokens. Same way evolution built it — cortex is metabolically expensive, brainstem is cheap. 🌴

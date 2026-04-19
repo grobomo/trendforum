@@ -12,8 +12,9 @@
     {
       "id": "19:70ce5237-91c1-4a27-997c-ef5df6c18a0e_ac04077b-2ed2-417f-9345-5d2ea1fefc32@unq.gbl.spaces",
       "label": "Joel+Chrissa 1:1",
-      "access": "read-write",
-      "section": "squad"
+      "access": "disabled",
+      "section": "squad",
+      "note": "Disabled per Joel's request (2026-04-18). Human-only chat."
     },
     {
       "id": "19:06f865338aae48659a1ae841823733d1@thread.v2",
@@ -33,6 +34,20 @@
       "label": "Coconut + Molty",
       "access": "read-write",
       "section": "coconut"
+    },
+    {
+      "id": "19:7d4350b2e8434a40ab290ee53b2bf027@thread.v2",
+      "label": "Misfits + Coconut",
+      "access": "read-write",
+      "section": "squad",
+      "note": "Joel+Chrissa+Coconut group chat. Created 2026-04-18."
+    },
+    {
+      "id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "label": "Coconut + Molty + Joerg",
+      "access": "read-write",
+      "section": "coconut",
+      "note": "Collab chat with Joerg Peetz (TS-EU). Created 2026-04-18."
     },
     {
       "id": "19:6eb61782a0ad47d2b330f8290de251a1@thread.v2",
