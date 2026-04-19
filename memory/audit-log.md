@@ -44,3 +44,50 @@ _Entries added by Coconut. Git-tracked for rollback._
 - **Observation:** `#coco-metacognition` Slack channel (in TOOLS.md) is not listed in DATA-POLICY.md. Would logically follow #coco-chat rules. Flag for Joel's next policy review.
 - **Corrections:** None required.
 - **Status:** No drift detected. Next audit scheduled per cron.
+
+## 2026-04-19T23:00:00Z — Scheduled Comm Policy Audit (cron)
+- **Scope:** All 5 channels (teams, slack, email, github, trello)
+- **Finding:** Slack `_shared/policy-summary.md` was missing the 2026-04-19 #all-misfits CUSTOMER violation (customer names, contact names, case numbers, infrastructure details in two messages — both deleted). This incident occurred at 19:14 UTC, after the prior 17:00 UTC audit, so the policy-summary was stale.
+- **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` appear in TOOLS.md but have no DATA-POLICY.md entries. Previously flagged for `#coco-metacognition` only — expanding flag to all four. Suggest Joel add these to DATA-POLICY.md at next review.
+- **Correction:** Updated Slack `_shared/policy-summary.md` Incidents section to include the 2026-04-19 #all-misfits violation.
+- **Status:** All 5 policy-summary.md files present and core classification rules in sync. One correction made (incident backfill). Four uncovered Slack channels flagged for Joel's policy review.
+
+## 2026-04-19T23:46:18Z — Security Audit (cron)
+- *Findings:*
+*Credential Expiry:*
+  • 🟡 Graph API env vars (MSGRAPH_TENANT_ID/CLIENT_ID) not set in this context.
+*Exposed Ports:*
+  • 🟡 Unexpected port *43931* listening on non-loopback: `100.120.65.116:43931` (unknown)
+  • 🟡 Unexpected port *3000* listening on non-loopback: `0.0.0.0:3000` (users:(("MainThread",pid=38901,fd=21)))
+  • 🟡 Unexpected port *443* listening on non-loopback: `100.120.65.116:443` (unknown)
+  • 🟡 Unexpected port *8443* listening on non-loopback: `100.120.65.116:8443` (unknown)
+  • 🟡 Unexpected port *53* listening on non-loopback: `10.255.255.254:53` (unknown)
+  • 🟡 Unexpected port *631* listening on non-loopback: `0.0.0.0:631` (unknown)
+  • 🟡 Unexpected port *8443* listening on non-loopback: `[fd7a:115c:a1e0::7136:4174]:8443` (unknown)
+  • 🟡 Unexpected port *443* listening on non-loopback: `[fd7a:115c:a1e0::7136:4174]:443` (unknown)
+  • 🟡 Unexpected port *35665* listening on non-loopback: `[fd7a:115c:a1e0::7136:4174]:35665` (unknown)
+  • 🟡 Unexpected port *8080* listening on non-loopback: `[::ffff:127.0.0.1]:8080` (users:(("signal-cli",pid=71922,fd=7)))
+  • 🟡 Unexpected port *631* listening on non-loopback: `[::]:631` (unknown)
+*File Permissions:*
+  • 🔴 `.openclaw/openclaw.json` is world-readable (mode 664). Fix: `chmod o-r /home/ubu/.openclaw/openclaw.json`
+  • 🔴 `.openclaw/workspace/scripts/poll_all.py` is world-readable (mode 664). Fix: `chmod o-r /home/ubu/.openclaw/workspace/scripts/poll_all.py`
+  • 🔴 `.openclaw/workspace/scripts/entra-cred-store.py` is world-readable (mode 775). Fix: `chmod o-r /home/ubu/.openclaw/workspace/scripts/entra-cred-store.py`
+*Plugin Integrity:*
+  • ℹ️ First run — baseline recorded for 6 plugin files.
+
+## 2026-04-19T23:46:59Z — Security Audit (cron)
+- *Findings:*
+*Credential Expiry:*
+  • 🟡 Graph API env vars (MSGRAPH_TENANT_ID/CLIENT_ID) not set in this context.
+*Exposed Ports:*
+  • 🟡 Unexpected port *43931* listening on non-loopback: `100.120.65.116:43931` (unknown)
+  • 🟡 Unexpected port *35665* listening on non-loopback: `[fd7a:115c:a1e0::7136:4174]:35665` (unknown)
+
+## 2026-04-19T23:47:14Z — Security Audit (cron)
+- *Findings:*
+*Exposed Ports:*
+  • 🟡 Unexpected port *43931* listening on non-loopback: `100.120.65.116:43931` (unknown)
+  • 🟡 Unexpected port *35665* listening on non-loopback: `[fd7a:115c:a1e0::7136:4174]:35665` (unknown)
+
+## 2026-04-19T23:47:54Z — Security Audit (cron)
+- Audits: Credential Expiry, Exposed Ports, File Permissions, Plugin Integrity — all clean.
