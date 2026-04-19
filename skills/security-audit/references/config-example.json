@@ -1,0 +1,20 @@
+{
+  "channel": "C0XXXXXXXX",
+  "expected_ports": {
+    "18789": "openclaw-gateway",
+    "3000": "openclaw-web",
+    "8080": "signal-cli"
+  },
+  "tailscale_ranges": ["100.", "fd7a:115c:a1e0"],
+  "sensitive_paths": [
+    "~/.openclaw/openclaw.json",
+    "~/.openclaw/gateway.json",
+    "~/.openclaw/.env"
+  ],
+  "credential_expiry": {
+    "entra_client_secret": "2026-07-16",
+    "api_key_acme": "2027-01-15"
+  },
+  "warn_days": 60,
+  "critical_days": 30
+}
