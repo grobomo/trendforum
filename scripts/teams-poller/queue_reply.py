@@ -35,7 +35,18 @@ if len(sys.argv) > 1:
 else:
     reply = sys.stdin.read().strip()
 
-if reply and reply != "TEAMS_NO_REPLY":
+# SAFETY: reject flag strings or file paths that leaked from compose step
+import re
+_FLAG_RE = re.compile(r'^--[a-z]', re.IGNORECASE)
+FLAG_PATTERNS = ['--file ', '--output ', '--path ', '/tmp/', '--flag']
+def looks_like_flag(text: str) -> bool:
+    stripped = text.strip().split('\n')[0]  # check first line
+    # Catch ANY --flag style content at start of message (not just known patterns)
+    if _FLAG_RE.match(stripped):
+        return True
+    return any(stripped.startswith(p) for p in FLAG_PATTERNS)
+
+if reply and reply != "TEAMS_NO_REPLY" and not looks_like_flag(reply):
     OUTBOUND_QUEUE.parent.mkdir(parents=True, exist_ok=True)
     # Check if there's a pending inbound with a chat_id to reply to
     target_chat_id = ""
@@ -62,5 +73,8 @@ if reply and reply != "TEAMS_NO_REPLY":
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }, f, indent=2)
     print("Reply queued for posting")
+elif reply and looks_like_flag(reply):
+    print(f"BLOCKED: reply looks like a leaked flag/path, not message content: {reply[:80]}")
+    sys.exit(1)
 else:
     print("No reply to queue")
