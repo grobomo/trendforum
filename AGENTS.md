@@ -209,6 +209,28 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+## Task Tracking (Mandatory)
+
+Every task Joel asks for gets committed to `joel-ginsberg_tmemu/todo-list-tracker` immediately — not after completion, not when convenient. The moment the ask happens:
+
+1. **Log it** — add to the channel's `pending.md` with: what was asked, when, which chat, status
+2. **Commit + push** — so Joel can see it in GitHub
+3. **Do the work** — actually complete the task
+4. **Update status** — move to Completed with proof it worked
+5. **Verify** — for any external write (Teams, email, API), read it back and confirm
+
+### Anti-Pattern Rules (Breaking the Cycle)
+
+- **Before building ANY new system:** check if existing tasks are complete first. Finish work > start work.
+- **Never report done without verification.** If you sent a Teams message, Graph API read-back it. If you created a repo, confirm it exists. No "queued" = done.
+- **If a system is broken, fix the system — not the symptom.** Ad hoc patches that leave the root cause intact are forbidden.
+- **No stats, no summaries, no meta-work as a substitute for actual work.** If chats need replies, reply to them. Don't build a dashboard about replying.
+- **Track promises vs reality.** Every commit to todo-list-tracker is auditable. Empty promises show up as tasks stuck in Open.
+
+### Memex Wiki (Auto-Recall)
+
+Before working on any system or architecture topic, search the memex wiki via MCP (`mcp-manager__mcpm`, server=memex, tool=wiki_search`) for relevant context. Write findings back to wiki when you learn something new.
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
