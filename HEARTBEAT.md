@@ -30,6 +30,16 @@
 - Only post if data has changed since last briefing (check `/tmp/schedule-briefing-last-posted.txt` timestamp)
 - Script: `scripts/schedule-briefing/gather.py`
 
+## Teams Response Queue — MANDATORY CHECK
+- Run: `python3 scripts/teams_tracker/check_gaps.py --minutes 10 --enriched`
+- If output starts with `TEAMS_GAPS_FOUND`:
+  1. Read the structured output — it lists chats, senders, and message previews
+  2. For each read-write chat with gaps: compose a contextual reply and send via `queue_reply.py`
+  3. After sending, mark responded: `python3 scripts/teams_tracker/tracker.py respond --chat-id <id>`
+  4. For read-only chats flagged separately, notify Joel via Slack DM
+- If no output (empty), move on — no gaps
+- *This is the gap that caused the "unanswered for hours" problem. Never let it slide.*
+
 ## Trello Board Review — MANDATORY WORK
 - Check Coconut Todo list for new/updated cards
 - Review all lists for accuracy
