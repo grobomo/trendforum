@@ -133,14 +133,29 @@ if get_chat_access(config, target_chat_id) == "read-only":
     print(f"BLOCKED: cannot post to read-only chat '{chat_label}'. Relay to Joel via Slack DM instead.")
     sys.exit(1)
 
-# --- Queue the reply ---
+# --- Queue the reply (array-based, supports multiple pending) ---
 OUTBOUND_QUEUE.parent.mkdir(parents=True, exist_ok=True)
+
+# Read existing queue (may be single-object legacy or array)
+existing = []
+try:
+    with open(OUTBOUND_QUEUE) as f:
+        data = json.load(f)
+        if isinstance(data, list):
+            existing = data
+        elif isinstance(data, dict) and data.get("reply"):
+            existing = [data]  # migrate legacy single-object
+except (FileNotFoundError, json.JSONDecodeError):
+    pass
+
+existing.append({
+    "reply": reply,
+    "chat_id": target_chat_id,
+    "timestamp": datetime.now(timezone.utc).isoformat(),
+})
+
 with open(OUTBOUND_QUEUE, "w") as f:
-    json.dump({
-        "reply": reply,
-        "chat_id": target_chat_id,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-    }, f, indent=2)
+    json.dump(existing, f, indent=2)
 
 chat_label = next(
     (c.get("label", "?") for c in config.get("chats", []) if c.get("id") == target_chat_id),
@@ -148,14 +163,12 @@ chat_label = next(
 )
 print(f"Reply queued for posting to '{chat_label}'")
 
-# --- Mark all pending messages in this chat as responded ---
-TRACKER = Path.home() / ".openclaw" / "workspace" / "scripts" / "webhook-server" / "response-tracker.py"
-if TRACKER.exists():
-    import subprocess
-    try:
-        subprocess.run(
-            [sys.executable, str(TRACKER), "respond", "--chat-id", target_chat_id],
-            capture_output=True, timeout=5,
-        )
-    except Exception:
-        pass  # Don't block reply queuing on tracker errors
+# --- Mark all pending messages in this chat as responded (central tracker) ---
+try:
+    _tracker_dir = str(Path.home() / ".openclaw" / "workspace" / "scripts")
+    if _tracker_dir not in sys.path:
+        sys.path.insert(0, _tracker_dir)
+    from teams_tracker.tracker import TeamsTracker
+    TeamsTracker().record_response(chat_id=target_chat_id)
+except Exception:
+    pass  # Don't block reply queuing on tracker errors
