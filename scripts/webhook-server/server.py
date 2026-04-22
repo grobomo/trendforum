@@ -74,7 +74,7 @@ def wake_openclaw(resource_type: str):
     def _do_wake():
         try:
             if resource_type == "teams":
-                prompt = "New Teams message received via webhook. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle output: TEAMS = compose reply then run python3 /home/ubu/.openclaw/workspace/scripts/teams-poller/queue_reply.py with your reply. If no output, do nothing."
+                prompt = "New Teams message received via webhook. Run python3 /home/ubu/.openclaw/workspace/scripts/teams_tracker/check_gaps.py --minutes 1 --enriched and handle output: if TEAMS_GAPS_FOUND, compose and send replies for read-write chats via queue_reply.py, then mark responded with tracker.py respond --chat-id <id>. For read-only chats, flag important items to Joel via Slack DM. If no output, do nothing."
             elif resource_type == "email":
                 prompt = "New email received via webhook. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle output: EMAIL = summarize and flag urgent items. If no output, do nothing."
             elif resource_type == "trello":
@@ -108,11 +108,21 @@ def wake_openclaw(resource_type: str):
     log.info("Sent wake to OpenClaw for %s (background thread)", resource_type)
 
 
-# ── Response Tracker Integration ──────────────────────────────────
+# ── Central Tracker Integration ──────────────────────────────────
 
 import re
 
-TRACKER_SCRIPT = Path.home() / ".openclaw" / "workspace" / "scripts" / "webhook-server" / "response-tracker.py"
+# Use the central teams-tracker (shared by webhook, poller, queue_reply, Graph API)
+_TRACKER_DIR = Path.home() / ".openclaw" / "workspace" / "scripts"
+if str(_TRACKER_DIR) not in sys.path:
+    sys.path.insert(0, str(_TRACKER_DIR))
+
+try:
+    from teams_tracker.tracker import TeamsTracker
+    _webhook_tracker = TeamsTracker()
+except ImportError:
+    _webhook_tracker = None
+    log.warning("teams_tracker not found — webhook tracking disabled")
 
 def _record_pending(resource: str, change_type: str):
     """Extract chat_id and msg_id from Graph resource path and record in tracker.
@@ -130,17 +140,16 @@ def _record_pending(resource: str, change_type: str):
     
     chat_id, msg_id = m.group(1), m.group(2)
     
-    # Record with sender=unknown (webhook doesn't carry sender info)
-    # The poll_all.py step will enrich with actual sender when processing
-    try:
-        subprocess.run(
-            [sys.executable, str(TRACKER_SCRIPT), "record",
-             "--chat-id", chat_id, "--msg-id", msg_id,
-             "--sender", "unknown", "--source", "webhook"],
-            capture_output=True, timeout=5,
-        )
-    except Exception as e:
-        log.warning("Failed to record pending message: %s", e)
+    if _webhook_tracker:
+        try:
+            _webhook_tracker.record_message(
+                chat_id=chat_id, msg_id=msg_id,
+                sender="unknown", source="webhook",
+            )
+        except Exception as e:
+            log.warning("Failed to record in central tracker: %s", e)
+    else:
+        log.debug("Tracker unavailable, skipping record for %s", msg_id)
 
 
 # ── HTTP Handler ─────────────────────────────────────────────────
