@@ -130,38 +130,56 @@ def main():
     if not stale:
         return  # Nothing to do — silent exit
 
-    # Group by chat, filter to read-write only
-    by_chat = {}
+    # Group by chat — include ALL monitored chats (skip only disabled)
+    rw_chats = {}   # read-write: compose and send replies
+    ro_chats = {}   # read-only/unknown: flag important content to Joel
     for m in stale:
         chat_id = m["chat_id"]
         access = get_access(chat_id, config)
-        if access != "read-write":
-            continue  # Skip read-only / disabled chats
+        if access == "disabled":
+            continue  # Only skip explicitly disabled chats
         label = m.get("label", chat_id[:20])
-        by_chat.setdefault(label, {"chat_id": chat_id, "msgs": []})
-        by_chat[label]["msgs"].append(m)
+        bucket = rw_chats if access == "read-write" else ro_chats
+        bucket.setdefault(label, {"chat_id": chat_id, "access": access, "msgs": []})
+        bucket[label]["msgs"].append(m)
 
-    if not by_chat:
-        return  # All pending are in read-only chats
+    if not rw_chats and not ro_chats:
+        return  # Nothing pending
 
     # Output structured prompt for agent
     print("TEAMS_GAPS_FOUND")
     print(f"Chats with unanswered messages (>{args.minutes}m):")
-    print()
-    for label, info in by_chat.items():
-        msgs = info["msgs"]
-        print(f"  [{label}] ({len(msgs)} pending, chat_id: {info['chat_id']})")
-        for m in msgs[-3:]:  # Show last 3 per chat to keep prompt short
-            age_min = (tracker._now_epoch_static() - m["recorded_at"]) / 60
-            sender = m.get("sender", "unknown")
-            preview = m.get("preview", "(no preview)")
-            print(f"    - {sender} ({age_min:.0f}m ago): {preview}")
-        if len(msgs) > 3:
-            print(f"    ... and {len(msgs) - 3} more")
-        print()
 
-    print("ACTION: Compose and send replies for each chat via queue_reply.py")
-    print("After replying, run: tracker.py respond --chat-id <id>")
+    if rw_chats:
+        print()
+        print("=== READ-WRITE (compose and send reply) ===")
+        for label, info in rw_chats.items():
+            _print_chat(label, info, tracker)
+
+    if ro_chats:
+        print()
+        print("=== READ-ONLY (flag important content to Joel via Slack DM) ===")
+        for label, info in ro_chats.items():
+            _print_chat(label, info, tracker)
+
+    print()
+    print("ACTIONS:")
+    if rw_chats:
+        print("  - Read-write chats: compose and send replies via queue_reply.py, then mark responded")
+    if ro_chats:
+        print("  - Read-only chats: flag anything important/actionable to Joel via Slack DM")
+
+
+def _print_chat(label, info, tracker):
+    msgs = info["msgs"]
+    print(f"  [{label}] ({len(msgs)} pending, access: {info['access']}, chat_id: {info['chat_id']})")
+    for m in msgs[-3:]:  # Show last 3 per chat
+        age_min = (tracker._now_epoch_static() - m["recorded_at"]) / 60
+        sender = m.get("sender", "unknown")
+        preview = m.get("preview", "(no preview)")
+        print(f"    - {sender} ({age_min:.0f}m ago): {preview}")
+    if len(msgs) > 3:
+        print(f"    ... and {len(msgs) - 3} more")
 
 
 # Static epoch for age calculation (avoid instance method dependency)
