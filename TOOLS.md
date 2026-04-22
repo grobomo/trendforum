@@ -40,8 +40,11 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - Board: To Do List (`TyFBN1Bx`) — <https://trello.com/b/TyFBN1Bx/to-do-list>
 - Lists:
   - `6954d3af836b51597afff8e9` = Coconut Todo (my tasks)
+  - `69e81730d4333e58a9aa2d0e` = Joel Next Steps
   - `6954d3af836b51597afff8e8` = Joel Todo
+  - `69e8173131921413c149f962` = Justin Next Steps
   - `69e19cd7864480d809461861` = Justin Todo
+  - `69e81731fc65aa3403256ac3` = Chrissa Next Steps
   - `69e19cce3a6e1e41e5c910e6` = Chrissa Todo
   - `69e51fe0ad60dd711d6e9fcc` = Testing
   - `6954d3af836b51597afff8f1` = Done
@@ -125,8 +128,35 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - `#social` (`C0ATB4AS9PD`) — casual/social. Always respond.
 - `#coco-metacognition` (`C0ATCRVSB71`) — metacognition channel. Thinking about thinking, making thought processes visible for self-improvement.
 - Joel DM (`D0ATWPM4DTK`) — private comms with Joel. Urgent flags, private info, things not for the squad.
+  - `#cdt-imsva-analyzer` (`C0ATM9PB59T`) — CDT/IMSVA analyzer development. Always respond.
+  - `#son` (`C0ATJVC4LUB`) — TBD purpose. Always respond.
+  - `#scheduling` (`C0ATK8YJQD9`) — scheduling channel. Always respond.
 
 **Group Policy:** `open` — auto-monitors any channel Coconut is invited to (no manual config needed).
+
+### Teams — How to Send Messages
+
+**The ONLY way to send a Teams message:**
+1. Write your message to a temp file (e.g. `/tmp/teams-reply.txt`)
+2. Pipe it to `queue_reply.py`:
+   ```
+   python3 scripts/teams-poller/queue_reply.py --chat-id "19:abc123@thread.v2" < /tmp/teams-reply.txt
+   ```
+3. The teams_service daemon picks up the queue and posts via Graph API
+
+**Rules:**
+- Message body comes from stdin ONLY (never positional args)
+- Use `--chat-id` with the full Teams chat ID, or use `--chat` with a label from config.json
+- 🌴 bookends are auto-enforced by queue_reply.py (added if missing), but ALWAYS include them yourself
+- Never call Graph API directly, never use send_reply.py directly, never write to outbound_queue.json manually
+- For read-only chats: queue_reply.py will block the post automatically
+
+**Chat IDs** are in `scripts/teams-poller/config.json` — look up by label.
+
+**DO NOT:**
+- Use heredocs / `cat << EOF | python3 ...` (exec preflight blocks it)
+- Call the Graph API directly to send messages
+- Write to outbound_queue.json by hand
 
 ### Graph API Search
 - Endpoint: `POST /search/query` with `entityTypes: ["chatMessage"]`

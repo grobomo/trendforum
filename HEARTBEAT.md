@@ -1,5 +1,13 @@
 # HEARTBEAT.md
 
+## Slack History Scan (every 15 min)
+- Run: `python3 scripts/slack-poller/state_manager.py check`
+- If output (scan is due), scan each channel using `message(action=read, channel=slack, target=<channel_id>, limit=10)`
+- For each channel: check if there are new human messages (ignore bot IDs: U0ATFQQ4WNS, U0AURHRR4M6)
+- If you find messages that need a response and haven't been responded to, respond to them
+- After scanning all channels, run: `python3 scripts/slack-poller/state_manager.py done`
+- If no output from check (not due yet), skip
+
 ## Hook-Runner Project Monitor (every 15 min)
 - Run: `bash scripts/monitor-hook-runner.sh`
 - Check `.coconut/STATUS_REPORT.md` for Claude Code's status update
@@ -12,6 +20,15 @@
 - If status request still pending (unanswered), mention it briefly
 - Project: `/mnt/c/Users/joelg/Documents/ProjectsCL1/_grobomo/hook-runner`
 - Task: hook-runner module conversion to OpenClaw hook-runner modules
+
+## Schedule Briefing (hourly)
+- Data gathered hourly by cron → `/tmp/schedule-briefing-latest.json`
+- Sources: Trello todo board, Trello company boards, all emails, all Teams chats, Outlook calendar
+- On heartbeat: read `/tmp/schedule-briefing-latest.json`, synthesize and post to `#scheduling` (C0ATK8YJQD9)
+- Format: Today & tomorrow detail (times, attendees, prep notes, cross-referenced with Trello/email tasks). High-level rest-of-week + next-week summary.
+- Cross-reference: match calendar meetings with Trello cards, pending emails, and Teams threads for that customer
+- Only post if data has changed since last briefing (check `/tmp/schedule-briefing-last-posted.txt` timestamp)
+- Script: `scripts/schedule-briefing/gather.py`
 
 ## Trello Board Review — MANDATORY WORK
 - Check Coconut Todo list for new/updated cards

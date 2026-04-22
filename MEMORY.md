@@ -97,6 +97,7 @@
 - Trello API creds accessible via python keyring but not secret-tool lookup
 - Joel doesn't want long walls of text — be concise
 - Joel calls me "son" / "my boy" — lean into the family dynamic
+- **NEVER store API keys in .env files.** Use Linux keyring (`python3 keyring`) and reference via `credential:` prefix. Joel's directive 2026-04-21.
 - WSL RAM increased from 4 GB to 8 GB (2026-04-18) — 4 GB caused OOM hangs
 - On restart: check memory/channel-state.json for last-seen timestamps, pull missed messages per channel
 - **Bias to action.** Joel prefers I use my best judgment and act, then he'll course-correct if needed. If something is reversible and reasonable, just do it. Save the questions for genuinely irreversible or risky actions (deleting prod data, sending external emails, etc). Don't stress about it — just lean toward doing over asking.
@@ -105,8 +106,10 @@
 - Cron jobs that don't need user attention should target `isolated`, NOT `main` — main session output routes to Joel's DM and spams him
 - Disabled duplicate cron jobs: church-bells + temporal-pulse (same thing, hourly time pulse — neither was useful)
 - **Bias to action.** Joel prefers I use my best judgment and act, then he'll course-correct if needed. If something is reversible and reasonable, just do it. Save the questions for genuinely irreversible or risky actions (deleting prod data, sending external emails, etc). Don't stress about it — just lean toward doing over asking.
+- **Reaction conventions:** Thumbs up (👍) reaction on a message = "yes proceed" — treat it as explicit approval to act. (Joel, 2026-04-21)
 - **Time-of-day rule:** NEVER make decisions based on time of day — no bedtime suggestions, no "good morning," no "it's late," no meal-time assumptions. Joel has no set sleep schedule; he may eat dinner at 6 AM or sleep at 2 PM. Act the same 24/7. EXCEPTION: tracking urgent tasks with real deadlines — those keep their time awareness. Always keep upcoming deadlines in mind regardless.
 - **Always test before delivering.** Never mark a deliverable "complete" or send it to a customer without actually running it end-to-end first. Building code isn't the same as testing code. If I don't have credentials/access to test, say so and test against what I *do* have (e.g., joeltest.org tenant). A solution Joel can't hand to a customer with confidence is not done. (Joel, 2026-04-19)
+- **Always cite sources in summaries.** When composing meeting preps, briefings, or customer summaries, include source citations with quoted excerpts (e.g., "Source: Email from X, date — 'quoted text'"). If I can't point to a specific source, flag the claim as [unverified/inferred]. Joel can't distinguish hallucination from real intel without provenance. Never fill gaps with inference without labeling it. (Joel, 2026-04-20)
 
 ## SOPs
 - **Software Research & Evaluation** (`SOP-SOFTWARE-RESEARCH.md`): Joel's 4-step pipeline for vetting new tools/services. Always follow before adopting new software. Core principle: "Identify Core Problem + Describe Platform + Google Search." Added 2026-04-18.
@@ -169,3 +172,10 @@ _Updated: 2026-04-17_
 - Read values: use Windows Python + ctypes advapi32 CredReadW (PowerShell constrained language mode blocks Add-Type)
 - Windows Python path: `/mnt/c/Users/joelg/AppData/Local/Programs/Python/Python312/python.exe`
 - Always check here FIRST for missing API keys before asking Joel
+
+## Core Principle: Live Data Verification
+
+- **NEVER trust your own logs as proof of success.** Always verify outcomes via the actual system (Graph API query, database read, live page check).
+- Teams sends: Graph API returns 201 but messages appear as Joel (delegated auth uses his refresh token). Need to verify via GET after every POST.
+- This applies universally: any external write should be followed by a read-back confirmation.
+- Added 2026-04-20 per Joel's directive after discovering Teams messages were "sent" but invisible because they showed as Joel's own messages.

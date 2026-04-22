@@ -27,6 +27,7 @@ _Source: DATA-POLICY.md | Last synced: 2026-04-19_
 ## Incidents
 - **2026-04-18:** Customer AWS account IDs posted to Joel DM — VIOLATION. Deleted + reposted to Teams. (audit-log.md)
 - **2026-04-18:** DDEI wiki research (file paths, CLI commands) posted to Joel DM — INTERNAL-INFRA violation. Deleted + summary reposted. (DATA-POLICY.md incident log)
+- **2026-04-19:** Customer names, contact names, case numbers, and infrastructure details posted to #all-misfits — VIOLATION. Two messages deleted. Root cause: structural (no pre-send enforcement). (audit-log.md)
 
 ## Notes
 - Joel's personal Slack workspace — NOT enterprise-managed
