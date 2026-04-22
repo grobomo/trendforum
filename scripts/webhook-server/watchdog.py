@@ -108,31 +108,49 @@ def _parse_expiration(sub: dict) -> float:
     return 0
 
 
-def check_subscriptions_valid() -> bool:
-    """Check if webhook subscriptions exist and haven't expired."""
+def check_subscriptions_valid(sub_type: str = None) -> bool:
+    """Check if webhook subscriptions exist and haven't expired.
+    
+    Args:
+        sub_type: If specified, only check subscriptions of this type
+                  (e.g. 'teams-messages', 'email'). None = any.
+    """
     subs = _load_subscriptions()
     if not subs:
         return False
 
     now = time.time()
     for sub in subs:
+        if sub_type and sub.get("type", "") != sub_type:
+            continue
         expires = _parse_expiration(sub)
         if expires > now:
             return True
     return False
 
 
+def check_teams_subscriptions_valid() -> bool:
+    """Check specifically if Teams message subscriptions are valid."""
+    return check_subscriptions_valid(sub_type="teams-messages")
+
+
 def check_subscriptions_expiring_soon() -> bool:
-    """Check if subscriptions are within renewal buffer of expiry."""
+    """Check if any Teams subscriptions are within renewal buffer of expiry."""
     subs = _load_subscriptions()
     if not subs:
         return True  # No subs = definitely needs renewal
 
     now = time.time()
-    for sub in subs:
+    teams_subs = [s for s in subs if s.get("type", "").startswith("teams")]
+    if not teams_subs:
+        return True  # No Teams subs at all = needs creation
+
+    for sub in teams_subs:
         expires = _parse_expiration(sub)
         if 0 < expires - now < SUBSCRIPTION_RENEWAL_BUFFER:
             return True
+        if expires <= now:
+            return True  # Already expired = needs renewal
     return False
 
 
@@ -173,19 +191,55 @@ def start_poller():
 
 
 def renew_subscriptions():
-    """Re-register webhook subscriptions."""
+    """Renew existing webhook subscriptions. Falls back to re-create if renew fails."""
     log.info("Renewing webhook subscriptions")
     try:
         result = subprocess.run(
-            [sys.executable, str(SUBSCRIPTIONS_SCRIPT), "register"],
-            capture_output=True, text=True, timeout=60,
+            [sys.executable, str(SUBSCRIPTIONS_SCRIPT), "renew"],
+            capture_output=True, text=True, timeout=120,
         )
         if result.returncode == 0:
             log.info("Subscriptions renewed successfully")
         else:
-            log.warning("Subscription renewal failed: %s", result.stderr[:200])
+            log.warning("Subscription renewal failed (rc=%d): %s", result.returncode, result.stderr[:200])
+            # If renew fails (expired subs can't be renewed), re-create
+            log.info("Attempting full re-creation of subscriptions")
+            recreate_subscriptions()
     except Exception as e:
         log.warning("Subscription renewal error: %s", e)
+
+
+def recreate_subscriptions():
+    """Delete all expired subscriptions and create fresh ones."""
+    subs_state = {}
+    try:
+        with open(SUBSCRIPTIONS_FILE) as f:
+            subs_state = json.load(f)
+    except Exception:
+        pass
+
+    notification_url = subs_state.get("notification_url", "")
+    if not notification_url:
+        log.error("No notification_url in subscriptions state, cannot recreate")
+        return
+
+    try:
+        # Delete all existing (expired) subs first
+        subprocess.run(
+            [sys.executable, str(SUBSCRIPTIONS_SCRIPT), "delete", "--all"],
+            capture_output=True, text=True, timeout=60,
+        )
+        # Re-create all
+        result = subprocess.run(
+            [sys.executable, str(SUBSCRIPTIONS_SCRIPT), "create", "--url", notification_url],
+            capture_output=True, text=True, timeout=120,
+        )
+        if result.returncode == 0:
+            log.info("Subscriptions re-created successfully: %s", result.stdout[:200])
+        else:
+            log.error("Subscription re-creation failed: %s", result.stderr[:200])
+    except Exception as e:
+        log.error("Subscription re-creation error: %s", e)
 
 
 def run_watchdog():
@@ -195,16 +249,18 @@ def run_watchdog():
     state["last_run"] = now
 
     webhook_healthy = check_webhook_health()
-    subs_valid = check_subscriptions_valid()
+    subs_valid = check_subscriptions_valid()  # any sub valid
+    teams_subs_valid = check_teams_subscriptions_valid()  # Teams subs specifically
     poller_status = get_poller_status()
 
-    log.info("Health: webhook=%s subs=%s poller=%s mode=%s",
+    log.info("Health: webhook=%s subs=%s teams_subs=%s poller=%s mode=%s",
              "UP" if webhook_healthy else "DOWN",
              "VALID" if subs_valid else "EXPIRED",
+             "VALID" if teams_subs_valid else "EXPIRED",
              poller_status, state["mode"])
 
-    # ── Case 1: Webhooks healthy + subscriptions valid → stop poller ──
-    if webhook_healthy and subs_valid:
+    # ── Case 1: Webhooks healthy + TEAMS subscriptions valid → stop poller ──
+    if webhook_healthy and teams_subs_valid:
         state["webhook_last_healthy"] = now
         state["mode"] = "webhook"
 
@@ -227,8 +283,8 @@ def run_watchdog():
                 state["mode"] = "poller"
                 log.warning("FAILOVER: webhooks unhealthy for %.0fs, poller activated", time_since_healthy)
 
-    # ── Case 3: Webhooks healthy but subs expired → renew + start poller as safety ──
-    elif webhook_healthy and not subs_valid:
+    # ── Case 3: Webhooks healthy but Teams subs expired → renew + start poller as safety ──
+    elif webhook_healthy and not teams_subs_valid:
         renew_subscriptions()
         state["last_subscription_check"] = now
         # Keep poller running until subs confirmed valid
@@ -249,6 +305,7 @@ def run_watchdog():
         "mode": state["mode"],
         "webhook": "UP" if webhook_healthy else "DOWN",
         "subs": "VALID" if subs_valid else "EXPIRED",
+        "teams_subs": "VALID" if teams_subs_valid else "EXPIRED",
         "poller": poller_status,
         "failovers": state.get("failover_count", 0),
     }))
