@@ -126,6 +126,58 @@ QUEUE_DIR = Path.home() / ".openclaw" / "teams-poller"
 INBOUND_QUEUE = QUEUE_DIR / "inbound_queue.json"
 OUTBOUND_QUEUE = QUEUE_DIR / "outbound_queue.json"
 PID_FILE = QUEUE_DIR / "service.pid"
+ACTIVITY_FILE = QUEUE_DIR / "chat_activity.json"
+
+# How long a chat stays "active" (polled) after its last send/receive
+ACTIVITY_TTL_SECONDS = 24 * 3600  # 24 hours
+
+
+# ── Activity tracking ────────────────────────────────────────────
+
+def _load_activity() -> dict:
+    """Load per-chat activity timestamps."""
+    try:
+        with open(ACTIVITY_FILE) as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def _save_activity(activity: dict):
+    """Save per-chat activity timestamps."""
+    QUEUE_DIR.mkdir(parents=True, exist_ok=True)
+    with open(ACTIVITY_FILE, "w") as f:
+        json.dump(activity, f, indent=2)
+
+
+def mark_chat_active(chat_id: str, reason: str = "poll"):
+    """Mark a chat as recently active (will be polled)."""
+    activity = _load_activity()
+    activity[chat_id] = {
+        "last_active": time.time(),
+        "reason": reason,
+    }
+    _save_activity(activity)
+    log.debug("Marked chat %s active (reason=%s)", chat_id[:30], reason)
+
+
+def is_chat_active(chat_id: str) -> bool:
+    """Check if a chat has had activity within the TTL window."""
+    activity = _load_activity()
+    entry = activity.get(chat_id)
+    if not entry:
+        return False
+    return (time.time() - entry.get("last_active", 0)) < ACTIVITY_TTL_SECONDS
+
+
+def get_active_chat_ids() -> set:
+    """Return set of chat IDs that are currently active."""
+    activity = _load_activity()
+    now = time.time()
+    return {
+        cid for cid, entry in activity.items()
+        if (now - entry.get("last_active", 0)) < ACTIVITY_TTL_SECONDS
+    }
 
 
 def write_inbound(prompt: str, pending_reply: dict):
@@ -194,6 +246,33 @@ def read_and_clear_outbound() -> list[dict]:
 _shutdown = False
 
 
+# ── Chat access policy (CHAT-ACCESS-POLICY.md) ──────────────────
+
+def _is_dm_chat(chat_id: str) -> bool:
+    """Detect if a chat ID is a 1:1 DM (vs group/meeting)."""
+    return "@unq.gbl.spaces" in chat_id
+
+
+def _is_meeting_chat(chat_id: str) -> bool:
+    """Detect if a chat ID is a meeting chat."""
+    return "meeting_" in chat_id
+
+
+def default_access_for_chat(chat_id: str) -> str:
+    """Apply the access policy defaults based on chat type.
+    
+    Policy (Joel, 2026-04-22):
+    - DMs: disabled by default (opt-in only)
+    - Group chats: read-only by default
+    - Meeting chats: read-only by default
+    - Write access: always explicit opt-in
+    - Coconut-created chats: read-write (handled at creation time)
+    """
+    if _is_dm_chat(chat_id):
+        return "disabled"
+    return "read-only"
+
+
 def _get_chat_config(config: dict, chat_id: str) -> dict | None:
     """Look up per-chat config from the chats[] array."""
     for c in config.get("chats", []):
@@ -232,6 +311,9 @@ def poll_once(client: GraphClient, config: dict, state: dict, chat_id: str = Non
     # Skip disabled chats entirely — don't poll, don't queue
     if access == "disabled":
         return None
+
+    # Mark chat active on any successful poll attempt
+    mark_chat_active(chat_id, reason="poll")
 
     try:
         raw_messages = teams.get_chat_messages(
@@ -291,6 +373,9 @@ def poll_once(client: GraphClient, config: dict, state: dict, chat_id: str = Non
 
     if not new_messages:
         return None
+
+    # New messages found — mark chat active (inbound activity)
+    mark_chat_active(chat_id, reason="inbound")
 
     new_ids = {m["message_id"] for m in new_messages}
     context = format_conversation_context(parsed, new_ids)
@@ -418,6 +503,9 @@ def post_reply(client: GraphClient, config: dict, reply_text: str, target_chat_i
     chat_id = target_chat_id or config.get("chat_id", "")
     bot_signature = config.get("bot_signature", BOT_SIGNATURE)
 
+    # Mark chat active on outbound (we're sending, so keep polling it)
+    mark_chat_active(chat_id, reason="outbound")
+
     # SAFETY: check access policy before posting
     chat_cfg = _get_chat_config(config, chat_id)
     if chat_cfg and chat_cfg.get("access") == "read-only":
@@ -540,8 +628,19 @@ def run_service(interval: int = 5):
             log.error("No chats[] or chat_id in config.json")
             sys.exit(1)
         chat_configs = [{"id": chat_id, "label": "default", "access": "read-write"}]
-    log.info("Monitoring %d chat(s): %s", len(chat_configs),
-             ", ".join(f"{c.get('label','?')} ({c.get('access','rw')})" for c in chat_configs))
+    # Separate active chats (read-write, read-only) from disabled
+    enabled_chats = [c for c in chat_configs if c.get("access") != "disabled"]
+    log.info("Monitoring %d enabled chat(s) of %d configured (activity-gated, TTL=%dh):",
+             len(enabled_chats), len(chat_configs), ACTIVITY_TTL_SECONDS // 3600)
+    for c in enabled_chats:
+        log.info("  %s (%s)", c.get('label', '?'), c.get('access', 'rw'))
+
+    # Seed activity for all enabled chats on first start so they get polled
+    # until the 24h TTL naturally prunes idle ones
+    for c in enabled_chats:
+        cid = c.get("id", "")
+        if cid and not is_chat_active(cid):
+            mark_chat_active(cid, reason="startup-seed")
 
     # Write PID file
     QUEUE_DIR.mkdir(parents=True, exist_ok=True)
@@ -581,19 +680,38 @@ def run_service(interval: int = 5):
                     token_refresh_time = time.time()
                     log.info("Token refreshed")
 
-            # Poll all configured chats
+            # Poll only ACTIVE chats (activity within TTL window)
             chat_configs = config.get("chats", [])
             if not chat_configs:
-                # Legacy fallback: single chat_id
                 chat_configs = [{"id": config.get("chat_id", ""), "label": "default", "access": "read-write"}]
+
+            active_ids = get_active_chat_ids()
+            polled_count = 0
+            skipped_count = 0
 
             for chat_cfg in chat_configs:
                 cid = chat_cfg.get("id", "")
                 if not cid:
                     continue
-                prompt = poll_once(client, config, state, chat_id=cid)
-                if prompt:
-                    write_inbound(prompt, state.get("pending_reply"))
+                access = chat_cfg.get("access", "read-write")
+                if access == "disabled":
+                    continue
+                # Only poll if chat has recent activity
+                if cid not in active_ids:
+                    skipped_count += 1
+                    continue
+                polled_count += 1
+                try:
+                    prompt = poll_once(client, config, state, chat_id=cid)
+                    if prompt:
+                        write_inbound(prompt, state.get("pending_reply"))
+                except Exception as chat_err:
+                    log.error("Failed polling %s: %s",
+                              chat_cfg.get('label', cid[:20]), chat_err)
+
+            if polled_count > 0 or skipped_count > 0:
+                log.debug("Poll cycle: %d active, %d inactive-skipped",
+                          polled_count, skipped_count)
 
             # Check for outbound replies to post (array-based)
             outbound_entries = read_and_clear_outbound()

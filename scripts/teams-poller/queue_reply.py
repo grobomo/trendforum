@@ -163,6 +163,14 @@ chat_label = next(
 )
 print(f"Reply queued for posting to '{chat_label}'")
 
+# --- Mark chat as active (so it keeps getting polled) ---
+try:
+    sys.path.insert(0, str(SCRIPT_DIR))
+    from teams_service import mark_chat_active
+    mark_chat_active(target_chat_id, reason="outbound-queue")
+except Exception:
+    pass  # Don't block on activity tracking errors
+
 # --- Mark all pending messages in this chat as responded (central tracker) ---
 try:
     _tracker_dir = str(Path.home() / ".openclaw" / "workspace" / "scripts")
