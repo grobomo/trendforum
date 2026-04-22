@@ -50,6 +50,20 @@
       "note": "Collab chat with Joerg Peetz (TS-EU). Created 2026-04-18."
     },
     {
+      "id": "19:3092a1dd-a2fb-4de2-afe9-4f6a53ca6f9e_70ce5237-91c1-4a27-997c-ef5df6c18a0e@unq.gbl.spaces",
+      "label": "Joel + Ryan Duff (human DMs)",
+      "access": "disabled",
+      "section": "coconut",
+      "note": "Disabled 2026-04-21 per Joel — human-only DMs. Bot-to-bot via group chat instead."
+    },
+    {
+      "id": "19:46f1126f3da342e0aea7a9b3539143fb@thread.v2",
+      "label": "Coconut + FlyBot",
+      "access": "read-write",
+      "section": "coconut",
+      "note": "Bot-to-bot group chat for Coconut and FlyBot. Created 2026-04-21."
+    },
+    {
       "id": "19:6eb61782a0ad47d2b330f8290de251a1@thread.v2",
       "label": "GM2 Squad 1",
       "access": "read-only",
@@ -62,6 +76,13 @@
       "access": "read-only",
       "section": "squad",
       "note": "Small TS group chat. Monitor only, no posting without Joel's permission."
+    },
+    {
+      "id": "19:06ea01d249f648ae87b5df55b351f4d1@thread.v2",
+      "label": "Joel + Coconut + Fred Vines",
+      "access": "read-write",
+      "section": "coconut",
+      "note": "Group chat with Frederick Vines (TS-NA). Created 2026-04-21."
     }
   ]
 }

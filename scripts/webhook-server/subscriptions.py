@@ -75,7 +75,7 @@ def create_subscription(client: GraphClient, resource: str, change_types: list,
     }
 
     try:
-        result = client.post("/subscriptions", json=payload)
+        result = client.post("/subscriptions", body=payload)
         log.info("Created subscription: id=%s resource=%s expires=%s",
                  result.get("id", "?"), resource, result.get("expirationDateTime", "?"))
         return result
@@ -93,7 +93,7 @@ def renew_subscription(client: GraphClient, sub_id: str, expiry_minutes: int) ->
     }
 
     try:
-        result = client.patch(f"/subscriptions/{sub_id}", json=payload)
+        result = client.patch(f"/subscriptions/{sub_id}", body=payload)
         log.info("Renewed subscription %s until %s", sub_id[:12], result.get("expirationDateTime", "?"))
         return result
     except Exception as e:
@@ -139,16 +139,28 @@ def cmd_create(args):
 
     # Teams chat subscriptions (max 60 min expiry for chat messages)
     chat_ids = []
-    if config.get("chat_id"):
-        chat_ids.append(config["chat_id"])
-    if config.get("private_chat_id"):
-        chat_ids.append(config["private_chat_id"])
+    chats_cfg = config.get("chats", [])
+    if isinstance(chats_cfg, list):
+        for ccfg in chats_cfg:
+            if ccfg.get("access") == "read-write":
+                chat_ids.append(ccfg.get("id", ""))
+    elif isinstance(chats_cfg, dict):
+        for cid, ccfg in chats_cfg.items():
+            if ccfg.get("access") == "read-write":
+                chat_ids.append(cid)
+    # Legacy single-chat config fallback
+    if not chat_ids:
+        if config.get("chat_id"):
+            chat_ids.append(config["chat_id"])
+        if config.get("private_chat_id"):
+            chat_ids.append(config["private_chat_id"])
 
     for chat_id in chat_ids:
+        # Messages: created + updated (covers new msgs, edits, reactions)
         resource = f"/chats/{chat_id}/messages"
         sub = create_subscription(
             client, resource,
-            change_types=["created"],
+            change_types=["created", "updated"],
             notification_url=notification_url,
             expiry_minutes=55,  # Renew before 60 min limit
         )
@@ -156,17 +168,36 @@ def cmd_create(args):
             created.append({
                 "id": sub["id"],
                 "resource": resource,
-                "type": "teams",
+                "type": "teams-messages",
                 "expiry_minutes": 55,
                 "expiration": sub.get("expirationDateTime"),
                 "created": datetime.now(timezone.utc).isoformat(),
             })
 
+        # Chat-level: updated (covers name changes, member changes)
+        chat_resource = f"/chats/{chat_id}"
+        chat_sub = create_subscription(
+            client, chat_resource,
+            change_types=["updated"],
+            notification_url=notification_url,
+            expiry_minutes=55,
+        )
+        if chat_sub:
+            created.append({
+                "id": chat_sub["id"],
+                "resource": chat_resource,
+                "type": "teams-chat",
+                "expiry_minutes": 55,
+                "expiration": chat_sub.get("expirationDateTime"),
+                "created": datetime.now(timezone.utc).isoformat(),
+            })
+
     # Email subscription (max 4230 min / ~2.9 days)
+    # created + updated covers new mail, read/unread changes, flag changes
     resource = "/me/mailFolders('Inbox')/messages"
     sub = create_subscription(
         client, resource,
-        change_types=["created"],
+        change_types=["created", "updated"],
         notification_url=notification_url,
         expiry_minutes=4200,  # ~2.9 days, renew before 4230 limit
     )

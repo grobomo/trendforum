@@ -339,8 +339,30 @@ def md_to_html(text):
     return '<br>'.join(html_lines)
 
 
+def verify_message(client: GraphClient, chat_id: str, message_id: str, max_retries: int = 2) -> bool:
+    """Verify a message actually exists in the chat via Graph API GET.
+    
+    Returns True if verified, False if message not found.
+    Core principle: never trust your own logs — always verify via live data.
+    """
+    import time as _time
+    for attempt in range(max_retries):
+        _time.sleep(2)  # Wait for propagation
+        try:
+            result = client.get(f'/me/chats/{chat_id}/messages/{message_id}')
+            if result and result.get('id'):
+                return True
+        except Exception as e:
+            log.warning("Verify attempt %d failed for msg %s: %s", attempt + 1, message_id, e)
+    return False
+
+
 def post_reply(client: GraphClient, config: dict, reply_text: str, target_chat_id: str = None):
-    """Post a reply to Teams. Blocks posting to read-only chats."""
+    """Post a reply to Teams with live verification.
+    
+    Blocks posting to read-only chats. After sending, verifies the message
+    actually exists via Graph API GET. Logs VERIFIED or VERIFY_FAILED.
+    """
     chat_id = target_chat_id or config.get("chat_id", "")
     bot_signature = config.get("bot_signature", BOT_SIGNATURE)
 
@@ -351,14 +373,37 @@ def post_reply(client: GraphClient, config: dict, reply_text: str, target_chat_i
                     chat_cfg.get("label", "?"), chat_id[:30])
         return
 
+    # Enforce 🌴 bookends (SOUL.md contract) — second safety net after queue_reply.py
+    PALM = "\U0001f334"  # 🌴
+    if not reply_text.startswith(PALM):
+        reply_text = f"{PALM} {reply_text}"
+    if not reply_text.rstrip().endswith(PALM):
+        reply_text = f"{reply_text.rstrip()} {PALM}"
+
     reply_html = md_to_html(reply_text)
     signed = f"{reply_html}<br><br><i>{bot_signature}</i>"
+    chat_label = chat_cfg.get("label", "?") if chat_cfg else "?"
     try:
-        teams.send_chat_message(client, chat_id, signed)
-        log.info("Posted reply to Teams chat %s (%s)", 
-                 chat_cfg.get("label", "?") if chat_cfg else "?", chat_id[:30])
+        result = teams.send_chat_message(client, chat_id, signed)
+        msg_id = result.get('id', '') if isinstance(result, dict) else ''
+        sender = ''
+        if isinstance(result, dict):
+            sender = result.get('from', {}).get('user', {}).get('displayName', '')
+        
+        if msg_id:
+            # Live verification — core principle: trust live data, not logs
+            verified = verify_message(client, chat_id, msg_id)
+            if verified:
+                log.info("VERIFIED: Posted reply to %s (%s) msg_id=%s sender=%s",
+                         chat_label, chat_id[:30], msg_id, sender)
+            else:
+                log.error("VERIFY_FAILED: Post returned 201 but message %s not found in %s (%s)",
+                          msg_id, chat_label, chat_id[:30])
+        else:
+            log.warning("POST returned no message ID for %s (%s) — cannot verify",
+                        chat_label, chat_id[:30])
     except Exception as e:
-        log.error("Failed to post reply: %s", e)
+        log.error("Failed to post reply to %s: %s", chat_label, e)
 
 
 def run_service(interval: int = 5):

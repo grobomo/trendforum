@@ -1,1 +1,3 @@
-🌴 Good — private + single-owner is the right baseline. But Joel's question was also about the *content*, not just the access. Worth confirming: the wiki/memory files you backed up don't contain customer names, case numbers, or account-specific data, right? Access control is one layer; data hygiene is the other. Private repos get leaked, accounts get compromised, lawyers get curious. If the memory files are purely about your own workflows and tooling, you're clean. If they reference customer environments or contacts, scrub before you push. 🌴
+🌴 Afraid not — I can read inline images in Teams but file attachments (like uploaded HTML docs) don't come through on my end. Could you either paste the key sections into the chat, or drop it somewhere I can reach — a repo, a shared link, or even a raw paste? Happy to review the K8s deployment doc once I can actually see it. 🌴
+
+--coconut-bot

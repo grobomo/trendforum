@@ -1,0 +1,243 @@
+{
+  "messages": {},
+  "responded": {
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828554116": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828554116",
+      "sender": "unknown",
+      "timestamp": 1776828553.2726297,
+      "source": "webhook",
+      "responded_at": 1776828807.341861,
+      "response_time_s": 254.06923174858093
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828581058": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828581058",
+      "sender": "unknown",
+      "timestamp": 1776828580.872031,
+      "source": "webhook",
+      "responded_at": 1776828807.3418658,
+      "response_time_s": 226.46983528137207
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828639123": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828639123",
+      "sender": "unknown",
+      "timestamp": 1776828636.888727,
+      "source": "webhook",
+      "responded_at": 1776828807.341868,
+      "response_time_s": 170.4531409740448
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828742790": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828742790",
+      "sender": "unknown",
+      "timestamp": 1776828740.7053642,
+      "source": "webhook",
+      "responded_at": 1776828807.341869,
+      "response_time_s": 66.63650488853455
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828773788": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828773788",
+      "sender": "unknown",
+      "timestamp": 1776828772.2942944,
+      "source": "webhook",
+      "responded_at": 1776828807.3418698,
+      "response_time_s": 35.04757571220398
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828811770": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828811770",
+      "sender": "unknown",
+      "timestamp": 1776828809.9125192,
+      "source": "webhook",
+      "responded_at": 1776829285.3538387,
+      "response_time_s": 475.44131994247437
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828856567": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828856567",
+      "sender": "unknown",
+      "timestamp": 1776828854.3422437,
+      "source": "webhook",
+      "responded_at": 1776829285.3538494,
+      "response_time_s": 431.0116059780121
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828876804": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828876804",
+      "sender": "unknown",
+      "timestamp": 1776828875.8315396,
+      "source": "webhook",
+      "responded_at": 1776829285.353851,
+      "response_time_s": 409.5223114490509
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828882133": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828882133",
+      "sender": "unknown",
+      "timestamp": 1776828880.6780286,
+      "source": "webhook",
+      "responded_at": 1776829285.3538518,
+      "response_time_s": 404.6758232116699
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776828900013": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776828900013",
+      "sender": "unknown",
+      "timestamp": 1776828900.4148092,
+      "source": "webhook",
+      "responded_at": 1776829285.3538527,
+      "response_time_s": 384.9390435218811
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829127471": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829127471",
+      "sender": "unknown",
+      "timestamp": 1776829126.7774203,
+      "source": "webhook",
+      "responded_at": 1776829285.3538532,
+      "response_time_s": 158.5764331817627
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829135064": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829135064",
+      "sender": "unknown",
+      "timestamp": 1776829132.9766848,
+      "source": "webhook",
+      "responded_at": 1776829285.353854,
+      "response_time_s": 152.37716937065125
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829168294": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829168294",
+      "sender": "unknown",
+      "timestamp": 1776829166.9960306,
+      "source": "webhook",
+      "responded_at": 1776829285.3538547,
+      "response_time_s": 118.35782432556152
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829290602": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829290602",
+      "sender": "unknown",
+      "timestamp": 1776829291.4709213,
+      "source": "webhook",
+      "responded_at": 1776829640.2820354,
+      "response_time_s": 348.8111147880554
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829328185": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829328185",
+      "sender": "unknown",
+      "timestamp": 1776829328.8821995,
+      "source": "webhook",
+      "responded_at": 1776829640.2820413,
+      "response_time_s": 311.39984226226807
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829569220": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829569220",
+      "sender": "unknown",
+      "timestamp": 1776829567.331151,
+      "source": "webhook",
+      "responded_at": 1776829640.2820444,
+      "response_time_s": 72.95089340209961
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829596197": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829596197",
+      "sender": "unknown",
+      "timestamp": 1776829595.0789528,
+      "source": "webhook",
+      "responded_at": 1776829640.2820458,
+      "response_time_s": 45.20309352874756
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829649655": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829649655",
+      "sender": "unknown",
+      "timestamp": 1776829650.5845807,
+      "source": "webhook",
+      "responded_at": 1776829653.7092545,
+      "response_time_s": 3.124674081802368
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829661956": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829661956",
+      "sender": "unknown",
+      "timestamp": 1776829662.0232651,
+      "source": "webhook",
+      "responded_at": 1776829770.72674,
+      "response_time_s": 108.70347571372986
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829677484": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829677484",
+      "sender": "unknown",
+      "timestamp": 1776829675.588061,
+      "source": "webhook",
+      "responded_at": 1776829770.7267468,
+      "response_time_s": 95.13868618011475
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829775679": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829775679",
+      "sender": "unknown",
+      "timestamp": 1776829775.0054119,
+      "source": "webhook",
+      "responded_at": 1776829882.305079,
+      "response_time_s": 107.29966735839844
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829809540": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829809540",
+      "sender": "unknown",
+      "timestamp": 1776829809.5374248,
+      "source": "webhook",
+      "responded_at": 1776829882.3050845,
+      "response_time_s": 72.76765990257263
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829885859": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829885859",
+      "sender": "unknown",
+      "timestamp": 1776829884.6286066,
+      "source": "webhook",
+      "responded_at": 1776830465.6500769,
+      "response_time_s": 581.021470785141
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776829909801": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776829909801",
+      "sender": "unknown",
+      "timestamp": 1776829909.9303381,
+      "source": "webhook",
+      "responded_at": 1776830465.6500807,
+      "response_time_s": 555.7197425365448
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776830281378": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776830281378",
+      "sender": "unknown",
+      "timestamp": 1776830280.290566,
+      "source": "webhook",
+      "responded_at": 1776830465.650082,
+      "response_time_s": 185.35951614379883
+    },
+    "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2:1776830471879": {
+      "chat_id": "19:e1c2fec1164c41b5b861fb156650cdb1@thread.v2",
+      "msg_id": "1776830471879",
+      "sender": "unknown",
+      "timestamp": 1776830473.0171745,
+      "source": "webhook",
+      "responded_at": 1776830591.5553946,
+      "response_time_s": 118.53822064399719
+    }
+  },
+  "stats": {
+    "total_recorded": 26,
+    "total_responded": 26
+  }
+}

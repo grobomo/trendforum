@@ -40,7 +40,7 @@ QUEUE_REPLY_SCRIPT = Path.home() / ".openclaw" / "workspace" / "scripts" / "team
 
 # Debounce: don't wake OpenClaw more than once per N seconds per resource type
 WAKE_DEBOUNCE_SECONDS = 15
-_last_wake = {"teams": 0, "email": 0}
+_last_wake = {"teams": 0, "email": 0, "trello": 0}
 _gateway_token = None
 
 
@@ -77,6 +77,8 @@ def wake_openclaw(resource_type: str):
                 prompt = "New Teams message received via webhook. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle output: TEAMS = compose reply then run python3 /home/ubu/.openclaw/workspace/scripts/teams-poller/queue_reply.py with your reply. If no output, do nothing."
             elif resource_type == "email":
                 prompt = "New email received via webhook. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle output: EMAIL = summarize and flag urgent items. If no output, do nothing."
+            elif resource_type == "trello":
+                prompt = "Trello board updated via webhook. Run python3 /home/ubu/.openclaw/workspace/scripts/schedule-briefing/gather.py --source trello_todo,trello_companies and review changes. If relevant to schedule or pending tasks, post update to #scheduling (C0ATK8YJQD9). Check if any card was assigned, moved, or has a due date change."
             else:
                 prompt = f"Webhook notification for {resource_type}. Run python3 /home/ubu/.openclaw/workspace/scripts/poll_all.py and handle any output."
 
@@ -104,6 +106,41 @@ def wake_openclaw(resource_type: str):
     t = threading.Thread(target=_do_wake, daemon=True)
     t.start()
     log.info("Sent wake to OpenClaw for %s (background thread)", resource_type)
+
+
+# ── Response Tracker Integration ──────────────────────────────────
+
+import re
+
+TRACKER_SCRIPT = Path.home() / ".openclaw" / "workspace" / "scripts" / "webhook-server" / "response-tracker.py"
+
+def _record_pending(resource: str, change_type: str):
+    """Extract chat_id and msg_id from Graph resource path and record in tracker.
+    
+    Resource format: chats('19:xxx@thread.v2')/messages('1234567890')
+    Only records on 'created' (new messages), not 'updated' (edits/reactions).
+    """
+    if change_type != "created":
+        return
+    
+    # Extract IDs from resource path
+    m = re.search(r"chats\('([^']+)'\)/messages\('([^']+)'\)", resource)
+    if not m:
+        return
+    
+    chat_id, msg_id = m.group(1), m.group(2)
+    
+    # Record with sender=unknown (webhook doesn't carry sender info)
+    # The poll_all.py step will enrich with actual sender when processing
+    try:
+        subprocess.run(
+            [sys.executable, str(TRACKER_SCRIPT), "record",
+             "--chat-id", chat_id, "--msg-id", msg_id,
+             "--sender", "unknown", "--source", "webhook"],
+            capture_output=True, timeout=5,
+        )
+    except Exception as e:
+        log.warning("Failed to record pending message: %s", e)
 
 
 # ── HTTP Handler ─────────────────────────────────────────────────
@@ -159,12 +196,50 @@ class WebhookHandler(BaseHTTPRequestHandler):
 
             # Determine resource type and wake OpenClaw
             if "chats" in resource and "messages" in resource:
+                # Extract chat_id and msg_id for response tracking
+                _record_pending(resource, change_type)
                 wake_openclaw("teams")
             elif "messages" in resource and "chats" not in resource:
                 # Mail messages
                 wake_openclaw("email")
             else:
                 log.info("Unknown resource type: %s", resource)
+
+        # ── Trello webhook ───────────────────────────────────
+        if self.path.startswith("/trello"):
+            try:
+                data = json.loads(body) if body else {}
+            except json.JSONDecodeError:
+                log.warning("Invalid JSON in Trello webhook body")
+                self.send_response(400)
+                self.end_headers()
+                return
+
+            self.send_response(200)
+            self.end_headers()
+
+            action = data.get("action", {})
+            action_type = action.get("type", "unknown")
+            board_name = data.get("model", {}).get("name", "?")
+            card_name = action.get("data", {}).get("card", {}).get("name", "")
+            list_name = action.get("data", {}).get("list", {}).get("name", "")
+            member = action.get("memberCreator", {}).get("fullName", "?")
+
+            log.info("Trello: %s on '%s' by %s (board: %s, list: %s)",
+                     action_type, card_name or board_name, member, board_name, list_name)
+
+            wake_openclaw("trello")
+            return
+
+    def do_HEAD(self):
+        """Handle Trello webhook validation (HEAD request)."""
+        if self.path.startswith("/trello"):
+            log.info("Trello webhook HEAD validation")
+            self.send_response(200)
+            self.end_headers()
+        else:
+            self.send_response(404)
+            self.end_headers()
 
     def do_GET(self):
         """Health check endpoint."""

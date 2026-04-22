@@ -2,10 +2,17 @@
 """Queue a reply for the Teams service to post.
 
 Usage:
-    python3 queue_reply.py "reply text"
+    echo "reply text" | python3 queue_reply.py
+    echo "reply text" | python3 queue_reply.py --chat-id 19:abc123@thread.v2
+    python3 queue_reply.py < /tmp/reply.txt
+    python3 queue_reply.py --chat-id 19:abc123@thread.v2 < /tmp/reply.txt
+
+Reply body is ALWAYS read from stdin. Never from positional args.
+This prevents the bug where a chat name passed as an arg gets posted as the message.
 """
 import json
 import sys
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -30,51 +37,125 @@ def get_chat_access(config: dict, chat_id: str) -> str:
     return "read-write"
 
 
-if len(sys.argv) > 1:
-    reply = " ".join(sys.argv[1:])
-else:
-    reply = sys.stdin.read().strip()
+def get_chat_id_by_label(config: dict, label: str) -> str:
+    """Look up chat_id by label (case-insensitive partial match)."""
+    label_lower = label.lower()
+    for c in config.get("chats", []):
+        if c.get("label", "").lower() == label_lower:
+            return c.get("id", "")
+    # Partial match fallback
+    for c in config.get("chats", []):
+        if label_lower in c.get("label", "").lower():
+            return c.get("id", "")
+    return ""
+
+
+# --- Parse args ---
+# Only --chat-id or --chat (with value) is accepted. Everything else is rejected.
+target_chat_id = ""
+i = 1
+while i < len(sys.argv):
+    arg = sys.argv[i]
+    if arg in ("--chat-id", "--chat") and i + 1 < len(sys.argv):
+        target_chat_id = sys.argv[i + 1]
+        i += 2
+    else:
+        print(f"ERROR: Unknown argument '{arg}'. Reply body must come from stdin.", file=sys.stderr)
+        print(f"Usage: echo 'reply text' | python3 {sys.argv[0]} [--chat-id <id>]", file=sys.stderr)
+        sys.exit(1)
+
+# --- Read reply from stdin ONLY ---
+reply = sys.stdin.read().strip()
+
+if not reply:
+    print("No reply to queue (stdin was empty)")
+    sys.exit(0)
+
+if reply == "TEAMS_NO_REPLY":
+    print("No reply to queue (TEAMS_NO_REPLY)")
+    sys.exit(0)
 
 # SAFETY: reject flag strings or file paths that leaked from compose step
-import re
 _FLAG_RE = re.compile(r'^--[a-z]', re.IGNORECASE)
 FLAG_PATTERNS = ['--file ', '--output ', '--path ', '/tmp/', '--flag']
+
+
 def looks_like_flag(text: str) -> bool:
     stripped = text.strip().split('\n')[0]  # check first line
-    # Catch ANY --flag style content at start of message (not just known patterns)
     if _FLAG_RE.match(stripped):
         return True
     return any(stripped.startswith(p) for p in FLAG_PATTERNS)
 
-if reply and reply != "TEAMS_NO_REPLY" and not looks_like_flag(reply):
-    OUTBOUND_QUEUE.parent.mkdir(parents=True, exist_ok=True)
-    # Check if there's a pending inbound with a chat_id to reply to
-    target_chat_id = ""
+
+if looks_like_flag(reply):
+    print(f"BLOCKED: reply looks like a leaked flag/path, not message content: {reply[:80]}")
+    sys.exit(1)
+
+# ── Enforce 🌴 bookends (SOUL.md contract) ──
+# Every outbound Teams message MUST start and end with 🌴.
+# This is enforced here so no compose path can bypass it.
+PALM = "\U0001f334"  # 🌴
+if not reply.startswith(PALM):
+    reply = f"{PALM} {reply}"
+if not reply.rstrip().endswith(PALM):
+    reply = f"{reply.rstrip()} {PALM}"
+
+# --- Resolve chat target ---
+config = load_config()
+
+# If target looks like a label (not a Teams chat ID), resolve it
+if target_chat_id and not target_chat_id.startswith("19:"):
+    resolved = get_chat_id_by_label(config, target_chat_id)
+    if resolved:
+        target_chat_id = resolved
+    else:
+        print(f"ERROR: Could not resolve chat label '{target_chat_id}' to a chat ID.", file=sys.stderr)
+        sys.exit(1)
+
+# Fall back to last inbound chat if no explicit target
+if not target_chat_id:
     try:
         with open(OUTBOUND_QUEUE.parent / "last_inbound_chat.json") as f:
             target_chat_id = json.load(f).get("chat_id", "")
     except (FileNotFoundError, json.JSONDecodeError):
         pass
 
-    # SAFETY: block replies to read-only chats
-    config = load_config()
-    if target_chat_id and get_chat_access(config, target_chat_id) == "read-only":
-        chat_label = next(
-            (c.get("label", "?") for c in config.get("chats", []) if c.get("id") == target_chat_id),
-            "unknown"
-        )
-        print(f"BLOCKED: cannot post to read-only chat '{chat_label}'. Relay to Joel via Slack DM instead.")
-        sys.exit(1)
-
-    with open(OUTBOUND_QUEUE, "w") as f:
-        json.dump({
-            "reply": reply,
-            "chat_id": target_chat_id,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }, f, indent=2)
-    print("Reply queued for posting")
-elif reply and looks_like_flag(reply):
-    print(f"BLOCKED: reply looks like a leaked flag/path, not message content: {reply[:80]}")
+if not target_chat_id:
+    print("ERROR: No chat target — no --chat-id provided and no last_inbound_chat.json found.", file=sys.stderr)
     sys.exit(1)
-else:
-    print("No reply to queue")
+
+# SAFETY: block replies to read-only chats
+if get_chat_access(config, target_chat_id) == "read-only":
+    chat_label = next(
+        (c.get("label", "?") for c in config.get("chats", []) if c.get("id") == target_chat_id),
+        "unknown"
+    )
+    print(f"BLOCKED: cannot post to read-only chat '{chat_label}'. Relay to Joel via Slack DM instead.")
+    sys.exit(1)
+
+# --- Queue the reply ---
+OUTBOUND_QUEUE.parent.mkdir(parents=True, exist_ok=True)
+with open(OUTBOUND_QUEUE, "w") as f:
+    json.dump({
+        "reply": reply,
+        "chat_id": target_chat_id,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }, f, indent=2)
+
+chat_label = next(
+    (c.get("label", "?") for c in config.get("chats", []) if c.get("id") == target_chat_id),
+    target_chat_id[:30]
+)
+print(f"Reply queued for posting to '{chat_label}'")
+
+# --- Mark all pending messages in this chat as responded ---
+TRACKER = Path.home() / ".openclaw" / "workspace" / "scripts" / "webhook-server" / "response-tracker.py"
+if TRACKER.exists():
+    import subprocess
+    try:
+        subprocess.run(
+            [sys.executable, str(TRACKER), "respond", "--chat-id", target_chat_id],
+            capture_output=True, timeout=5,
+        )
+    except Exception:
+        pass  # Don't block reply queuing on tracker errors
