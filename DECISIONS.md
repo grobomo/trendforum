@@ -15,8 +15,9 @@ This file is injected into every session context. If you're about to do somethin
 ### Token Optimization — REDUCE POLL FREQUENCY
 - **Decision:** Reduce cron poll frequency from 3min to longer intervals
 - **Why:** 21,749 polls × ~5K tokens = ~100M tokens/day wasted on empty polls
-- **Status:** NEEDS IMPLEMENTATION
-- **DO NOT:** Keep running polls every 3 minutes when nothing is happening
+- **Status:** DONE — 5-min rate limiter added to poll_all.py (2026-04-22 23:50 CDT)
+- Webhook watchdog.py cron REMOVED (was running every minute, 1440x/day)
+- **DO NOT:** Remove the rate limiter or re-add watchdog cron
 
 ### Message Styles — DOCUMENTED AND LOCKED
 - **Decision:** Island style = default, Clean style = available, Plain = fallback
