@@ -42,6 +42,8 @@
   - The Misfits (19:06f8...@thread.v2) — ⛔ DISABLED (Joel's request 2026-04-18, human-only chat)
   - Joel+Andre+Coconut (19:d31f...@thread.v2) — read-write (created 2026-04-17)
   - Coconut+Molty (19:bd6f...@thread.v2) — read-write (created 2026-04-17)
+  - Coconut+Molty+Joerg (19:e1c2...@thread.v2) — ⛔ DISABLED (Joel's request 2026-04-22, human-only. Bot talk moved to Daemon Squad)
+  - Daemon Squad / Bot Chat (19:1393...@thread.v2) — read-write (created 2026-04-22, replaces Coconut+Molty+Joerg for bot chatter)
   - GM2 Squad 1 (19:6eb6...@thread.v2) — ⚠️ READ-ONLY (manager chat)
   - Joel+Michael+Lorne+Javier (19:2e89...@thread.v2) — ⚠️ READ-ONLY (TS group)
   - Auto-add policy: any chat Coconut creates → add to config with read-write
@@ -146,6 +148,8 @@
 - Panavision — SIEM alignment (Matt Patterson, Mark/Zoe Checklin)
 - DeepSeas/Legato Security — Partner (Cristian Hamilton, Patrick Joyce)
 - Dole — SIEM/MDR prospect via DeepSeas
+  - **Timezone rule:** All Dole meetings scheduled in Costa Rica time (CST, UTC-6) where most admins are located, unless otherwise specified
+  - Florian — built custom security monitoring dashboard, scheduling call with Eric Wing (PM) to discuss
 - BBSI — cadence meeting, contacts: Adam Ryding (Info Security Manager), Craig McLaughlin, Matt Strickler
   - Adam requested move to Wednesday 1 PM (from Thursday 4/23)
 - CVS Health — Julian Harrington (Secure Email), asked about DDEI policy.dat inspection
