@@ -18,6 +18,33 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).parent
 results = []
 
+# Rate limiter: skip if called within last 5 minutes
+RATE_LIMIT_FILE = Path.home() / '.openclaw' / 'poll-last-run.json'
+RATE_LIMIT_SECONDS = 300  # 5 minutes
+
+def check_rate_limit():
+    """Return True if we should skip this run (too recent)."""
+    try:
+        with open(RATE_LIMIT_FILE) as f:
+            state = json.load(f)
+        last_run = state.get('last_run', 0)
+        if time.time() - last_run < RATE_LIMIT_SECONDS:
+            return True
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+    return False
+
+def update_rate_limit():
+    """Record current run timestamp."""
+    RATE_LIMIT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(RATE_LIMIT_FILE, 'w') as f:
+        json.dump({'last_run': time.time()}, f)
+
+if check_rate_limit():
+    sys.exit(0)
+
+update_rate_limit()
+
 
 def run_script(name, script_path):
     """Run a poller script and capture output."""
