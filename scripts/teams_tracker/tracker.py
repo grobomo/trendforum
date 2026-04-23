@@ -224,8 +224,20 @@ class TeamsTracker:
         return by_chat
 
     def stale(self, minutes: int = 15) -> list[dict]:
-        """Messages pending longer than threshold."""
-        cutoff = _now_epoch() - (minutes * 60)
+        """Messages pending longer than threshold.
+
+        Auto-expires entries older than 2 hours to prevent stale buildup.
+        """
+        now = _now_epoch()
+        expire_cutoff = now - 7200  # 2 hours
+        expired = [k for k, v in self.data["pending"].items()
+                   if v.get("recorded_at", now) < expire_cutoff]
+        if expired:
+            for k in expired:
+                del self.data["pending"][k]
+            self._save()
+
+        cutoff = now - (minutes * 60)
         return [m for m in self.pending() if m["recorded_at"] < cutoff]
 
     def stats(self) -> dict:

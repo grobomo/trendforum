@@ -1,0 +1,51 @@
+{
+  "backgroundImage": {
+    "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=30"
+  },
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "size": "medium",
+      "text": " ",
+      "type": "TextBlock"
+    },
+    {
+      "items": [
+        {
+          "color": "good",
+          "size": "large",
+          "text": "🌴 Coconut",
+          "weight": "bolder",
+          "wrap": true,
+          "type": "TextBlock"
+        },
+        {
+          "text": "{{CONTENT}}",
+          "wrap": true,
+          "spacing": "Medium",
+          "type": "TextBlock"
+        },
+        {
+          "horizontalAlignment": "right",
+          "isSubtle": true,
+          "size": "small",
+          "text": "_--coconut-bot_ 🌴",
+          "spacing": "Medium",
+          "type": "TextBlock"
+        }
+      ],
+      "style": "emphasis",
+      "type": "Container"
+    },
+    {
+      "size": "medium",
+      "text": " ",
+      "type": "TextBlock"
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "msTeams": {
+    "width": "full"
+  }
+}

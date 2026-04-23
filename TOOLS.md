@@ -134,6 +134,13 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 **Group Policy:** `open` — auto-monitors any channel Coconut is invited to (no manual config needed).
 
+### Teams Message Styles
+- Default style: `island` (Adaptive Card with beach bg + emphasis container)
+- Available: `island`, `clean` (green left border HTML), `plain` (raw HTML)
+- Style templates: `scripts/teams-poller/styles/` with `STYLES.md` documentation
+- `send_direct.py --style <name>` overrides per-message
+- Per-chat config: `"style": "island"` in config.json
+
 ### Teams — How to Send Messages
 
 **The ONLY way to send a Teams message:**

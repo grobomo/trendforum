@@ -103,10 +103,16 @@ def enrich_from_graph(tracker: TeamsTracker, config: dict):
             real = graph_msgs.get(stub["msg_id"])
             if real and real.get("sender_name"):
                 key = f"{stub['chat_id']}:{stub['msg_id']}"
+                text = real.get("text", "")
+                # Auto-mark bot messages as responded (delegated auth shows as Joel)
+                if bot_signature in text:
+                    if key in tracker.data["pending"]:
+                        del tracker.data["pending"][key]
+                    continue
                 if key in tracker.data["pending"]:
                     entry = tracker.data["pending"][key]
                     entry["sender"] = real["sender_name"]
-                    entry["preview"] = (real.get("text", ""))[:120]
+                    entry["preview"] = text[:120]
                     entry["source"] = f"{entry.get('source', 'webhook')}+enriched"
 
     tracker._save()
@@ -129,6 +135,12 @@ def main():
     stale = tracker.stale(minutes=args.minutes)
     if not stale:
         return  # Nothing to do — silent exit
+
+    bot_signature = config.get("bot_signature", "--coconut-bot")
+    # Filter out bot's own messages (delegated auth shows sender as Joel)
+    stale = [m for m in stale if bot_signature not in m.get("preview", "")]
+    if not stale:
+        return
 
     # Group by chat — include ALL monitored chats (skip only disabled)
     rw_chats = {}   # read-write: compose and send replies
