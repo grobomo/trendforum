@@ -145,7 +145,28 @@ except Exception as e:
     # Don't let Trello errors break the whole poll
     pass
 
-# 5. Teams service health (lightweight)
+# 5. Teams gap check (catches what check_inbound misses)
+# Run with --minutes 5 --enriched to catch recent gaps with real content
+try:
+    r = subprocess.run(
+        [sys.executable, str(SCRIPT_DIR / "teams_tracker/check_gaps.py"), "--minutes", "5", "--enriched"],
+        capture_output=True, text=True, timeout=30,
+    )
+    gap_out = r.stdout.strip() if r.stdout else None
+except Exception:
+    gap_out = None
+if gap_out and gap_out.startswith("TEAMS_GAPS_FOUND"):
+    # Only add if we didn't already get Teams output
+    if not teams_out:
+        results.append(("TEAMS", gap_out))
+    else:
+        # Append gap info to existing Teams output
+        for i, (tag, content) in enumerate(results):
+            if tag == "TEAMS":
+                results[i] = ("TEAMS", content + "\n\n" + gap_out)
+                break
+
+# 6. Teams service health (lightweight)
 try:
     r = subprocess.run(
         ["systemctl", "--user", "is-active", "teams-poller"],
