@@ -1,0 +1,10 @@
+*/15 * * * * python3 /home/ubu/.openclaw/workspace/scripts/monitor-and-post.py >> /tmp/monitor-claude.log 2>&1
+*/15 * * * * python3 /home/ubu/.openclaw/workspace/scripts/trello-board-sync.py >> /dev/null 2>&1
+*/5 * * * * curl -sf http://127.0.0.1:18789/v1/health > /dev/null 2>&1 || true
+*/5 * * * * python3 /home/ubu/.openclaw/workspace/scripts/slack-channel-sync.py >> /tmp/slack-channel-sync.log 2>&1
+0 12 * * 0 python3 /home/ubu/.openclaw/workspace/scripts/security-audit.py --force >> /tmp/security-audit.log 2>&1
+0 6 * * * python3 /home/ubu/.openclaw/workspace/scripts/security-audit.py >> /tmp/security-audit.log 2>&1
+0 * * * * bash /home/ubu/.openclaw/workspace/scripts/schedule-briefing/briefing-cron.sh >> /tmp/schedule-briefing.log 2>&1
+*/15 * * * * python3 /home/ubu/.openclaw/workspace/scripts/planner-trello-sync/sync.py --direction down >> /tmp/planner-sync.log 2>&1
+*/45 * * * * cd /home/ubu/.openclaw/workspace && python3 scripts/webhook-server/subscriptions.py renew --url https://nabu-2wd56m3-1.orca-decibel.ts.net/webhooks >> /tmp/webhook-renew.log 2>&1
+*/10 * * * * python3 /home/ubu/.openclaw/workspace/scripts/teams-stale-check.py >> /tmp/teams-stale-check.log 2>&1
