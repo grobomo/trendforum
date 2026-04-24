@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw Token Usage Report</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --orange: #d29922;
+    --purple: #bc8cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+    line-height: 1.5;
+  }
+  h1 { color: var(--accent); margin-bottom: 4px; font-size: 1.8em; }
+  h2 { color: var(--text); margin: 32px 0 12px; font-size: 1.3em; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .meta { color: var(--muted); font-size: 0.9em; margin-bottom: 24px; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card .label { color: var(--muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+  .card .value { font-size: 1.8em; font-weight: 700; margin-top: 4px; }
+  .card .value.cost { color: var(--red); }
+  .card .value.tokens { color: var(--green); }
+  .card .value.sessions { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    font-size: 0.9em;
+  }
+  th {
+    background: var(--border);
+    color: var(--text);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  th.num, td.num { text-align: right; }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tr:hover { background: rgba(88,166,255,0.05); }
+  .mono { font-family: 'SF Mono', 'Cascadia Code', monospace; font-size: 0.85em; }
+  .hour { font-family: 'SF Mono', 'Cascadia Code', monospace; }
+  .cost { color: var(--orange); font-weight: 600; }
+  .bar-cell { width: 200px; padding: 8px 12px; }
+  .bar {
+    height: 14px;
+    border-radius: 3px;
+    min-width: 2px;
+    transition: width 0.3s;
+  }
+  .input-bar { background: linear-gradient(90deg, var(--accent), var(--purple)); }
+  .warn { background: rgba(248,81,73,0.15); border-left: 3px solid var(--red); padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  .warn strong { color: var(--red); }
+  footer { color: var(--muted); font-size: 0.8em; margin-top: 40px; text-align: center; }
+</style>
+</head>
+<body>
+<h1>🌴 OpenClaw Token Usage Report</h1>
+<p class="meta">
+  Generated: 2026-04-24T18:54:35.936461-05:00<br>
+  Window: 48h (since 2026-04-22T18:54:35.936461-05:00)
+</p>
+
+<div class="cards">
+  <div class="card">
+    <div class="label">Total Sessions</div>
+    <div class="value sessions">298</div>
+  </div>
+  <div class="card">
+    <div class="label">Estimated Cost</div>
+    <div class="value cost">$4,175.32</div>
+  </div>
+  <div class="card">
+    <div class="label">Input Tokens</div>
+    <div class="value tokens">934,250,577</div>
+  </div>
+  <div class="card">
+    <div class="label">Output Tokens</div>
+    <div class="value tokens">1,488,197</div>
+  </div>
+  <div class="card">
+    <div class="label">Cache Read Tokens</div>
+    <div class="value" style="color:var(--purple)">199,387,640</div>
+  </div>
+  <div class="card">
+    <div class="label">Avg Cost/Session</div>
+    <div class="value cost">$14.01</div>
+  </div>
+</div>
+
+<div class='warn'><strong>⚠️ High-cost session detected.</strong> Session 27f2b0e7-3c3… accounts for $3,823.09 (92% of total). 42 compactions suggest runaway context accumulation.</div>
+
+<h2>📊 Hourly Breakdown</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Hour (CDT)</th>
+      <th class="num">Input Tokens</th>
+      <th class="num">Output Tokens</th>
+      <th class="num">Cache Read</th>
+      <th class="num">API Calls</th>
+      <th class="num">Sessions</th>
+      <th class="num">Est. Cost</th>
+      <th>Input Volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+        <tr>
+            <td class="hour">2026-04-22 18:00</td>
+            <td class="num">577,065</td>
+            <td class="num">257</td>
+            <td class="num">75,339</td>
+            <td class="num">5</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:4.6%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-22 19:00</td>
+            <td class="num">10,790,931</td>
+            <td class="num">54,282</td>
+            <td class="num">4,904,510</td>
+            <td class="num">241</td>
+            <td class="num">26</td>
+            <td class="num cost">$8.48</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:85.7%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-22 20:00</td>
+            <td class="num">7,896,710</td>
+            <td class="num">24,065</td>
+            <td class="num">2,605,518</td>
+            <td class="num">131</td>
+            <td class="num">10</td>
+            <td class="num cost">$19.23</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:62.7%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-22 21:00</td>
+            <td class="num">5,814,832</td>
+            <td class="num">8,849</td>
+            <td class="num">1,694,383</td>
+            <td class="num">85</td>
+            <td class="num">5</td>
+            <td class="num cost">$1.66</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:46.2%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-22 22:00</td>
+            <td class="num">10,686,332</td>
+            <td class="num">32,253</td>
+            <td class="num">3,407,005</td>
+            <td class="num">179</td>
+            <td class="num">15</td>
+            <td class="num cost">$31.34</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:84.8%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-22 23:00</td>
+            <td class="num">12,596,985</td>
+            <td class="num">33,509</td>
+            <td class="num">3,163,685</td>
+            <td class="num">174</td>
+            <td class="num">9</td>
+            <td class="num cost">$4.94</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:100.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 00:00</td>
+            <td class="num">626,373</td>
+            <td class="num">368</td>
+            <td class="num">126,479</td>
+            <td class="num">7</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:5.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 11:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">71</td>
+            <td class="num">3</td>
+            <td class="num cost">$2.30</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 12:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">176</td>
+            <td class="num">12</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 13:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">125</td>
+            <td class="num">5</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 14:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">55</td>
+            <td class="num">1</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 15:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">43</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 16:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">78</td>
+            <td class="num">5</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 17:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">235</td>
+            <td class="num">17</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 18:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">263</td>
+            <td class="num">21</td>
+            <td class="num cost">$4.63</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 19:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">178</td>
+            <td class="num">21</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 20:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">139</td>
+            <td class="num">1</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 21:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">88</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 22:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">85</td>
+            <td class="num">2</td>
+            <td class="num cost">$279.65</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-23 23:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">27</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 00:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">8</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 01:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">5</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 02:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">5</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 03:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">31</td>
+            <td class="num">5</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 04:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">69</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 05:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">94</td>
+            <td class="num">1</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 06:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">17</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 07:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">15</td>
+            <td class="num">0</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 08:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">24</td>
+            <td class="num">3</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 09:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">148</td>
+            <td class="num">12</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 10:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">174</td>
+            <td class="num">16</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 11:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">155</td>
+            <td class="num">33</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 12:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">177</td>
+            <td class="num">22</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 13:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">45</td>
+            <td class="num">1</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 15:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">110</td>
+            <td class="num">5</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 16:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">127</td>
+            <td class="num">25</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 17:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">194</td>
+            <td class="num">17</td>
+            <td class="num cost">$0.000000</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="hour">2026-04-24 18:00</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num">125</td>
+            <td class="num">5</td>
+            <td class="num cost">$3,823.09</td>
+            <td class="bar-cell">
+                <div class="bar input-bar" style="width:0.0%"></div>
+            </td>
+        </tr>
+  </tbody>
+</table>
+
+<h2>🏆 Top Sessions by Cost</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Session ID</th>
+      <th>Started</th>
+      <th>Model</th>
+      <th>Channel</th>
+      <th class="num">Input Tokens</th>
+      <th class="num">Output Tokens</th>
+      <th class="num">Est. Cost</th>
+      <th class="num">Compactions</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+        <tr>
+            <td class="mono">27f2b0e7-3c3…</td>
+            <td>04/24 18:17</td>
+            <td>claude-4.6-opus</td>
+            <td>slack</td>
+            <td class="num">863,507,094</td>
+            <td class="num">1,315,132</td>
+            <td class="num cost">$3,823.09</td>
+            <td class="num">42</td>
+        </tr>
+        <tr>
+            <td class="mono">c36bc117-9fe…</td>
+            <td>04/23 22:02</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">52,399,471</td>
+            <td class="num">25,309</td>
+            <td class="num cost">$257.23</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">0b3838bc-d89…</td>
+            <td>04/22 22:41</td>
+            <td>claude-4.6-opus</td>
+            <td>slack</td>
+            <td class="num">5,525,361</td>
+            <td class="num">26,815</td>
+            <td class="num cost">$25.31</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">ec1fcea3-dee…</td>
+            <td>04/23 22:01</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">5,082,511</td>
+            <td class="num">30,424</td>
+            <td class="num cost">$22.42</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">191b3290-914…</td>
+            <td>04/22 20:08</td>
+            <td>claude-4.6-opus</td>
+            <td>slack</td>
+            <td class="num">3,320,776</td>
+            <td class="num">21,044</td>
+            <td class="num cost">$17.55</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">4602029c-73c…</td>
+            <td>04/23 18:00</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num cost">$4.63</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">ceba92c3-c0d…</td>
+            <td>04/23 11:28</td>
+            <td>claude-4.6-sonnet</td>
+            <td>unknown</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num cost">$2.30</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">f67cb61d-4a9…</td>
+            <td>04/22 23:19</td>
+            <td>claude-4.6-opus</td>
+            <td>slack</td>
+            <td class="num">123,273</td>
+            <td class="num">1,741</td>
+            <td class="num cost">$1.94</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">f31bc9b4-887…</td>
+            <td>04/22 22:28</td>
+            <td>claude-4.6-opus</td>
+            <td>slack</td>
+            <td class="num">749,122</td>
+            <td class="num">6,830</td>
+            <td class="num cost">$1.53</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">173f2132-05a…</td>
+            <td>04/22 22:10</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">215,640</td>
+            <td class="num">1,951</td>
+            <td class="num cost">$1.26</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">af9f4f03-0d8…</td>
+            <td>04/22 20:30</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">203,313</td>
+            <td class="num">1,449</td>
+            <td class="num cost">$1.13</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">e842753d-97c…</td>
+            <td>04/22 19:40</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">200,957</td>
+            <td class="num">1,297</td>
+            <td class="num cost">$1.11</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">8c65d668-150…</td>
+            <td>04/22 19:00</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">186,215</td>
+            <td class="num">3,559</td>
+            <td class="num cost">$1.11</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">bf555ceb-40d…</td>
+            <td>04/22 23:11</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">196,757</td>
+            <td class="num">1,177</td>
+            <td class="num cost">$1.07</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">9cd062b8-fa1…</td>
+            <td>04/22 22:30</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">173,915</td>
+            <td class="num">1,515</td>
+            <td class="num cost">$1.03</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">351ca641-c07…</td>
+            <td>04/22 23:10</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">172,837</td>
+            <td class="num">2,089</td>
+            <td class="num cost">$1.02</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">2c37f825-bc7…</td>
+            <td>04/22 19:32</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">128,919</td>
+            <td class="num">3,397</td>
+            <td class="num cost">$0.8199</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">ce79e49b-30b…</td>
+            <td>04/22 22:58</td>
+            <td>claude-4.6-opus</td>
+            <td>slack</td>
+            <td class="num">141,687</td>
+            <td class="num">1,826</td>
+            <td class="num cost">$0.7800</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">967ea2c7-855…</td>
+            <td>04/22 23:40</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">138,077</td>
+            <td class="num">1,323</td>
+            <td class="num cost">$0.7536</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">8838b3ab-5bd…</td>
+            <td>04/22 22:41</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">128,184</td>
+            <td class="num">900</td>
+            <td class="num cost">$0.7086</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">ee6a2d7b-444…</td>
+            <td>04/22 19:53</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">116,002</td>
+            <td class="num">1,858</td>
+            <td class="num cost">$0.6867</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">294737e0-cac…</td>
+            <td>04/22 21:48</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">93,238</td>
+            <td class="num">1,926</td>
+            <td class="num cost">$0.6505</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">f7c6a795-cf3…</td>
+            <td>04/22 19:53</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">106,005</td>
+            <td class="num">2,119</td>
+            <td class="num cost">$0.6282</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">89a83ee0-e60…</td>
+            <td>04/22 19:34</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">91,294</td>
+            <td class="num">1,983</td>
+            <td class="num cost">$0.6115</td>
+            <td class="num">0</td>
+        </tr>
+        <tr>
+            <td class="mono">c56e8e37-d33…</td>
+            <td>04/22 19:23</td>
+            <td>claude-4.6-opus</td>
+            <td>unknown</td>
+            <td class="num">104,927</td>
+            <td class="num">1,383</td>
+            <td class="num cost">$0.6044</td>
+            <td class="num">0</td>
+        </tr>
+  </tbody>
+</table>
+
+<h2>🤖 By Model</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th class="num">Sessions</th>
+      <th class="num">Input Tokens</th>
+      <th class="num">Output Tokens</th>
+      <th class="num">Est. Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+        <tr>
+            <td>claude-4.6-opus</td>
+            <td class="num">199</td>
+            <td class="num">933,879,700</td>
+            <td class="num">1,480,585</td>
+            <td class="num cost">$4,173.02</td>
+        </tr>
+        <tr>
+            <td>claude-4.6-sonnet</td>
+            <td class="num">19</td>
+            <td class="num">0</td>
+            <td class="num">0</td>
+            <td class="num cost">$2.30</td>
+        </tr>
+        <tr>
+            <td>unknown</td>
+            <td class="num">80</td>
+            <td class="num">370,877</td>
+            <td class="num">7,612</td>
+            <td class="num cost">$0.000000</td>
+        </tr>
+  </tbody>
+</table>
+
+<h2>📡 By Channel</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Channel</th>
+      <th class="num">Sessions</th>
+      <th class="num">Input Tokens</th>
+      <th class="num">Output Tokens</th>
+      <th class="num">Est. Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+        <tr>
+            <td>slack</td>
+            <td class="num">23</td>
+            <td class="num">873,367,313</td>
+            <td class="num">1,373,388</td>
+            <td class="num cost">$3,870.19</td>
+        </tr>
+        <tr>
+            <td>unknown</td>
+            <td class="num">275</td>
+            <td class="num">60,883,264</td>
+            <td class="num">114,809</td>
+            <td class="num cost">$305.13</td>
+        </tr>
+  </tbody>
+</table>
+
+<footer>
+  Generated by OpenClaw Token Usage Report skill &middot; Data from sessions.json + session transcripts
+</footer>
+</body>
+</html>
