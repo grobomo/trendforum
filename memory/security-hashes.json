@@ -4,5 +4,10 @@
   "coconut-guardrails/package.json": "6003aaa58536395c",
   "hook-runner-gates/index.ts": "43357dd091a3c974",
   "hook-runner-gates/openclaw.plugin.json": "45662d69c04891a6",
-  "hook-runner-gates/package.json": "38a10b9687e244e8"
+  "hook-runner-gates/package.json": "38a10b9687e244e8",
+  "mfa-skill-guard/config.example.json": "876fae360f2ee85a",
+  "mfa-skill-guard/index.ts": "2d2b6c44a7f46cde",
+  "mfa-skill-guard/openclaw.plugin.json": "a5a94eb7c735dab4",
+  "mfa-skill-guard/package.json": "1fab66931959ae0f",
+  "mfa-skill-guard/test.ts": "8cbbab58cc408a25"
 }

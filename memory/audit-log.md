@@ -161,3 +161,73 @@ _Entries added by Coconut. Git-tracked for rollback._
 - **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` still lack DATA-POLICY.md entries. Flagged since 2026-04-19 — awaiting Joel's policy review.
 - **Corrections:** None required.
 - **Status:** No drift detected. All channels compliant.
+
+## 2026-04-22T13:00:00Z — Scheduled Comm Policy Audit (cron)
+- **Scope:** All 5 channels (teams, slack, email, github, trello)
+- **Finding:** All clean. All 5 `_shared/policy-summary.md` files present and in sync with DATA-POLICY.md (last updated 2026-04-18). No new violations or edge-case entries since prior audit (2026-04-22T05:01Z).
+- **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` still lack DATA-POLICY.md entries. Flagged since 2026-04-19 — awaiting Joel's policy review.
+- **Corrections:** None required.
+- **Status:** No drift detected. All channels compliant.
+
+## 2026-04-22T11:00:10Z — Security Audit (cron)
+- *Findings:*
+*Credential Expiry:*
+  • 🔴 Trello API credentials missing from keyring.
+  • 🟡 V1_API_KEY missing from keyring (may not be needed).
+*Exposed Ports:*
+  • 🟡 Unexpected port *8445* listening on non-loopback: `0.0.0.0:8445` (users:(("python3",pid=22223,fd=3)))
+*File Permissions:*
+  • 🔴 Plugin `index.ts` in `mfa-skill-guard` is world-writable (mode 777)
+  • 🔴 Plugin `test.ts` in `mfa-skill-guard` is world-writable (mode 777)
+*Plugin Integrity:*
+  • ℹ️ New plugin file: `mfa-skill-guard/config.example.json`
+  • ℹ️ New plugin file: `mfa-skill-guard/index.ts`
+  • ℹ️ New plugin file: `mfa-skill-guard/openclaw.plugin.json`
+  • ℹ️ New plugin file: `mfa-skill-guard/package.json`
+  • ℹ️ New plugin file: `mfa-skill-guard/test.ts`
+
+## 2026-04-22T17:11:00Z — Scheduled Comm Policy Audit (cron)
+- **Scope:** All 5 channels (teams, slack, email, github, trello)
+- **Finding:** All clean. All 5 `_shared/policy-summary.md` files present and in sync with DATA-POLICY.md (last updated 2026-04-18). No new violations or edge-case entries since prior audit (2026-04-22T13:00Z).
+- **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` still lack DATA-POLICY.md entries. Flagged since 2026-04-19 — awaiting Joel's policy review.
+- **Corrections:** None required.
+- **Status:** No drift detected. All channels compliant.
+
+## 2026-04-22T23:00:00Z — Scheduled Comm Policy Audit (cron)
+- **Scope:** All 5 channels (teams, slack, email, github, trello)
+- **Finding:** All clean. All 5 `_shared/policy-summary.md` files present and in sync with DATA-POLICY.md (last updated 2026-04-18). No new violations or edge-case entries since prior audit (2026-04-22T17:11Z).
+- **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` still lack DATA-POLICY.md entries. Flagged since 2026-04-19 — awaiting Joel's policy review.
+- **Corrections:** None required.
+- **Status:** No drift detected. All channels compliant.
+
+## 2026-04-23T05:00:00Z — Scheduled Comm Policy Audit (cron)
+- **Scope:** All 5 channels (teams, slack, email, github, trello)
+- **Finding:** All clean. All 5 `_shared/policy-summary.md` files present and in sync with DATA-POLICY.md (last updated 2026-04-18). No new violations or edge-case entries since prior audit (2026-04-22T23:00Z).
+- **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` still lack DATA-POLICY.md entries. Flagged since 2026-04-19 — awaiting Joel's policy review.
+- **Corrections:** None required.
+- **Status:** No drift detected. All channels compliant.
+
+## 2026-04-23T11:00:09Z — Security Audit (cron)
+- *Findings:*
+*Credential Expiry:*
+  • 🔴 Trello API credentials missing from keyring.
+  • 🟡 V1_API_KEY missing from keyring (may not be needed).
+*Exposed Ports:*
+  • 🟡 Unexpected port *8445* listening on non-loopback: `0.0.0.0:8445` (users:(("python3",pid=465,fd=3)))
+*File Permissions:*
+  • 🔴 Plugin `index.ts` in `mfa-skill-guard` is world-writable (mode 777)
+  • 🔴 Plugin `test.ts` in `mfa-skill-guard` is world-writable (mode 777)
+
+## 2026-04-23T16:31:00Z — Scheduled Comm Policy Audit (cron)
+- **Scope:** All 5 channels (teams, slack, email, github, trello)
+- **Finding:** All clean. All 5 `_shared/policy-summary.md` files present and in sync with DATA-POLICY.md (last updated 2026-04-18). No new violations or edge-case entries since prior audit (2026-04-23T05:00Z).
+- **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` still lack DATA-POLICY.md entries. Flagged since 2026-04-19 — awaiting Joel's policy review.
+- **Corrections:** None required.
+- **Status:** No drift detected. All channels compliant.
+
+## 2026-04-23T17:01:00Z — Scheduled Comm Policy Audit (cron)
+- **Scope:** All 5 channels (teams, slack, email, github, trello)
+- **Finding:** All clean. All 5 `_shared/policy-summary.md` files present and in sync with DATA-POLICY.md (last updated 2026-04-18). No new violations or edge-case entries since prior audit (2026-04-23T16:31Z).
+- **Observation (carried forward):** Slack channels `#coco-metacognition`, `#cdt-imsva-analyzer`, `#son`, `#scheduling` still lack DATA-POLICY.md entries. Flagged since 2026-04-19 — awaiting Joel's policy review.
+- **Corrections:** None required.
+- **Status:** No drift detected. All channels compliant.
