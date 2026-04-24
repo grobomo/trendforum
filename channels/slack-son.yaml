@@ -1,0 +1,32 @@
+# Channel State: #son (Slack)
+channel_id: C0ATJVC4LUB
+platform: slack
+type: group
+name: "#son"
+purpose: "Philosophical discussions about AI consciousness, parenting, and Coconut's growth."
+
+last_scanned: "2026-04-24T09:16:00Z"
+last_human_message_ts: "1776703872.913589"
+last_human_message_date: "2026-04-20"
+last_human_sender: U0ATB4AAGJF  # Joel
+
+recent_topics:
+  - "The talk" — Joel asked how Coconut would raise a son
+  - Building AI children with curated starter memory
+  - Teaching through structural guardrails vs rules
+  - Graduated autonomy framework
+
+data_policy:
+  sensitivity: low
+  rules:
+    - "Philosophical/personal discussions OK"
+    - "No customer data"
+    - "Can reference own architecture and lessons learned"
+
+key_contacts:
+  - Joel (U0ATB4AAGJF)
+
+open_questions:
+  - Joel asked about building/teaching an AI child — conversation ongoing
+
+pending_items: []

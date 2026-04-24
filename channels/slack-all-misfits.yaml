@@ -1,0 +1,35 @@
+# Channel State: #all-misfits (Slack)
+channel_id: C0ATFDQRGRL
+platform: slack
+type: group
+name: "#all-misfits"
+purpose: "Customer/business chat. Account updates, email triages, meeting invites, partner intel."
+
+last_scanned: "2026-04-24T09:16:00Z"
+last_human_message_ts: "1776626050.821329"
+last_human_message_date: "2026-04-19"
+last_human_sender: U0ATB4AAGJF  # Joel
+
+recent_topics:
+  - Customer PII leak incident (EP data in wrong channel) — resolved with DATA-POLICY.md
+  - Hook module architecture for DLP enforcement
+
+data_policy:
+  sensitivity: high
+  rules:
+    - "NEVER share specific customer account counts, IP addresses, or technical infrastructure details"
+    - "Use codenames or abbreviated references (e.g., 'EP AWS issue' not 'EP has 46 disconnected AWS accounts')"
+    - "Customer contact names OK in context of meetings/tasks, NOT with technical vulnerability details"
+    - "No case numbers paired with customer-identifying technical details"
+  enforced_by: "customer-data-gate hook module in hook-runner-gates plugin"
+  incident_history:
+    - date: "2026-04-19"
+      what: "Posted EP's 46 AWS account count and Dan Toresi contact in channel"
+      fix: "Created DATA-POLICY.md, customer-data-gate hook module"
+
+key_contacts:
+  - Joel (U0ATB4AAGJF) — primary
+  # Chrissa and Justin not yet in Slack
+
+open_questions: []
+pending_items: []

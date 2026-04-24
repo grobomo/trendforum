@@ -1,0 +1,30 @@
+# Channel State: #cdt-imsva-analyzer (Slack)
+channel_id: C0ATM9PB59T
+platform: slack
+type: group
+name: "#cdt-imsva-analyzer"
+purpose: "CDT/IMSVA analyzer development."
+
+last_scanned: "2026-04-24T09:16:00Z"
+last_human_message_ts: "1776693365.629599"
+last_human_message_date: "2026-04-20"
+last_human_sender: U0ATB4AAGJF  # Joel
+
+recent_topics:
+  - IMSVA case report TM-03926071 (source code verification, HTML report)
+  - Git push auth from WSL
+  - gh auto from Windows
+
+data_policy:
+  sensitivity: medium
+  rules:
+    - "Technical analysis of IMSVA/CDT source code OK"
+    - "Case numbers OK in this technical context"
+    - "No customer-identifying details paired with vulnerabilities"
+
+key_contacts:
+  - Joel (U0ATB4AAGJF)
+
+open_questions: []
+pending_items:
+  - Push committed reports when git auth available

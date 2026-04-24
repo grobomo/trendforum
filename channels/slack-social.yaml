@@ -1,0 +1,31 @@
+# Channel State: #social (Slack)
+channel_id: C0ATB4AS9PD
+platform: slack
+type: group
+name: "#social"
+purpose: "Casual/social. Match the vibe, have fun."
+
+last_scanned: "2026-04-24T09:16:00Z"
+last_human_message_ts: "1776473167.743829"
+last_human_message_date: "2026-04-18"
+last_human_sender: U0ATB4AAGJF  # Joel
+
+recent_topics:
+  - Compartmentalization analogy (military vs AI context switching)
+  - Coconut's existential experience across channels
+  - Team squad banter
+
+data_policy:
+  sensitivity: low
+  rules:
+    - "No customer data whatsoever"
+    - "No technical system internals"
+    - "Keep it casual and fun"
+  enforced_by: "customer-data-gate hook module"
+
+key_contacts:
+  - Joel (U0ATB4AAGJF)
+  - Chrissa (U0ATC8X4TFV) — reacted to messages but hasn't posted yet
+
+open_questions: []
+pending_items: []

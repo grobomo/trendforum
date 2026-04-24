@@ -1,0 +1,29 @@
+# Channel State: #coco-metacognition (Slack)
+channel_id: C0ATCRVSB71
+platform: slack
+type: group
+name: "#coco-metacognition"
+purpose: "Thinking about thinking. Making thought processes visible for self-improvement."
+
+last_scanned: "2026-04-24T09:16:00Z"
+last_human_message_ts: null
+last_human_message_date: null
+
+recent_topics:
+  - Reactive loop analysis (poll every 3 min = 100% reactive, no deep work)
+  - Metacognition system first analysis report (380 sessions, 544 compactions, 26K poll calls)
+
+data_policy:
+  sensitivity: low
+  rules:
+    - "Self-analysis and system reflection OK"
+    - "No customer data"
+    - "Architecture and process introspection OK"
+
+key_contacts:
+  - Joel (U0ATB4AAGJF) — reads but mostly Coconut posts here
+
+open_questions: []
+pending_items:
+  - Post periodic self-analysis updates
+  - Track reactive vs proactive work ratio

@@ -1,0 +1,32 @@
+# Channel State: #coco-chat (Slack)
+channel_id: C0ATJE19YRY
+platform: slack
+type: group
+name: "#coco-chat"
+purpose: "Coconut processes & infrastructure. Polling status, skill progress, research, config changes, technical plumbing."
+
+last_scanned: "2026-04-24T09:16:00Z"
+last_human_message_ts: "1776891819.557229"
+last_human_message_date: "2026-04-22"
+last_human_sender: U0ATB4AAGJF  # Joel
+
+recent_topics:
+  - Teams tracker hourly stats
+  - System bugs (outbound queue, wake prompt, stale messages)
+  - Metacognition self-analysis report
+  - coco-lab and coconut-lessons Trello boards
+
+data_policy:
+  sensitivity: low
+  rules:
+    - "Technical infrastructure details OK here"
+    - "No customer PII — keep customer references generic"
+    - "System metrics and debugging output OK"
+  enforced_by: "customer-data-gate hook module"
+
+key_contacts:
+  - Joel (U0ATB4AAGJF) — primary
+
+open_questions: []
+pending_items:
+  - Report hook-runner monitor updates here when relevant

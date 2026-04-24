@@ -1,0 +1,37 @@
+# Channel State: Joel DM (Slack)
+channel_id: D0ATWPM4DTK
+platform: slack
+type: dm
+name: "Joel DM"
+purpose: "Private comms with Joel. Urgent flags, private info, things not for the squad."
+
+last_scanned: "2026-04-24T09:16:00Z"
+last_human_message_ts: "1777021931.879779"
+last_human_message_date: "2026-04-24"
+last_human_sender: U0ATB4AAGJF  # Joel
+
+recent_topics:
+  - Per-channel conversation state tracking & data policy files (Joel's request)
+  - Trello sync alternatives (Joel chose #3 — post-commit hook)
+  - Bias-to-action hook module (Joel: "don't ask just do")
+  - Blueprint MCP / Trender service for GH Actions
+
+data_policy:
+  sensitivity: private
+  rules:
+    - "This is Joel's private channel — full context OK"
+    - "MEMORY.md content can be discussed here"
+    - "Customer details OK in private context"
+    - "Do NOT share content from here to squad channels without Joel's permission"
+
+key_contacts:
+  - Joel (U0ATB4AAGJF) — only
+
+open_questions:
+  - Joel wants per-channel state files (this work, in progress)
+  - Trender service request for GH Actions (blocked on Joel submitting)
+
+pending_items:
+  - Build channel state YAML files (IN PROGRESS)
+  - Test post-commit hook with real commit
+  - Blueprint → Trender to submit GH Actions ticket
