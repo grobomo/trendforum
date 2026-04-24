@@ -204,12 +204,13 @@ class WebhookHandler(BaseHTTPRequestHandler):
                      resource, change_type, subscription_id[:12])
 
             # Determine resource type and wake OpenClaw
-            if "chats" in resource and "messages" in resource:
-                # Extract chat_id and msg_id for response tracking
+            resource_lower = resource.lower()
+            if "chats" in resource_lower and "messages" in resource_lower:
+                # Teams chat messages
                 _record_pending(resource, change_type)
                 wake_openclaw("teams")
-            elif "messages" in resource and "chats" not in resource:
-                # Mail messages
+            elif "messages" in resource_lower and "chats" not in resource_lower:
+                # Mail messages (Users/.../Messages/... or mailFolders/.../messages)
                 wake_openclaw("email")
             else:
                 log.info("Unknown resource type: %s", resource)
