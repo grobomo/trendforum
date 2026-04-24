@@ -47,6 +47,7 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
   - `69e81731fc65aa3403256ac3` = Chrissa Next Steps
   - `69e19cce3a6e1e41e5c910e6` = Chrissa Todo
   - `69e51fe0ad60dd711d6e9fcc` = Testing
+  - `69ebe51d36d2269f7c93de8c` = Claude Code Tabs
   - `6954d3af836b51597afff8f1` = Done
 - API creds in Linux keyring: `openclaw/TRELLO_API_KEY`, `openclaw/TRELLO_TOKEN`
 - Mark cards `dueComplete: true` → Trello automation moves to Done list

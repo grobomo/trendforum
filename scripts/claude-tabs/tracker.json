@@ -1,0 +1,23 @@
+{
+  "tabs": [
+    {
+      "id": "tab-1777062000",
+      "project": "/home/ubu/openclaw-dm",
+      "project_name": "openclaw-dm",
+      "task": "Build Teams comms preprocessor",
+      "task_id": "T-comms-preproc",
+      "prompt": "Build classify.py, teams_preprocessor.py, teams-response-gate.js",
+      "pid": null,
+      "trello_card_id": "69ebe74a96f48a3b4c47043f",
+      "status": "completed",
+      "launched_at": "2026-04-24T20:33:00+00:00",
+      "last_checkin": null,
+      "checkins": [],
+      "context_resets": 2,
+      "completed_at": "2026-04-24T21:57:32.236475+00:00",
+      "summary": "All 3 components built + smoke-tested. classify.py, teams_preprocessor.py, teams-response-gate.js. enabled=false."
+    }
+  ],
+  "trello_list_id": "69ebe51d36d2269f7c93de8c",
+  "trello_board_id": "6954d3af836b51597afff8f2"
+}

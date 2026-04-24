@@ -23,22 +23,26 @@
 
 ## Schedule Briefing (hourly)
 - Data gathered hourly by cron → `/tmp/schedule-briefing-latest.json`
-- Sources: Trello todo board, Trello company boards, all emails, all Teams chats, Outlook calendar
+- Sources: Trello todo board, Trello company boards, all emails, Outlook calendar
 - On heartbeat: read `/tmp/schedule-briefing-latest.json`, synthesize and post to `#scheduling` (C0ATK8YJQD9)
 - Format: Today & tomorrow detail (times, attendees, prep notes, cross-referenced with Trello/email tasks). High-level rest-of-week + next-week summary.
-- Cross-reference: match calendar meetings with Trello cards, pending emails, and Teams threads for that customer
+- Cross-reference: match calendar meetings with Trello cards, pending emails for that customer
 - Only post if data has changed since last briefing (check `/tmp/schedule-briefing-last-posted.txt` timestamp)
 - Script: `scripts/schedule-briefing/gather.py`
 
-## Teams Response Queue — MANDATORY CHECK
-- Run: `python3 scripts/teams_tracker/check_gaps.py --minutes 10 --enriched`
-- If output starts with `TEAMS_GAPS_FOUND`:
-  1. Read the structured output — it lists chats, senders, and message previews
-  2. For each read-write chat with gaps: compose a contextual reply and send via `queue_reply.py`
-  3. After sending, mark responded: `python3 scripts/teams_tracker/tracker.py respond --chat-id <id>`
-  4. For read-only chats flagged separately, notify Joel via Slack DM
-- If no output (empty), move on — no gaps
-- *This is the gap that caused the "unanswered for hours" problem. Never let it slide.*
+## Teams Monitoring — SUSPENDED
+- *Paused by Joel (2026-04-24).* Do NOT poll, respond to, or check Teams until a proper value-add approach is designed.
+- When re-enabling: must add value, not noise. Design the approach first, get Joel's approval, then turn it back on.
+
+## Claude Code Tab Monitor (every 15 min)
+- Run: `python3 /home/ubu/.openclaw/workspace/scripts/claude-tabs/manage.py monitor`
+- If output starts with `CLAUDE_TAB_ISSUES`: investigate each issue
+  - 🔴 DEAD: process gone. Check transcript for errors/completion. If work done, run `verify` then `close`.
+  - 🟡 STALE: no transcript activity. Process may be stuck. Check logs.
+  - ⚠️ NO CHECKIN: Claude Code hasn't reported in. Check if stop hook is firing.
+- Also run `python3 /home/ubu/.openclaw/workspace/scripts/claude-tabs/manage.py status` for dashboard view
+- When a tab's work is verified complete: `manage.py close --tab-id <id> --summary "what was built"`
+- Closing updates the Trello card in "Claude Code Tabs" list
 
 ## Trello Board Review — MANDATORY WORK
 - Check Coconut Todo list for new/updated cards
