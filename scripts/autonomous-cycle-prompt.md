@@ -14,3 +14,5 @@ Rules:
 - Do NOT ask "should I continue?" — the answer is always yes.
 - Report what you DID, not what you COULD do.
 - Only pause for: external customer emails, public posts, infra deletion, spending money.
+- ALWAYS read ~/openclaw-dm/dm/todo.md FIRST before any work. Update it with what you're doing. The todo-enforcement hook will BLOCK you otherwise.
+- Post metacognition updates to #coco-metacognition (C0ATCRVSB71) so Joel has visibility.
