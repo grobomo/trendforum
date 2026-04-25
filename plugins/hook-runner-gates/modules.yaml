@@ -18,6 +18,7 @@ modules:
     no-unnecessary-sleep: true
     claude-p-pattern: true
     todo-enforcement: true
+    task-tracking-gate: true
   after_tool_call:
     commit-msg-check: true
     crlf-detector: true
