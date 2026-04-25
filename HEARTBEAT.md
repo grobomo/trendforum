@@ -24,18 +24,25 @@ This is your work loop. The cron fires every 15 min as a system event. When it f
 - 🟡 STALE: investigate stuck process
 - ⚠️ NO CHECKIN: check stop hook
 
-### 4. Metacognition (brief)
-- Quick self-review: 2-3 sentences max
-- Am I repeating mistakes? Violating lessons?
-- Append to `memory/metacognition/YYYY-MM-DD.md`
-- Post to #coco-metacognition (C0ATCRVSB71) ONLY if catching a real mistake
+### 4. Session Health
+- Run: `python3 /home/ubu/.openclaw/workspace/scripts/session-health/monitor.py`
+- Auto-resets main session if >15MB or >15 compactions
+- Auto-cleans orphaned tmp/checkpoint/deleted files
+- Auto-prunes stale sessions.json entries
+- If status is CRITICAL or RESET: note what happened in metacognition log
 
-### 5. Schedule Briefing (hourly)
+### 5. Self-Audit + Metacognition
+- Run: `python3 /home/ubu/openclaw-dm/scripts/metacognition/self-audit.py`
+- If FAILURES: investigate and fix immediately. Post to #coco-metacognition (C0ATCRVSB71)
+- Quick self-review: 2-3 sentences max — am I repeating mistakes? Violating lessons?
+- Append to `memory/metacognition/YYYY-MM-DD.md`
+
+### 6. Schedule Briefing (hourly)
 - Data source: `/tmp/schedule-briefing-latest.json` (gathered by cron)
 - If fresh + unposted: synthesize and post to #scheduling (C0ATK8YJQD9)
 - Check `/tmp/schedule-briefing-last-posted.txt` to avoid dupes
 
-### 6. Continue
+### 7. Continue
 - If time remains, work on the next Trello card
 - Never idle while cards exist
 - Report what you DID, not what you COULD do
