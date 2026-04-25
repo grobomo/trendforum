@@ -101,6 +101,33 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - Source of truth: local `memory/channels/*.md` files
 - Trello is the human-facing visibility mirror, updated when possible
 
+### Dynamics 365 CRM (Case Lookup)
+- URL: `https://trendmicro.crm.dynamics.com`
+- Auth: Joel's MS Entra SSO → MFA required via Authenticator app
+- App: Customer Service Workspace (PowerApps-based)
+- After login, Dynamics may show "Sign in to continue" popup — click "Sign in" button to proceed
+- Known quirk: MFA approval sometimes doesn't stick on first try; may need 2-3 attempts
+- Case search: use Global Search bar at top, search by case number (e.g. `TM-03953649`)
+- PCT/Jira linked cases: look for "Associated SEG or PCT Case" tab in case view
+
+### MFA Flow (Dynamics / MS Login)
+**Goal:** Get Joel's MFA approval code from the browser login screen and relay it to Slack.
+
+**Steps:**
+1. Navigate Blueprint browser to target URL (e.g. `trendmicro.crm.dynamics.com`)
+2. MS redirects to `login.microsoftonline.com` → MFA prompt renders
+3. Take screenshot: `browser_take_screenshot`
+4. **Use Haiku** (`model: trendmicro-aiendpoint/claude-4.5-haiku`) to read the 2-digit code from screenshot — fast + cheap
+5. Post code to Joel's Slack DM immediately
+6. Joel approves on Authenticator app
+7. Wait 5-8 seconds, screenshot again to confirm auth succeeded
+8. If stuck on "Please sign in again" or "Sign in to continue" → close tab, open fresh one, retry
+
+**Key rules:**
+- ALWAYS use Haiku for screenshot → code extraction (Joel's request — Opus is too slow for this)
+- Be fast — MFA prompts expire. Don't waste time on DOM snapshots; go straight to screenshot → Haiku → Slack
+- Copy screenshots to workspace dir before sending to `image` tool (tmp paths not allowed)
+
 ### Blueprint MCP (Browser Automation)
 - MCP server: `blueprint-extra` in mcp-manager
 - Connects to Chrome extension in Joel's Windows Chrome (Profile 3)
