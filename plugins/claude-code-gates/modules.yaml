@@ -1,0 +1,36 @@
+modules:
+  before_tool_call:
+    force-push-gate: true
+    secret-scan-gate: true
+    commit-quality-gate: true
+    git-destructive-guard: true
+    archive-not-delete: true
+    git-rebase-safety: true
+    no-hardcoded-paths: true
+    victory-declaration-gate: true
+    root-cause-gate: true
+    no-fragile-heuristics: true
+    no-focus-steal: true
+    crlf-ssh-key-check: true
+    unresolved-issues-gate: true
+    no-nested-claude: true
+    disk-space-guard: true
+    no-unnecessary-sleep: true
+    claude-p-pattern: true
+    todo-enforcement: true
+    task-tracking-gate: true
+    teams-access-guard: true
+  after_tool_call:
+    audit-logger: true
+    commit-msg-check: true
+    crlf-detector: true
+    test-coverage-check: true
+    result-review-gate: true
+    rule-hygiene: true
+    empty-output-detector: true
+    disk-space-detect: true
+    troubleshoot-detector: true
+  before_agent_reply:
+    auto-continue: true
+  session_start:
+    session-start-reminder: true
