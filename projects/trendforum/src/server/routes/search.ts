@@ -13,7 +13,6 @@ router.get('/search', async (req, res) => {
 
   const pageNum = parseInt(page as string, 10) || 1;
   const perPage = 25;
-  const term = `%${q.trim()}%`;
 
   const posts = await prisma.post.findMany({
     where: {
