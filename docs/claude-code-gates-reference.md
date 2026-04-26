@@ -4,10 +4,10 @@
 
 ### Architecture
 
-The hook-runner-gates plugin is a **modular, file-based gate system**. Each gate is a single `.js` file (CommonJS) that receives tool call context and returns `null` (allow) or `{ decision: "block", reason: "..." }`.
+The claude-code-gates plugin is a **modular, file-based gate system**. Each gate is a single `.js` file (CommonJS) that receives tool call context and returns `null` (allow) or `{ decision: "block", reason: "..." }`.
 
 ```
-~/.openclaw/extensions/hook-runner-gates/
+~/.openclaw/extensions/claude-code-gates/
 ├── index.ts              ← Plugin entry, loads modules dynamically
 ├── modules.yaml          ← Enable/disable toggles per module
 ├── modules/
@@ -46,11 +46,11 @@ modules/before_tool_call/<projectname>/*.js
 
 Only loaded when `basename(CLAUDE_PROJECT_DIR || cwd) === <projectname>`. This means Claude Code sessions working on project `openclaw` will load gates from `modules/before_tool_call/openclaw/` in addition to global gates.
 
-### Key Differences: hook-runner-gates vs coconut-guardrails
+### Key Differences: claude-code-gates vs coconut-guardrails
 
 The split is about *who is being governed*, not gate complexity:
 
-| Aspect | hook-runner-gates | coconut-guardrails |
+| Aspect | claude-code-gates | coconut-guardrails |
 |--------|------------------|-------------------|
 | **Governs** | Claude Code sessions (Windows terminal tabs) | OpenClaw/Coconut (agent sessions) |
 | **Purpose** | Behavioral enforcement for Claude Code | Behavioral enforcement for Coconut |
@@ -63,7 +63,7 @@ Both use the same hook-runner module system and the same contract (return `null`
 
 ### When to Add a Gate (Self-Reference)
 
-Add to **hook-runner-gates** when:
+Add to **claude-code-gates** when:
 1. Claude Code needs a behavioral constraint ("never do X in this project")
 2. A pattern repeats across Claude Code sessions
 3. Project-scoped rules needed (scope to project subdirectory)
