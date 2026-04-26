@@ -6,7 +6,7 @@ import { generateDisplayName } from '../auth.js';
 const router = Router();
 
 router.post('/posts/:id/comments', requireAuth, async (req, res) => {
-  const postId = parseInt(req.params.id, 10);
+  const postId = parseInt(req.params.id as string, 10);
   const { body, parentId } = req.body;
 
   if (!body) {
