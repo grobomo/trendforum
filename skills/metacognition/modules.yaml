@@ -50,3 +50,10 @@ modules:
     config:
       default_probation_hours: "72"
       max_block_rate: "0.15"
+
+  trello-bridge:
+    enabled: true
+    tier: quick
+    description: Create Trello cards from actionable metacognition findings so Opus trello-work cron follows up
+    config:
+      target_list: "6954d3af836b51597afff8e9"  # Coconut Todo
