@@ -1,0 +1,39 @@
+discovered:
+- manifest_path: /home/ubu/.openclaw/extensions/openclaw-gates/metacognition/metacog.yaml
+  metacog_dir: /home/ubu/.openclaw/extensions/openclaw-gates/metacognition
+  project_name: openclaw-gates
+  project_dir: /home/ubu/.openclaw/extensions/openclaw-gates
+  found_at: '2026-04-26T07:03:58.812045+00:00'
+  manifest_hash: sha256:07e1db96fbe0a33f
+  dir_hash: sha256:6d0dffe786566257
+- manifest_path: /home/ubu/.openclaw/workspace/plugins/openclaw-gates/metacognition/metacog.yaml
+  metacog_dir: /home/ubu/.openclaw/workspace/plugins/openclaw-gates/metacognition
+  project_name: openclaw-gates
+  project_dir: /home/ubu/.openclaw/workspace/plugins/openclaw-gates
+  found_at: '2026-04-26T07:03:58.812045+00:00'
+  manifest_hash: sha256:07e1db96fbe0a33f
+  dir_hash: sha256:68c570bddebbcc47
+modules:
+  openclaw-gates/gate-health:
+    id: openclaw-gates/gate-health
+    project: openclaw-gates
+    name: gate-health
+    description: Verify all enabled gates are loading and firing correctly
+    tier: quick
+    script_path: /home/ubu/.openclaw/extensions/openclaw-gates/metacognition/gate-health.py
+    script_hash: null
+    status: monitoring
+    discovered_at: '2026-04-26T07:03:58.812045+00:00'
+    monitoring_started: '2026-04-26T07:03:58.812045+00:00'
+    monitoring_hours_required: 24
+    monitoring_runs: 0
+    monitoring_findings: []
+    static_analysis:
+      safe: false
+      suspicious_count: 1
+      suspicious:
+      - File does not exist
+      lines: 0
+      size: 0
+    approved_at: null
+    approved_by: null

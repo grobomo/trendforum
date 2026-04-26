@@ -21,6 +21,7 @@ SKILL_DIR = Path(__file__).resolve().parent.parent
 MODULES_YAML = SKILL_DIR / "modules.yaml"
 MODULES_DIR = Path(__file__).resolve().parent / "modules"
 OUTPUT_DIR = Path.home() / ".openclaw/workspace/memory/metacognition"
+DISCOVERY_SCRIPT = Path(__file__).resolve().parent / "discovery.py"
 
 
 def load_modules() -> dict:
@@ -33,9 +34,28 @@ def load_modules() -> dict:
     return data.get("modules", {})
 
 
+def load_discovered_modules() -> list:
+    """Load approved project-contributed modules from discovery registry."""
+    if not DISCOVERY_SCRIPT.exists():
+        return []
+    try:
+        # Import the get_approved_modules function
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("discovery", str(DISCOVERY_SCRIPT))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod.get_approved_modules()
+    except Exception:
+        return []
+
+
 def run_module(name: str, module_config: dict) -> int:
     """Run a single module. Returns exit code."""
-    script = MODULES_DIR / f"{name}.py"
+    # Check if this is a project-contributed module with explicit script path
+    if module_config.get("_project_module") and module_config.get("_script_path"):
+        script = Path(module_config["_script_path"])
+    else:
+        script = MODULES_DIR / f"{name}.py"
     if not script.exists():
         print(f"  ⚠️  Script not found: {script}")
         return 2
@@ -87,6 +107,19 @@ def main():
             desc = cfg.get("description", "")[:40]
             print(f"{name:<25} {tier:<8} {enabled:<9} {desc}")
         return
+
+    # Merge in discovered project modules
+    discovered = load_discovered_modules()
+    for dm in discovered:
+        dm_name = dm["id"]  # e.g. "openclaw-gates/change-control"
+        if dm_name not in modules:
+            modules[dm_name] = {
+                "enabled": True,
+                "tier": dm.get("tier", "deep"),
+                "description": dm.get("description", f"[project: {dm['project']}]"),
+                "_project_module": True,
+                "_script_path": dm["script_path"],
+            }
 
     if args.module:
         # Run single module regardless of tier/enabled

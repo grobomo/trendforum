@@ -1,0 +1,8 @@
+# Metacognition modules contributed by openclaw-gates plugin
+# These checks verify gate health, deployment compliance, and coverage
+
+modules:
+  gate-health:
+    tier: quick
+    description: Verify all enabled gates are loading and firing correctly
+    script: gate-health.py

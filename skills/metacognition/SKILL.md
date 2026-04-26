@@ -177,12 +177,80 @@ Per lesson 002 (`memory/lessons/002-managed-vs-plugin-hooks.md`):
 - Plugin SDK hooks support `before_tool_call` with blocking
 - Enforcement MUST use Plugin SDK hooks
 
-## Adding a New Module
+## Adding a Core Module
 
 1. Create `{baseDir}/scripts/modules/<name>.py` following the module contract
 2. Add entry to `modules.yaml` with `enabled`, `tier`, and `description`
 3. Test: `python3 {baseDir}/scripts/metacog-runner.py --module <name> --dry-run`
 4. Enable in production by setting `enabled: true`
+
+## Project-Contributed Modules (Discovery)
+
+Any extension, skill, or project can contribute metacognition modules by adding
+a `metacognition/` folder with a `metacog.yaml` manifest — like `robots.txt` for
+self-awareness.
+
+### Convention
+
+```
+my-extension/
+├── metacognition/
+│   ├── metacog.yaml         # Manifest declaring modules
+│   ├── health-check.py      # Module script (follows module contract)
+│   └── coverage-check.py
+└── ... (rest of extension)
+```
+
+### metacog.yaml Format
+
+```yaml
+modules:
+  health-check:
+    tier: quick
+    description: Verify extension health and configuration
+    script: health-check.py
+  coverage-check:
+    tier: deep
+    description: Check for gaps in extension coverage
+    script: coverage-check.py
+    monitoring_hours: 48   # Override default 24h monitoring
+```
+
+### Discovery Pipeline
+
+```bash
+python3 {baseDir}/scripts/discovery.py scan      # Find new metacog.yaml files
+python3 {baseDir}/scripts/discovery.py status     # Show all modules + status
+python3 {baseDir}/scripts/discovery.py approve <id>  # Approve after monitoring
+python3 {baseDir}/scripts/discovery.py suspend <id>  # Suspend a module
+python3 {baseDir}/scripts/discovery.py verify     # Re-verify all approved hashes
+```
+
+### Security Pipeline
+
+New modules go through:
+`discovered` → `monitoring` (24h, dry-run) → `pending-approval` → `approved`
+
+Security layers:
+1. *Disabled by default* — nothing runs until explicitly approved
+2. *Static analysis* — scripts scanned for suspicious patterns (network, subprocess,
+   eval, exec) on discovery. Flagged modules require extra scrutiny.
+3. *Hash verification* — SHA256 hash locked on approval. If code changes, module is
+   auto-suspended. Re-scan and re-approve required.
+4. *Monitoring period* — 24h default. Module runs in shadow mode (output captured,
+   not acted on) before approval is possible.
+5. *Future: MFA approval* — will require MFA verification before approving modules.
+   See Trello card for MFA approval gate.
+
+### Scan Locations
+
+The discovery scanner checks:
+- `~/.openclaw/extensions/*/metacognition/`
+- `~/.openclaw/workspace/skills/*/metacognition/`
+- `~/openclaw-dm/*/metacognition/` (and root)
+
+Approved project modules are merged into the runner at execution time alongside
+core modules. Each run re-verifies hashes before executing.
 
 ## Migration from Existing System
 
