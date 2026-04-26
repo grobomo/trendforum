@@ -193,33 +193,35 @@ present → execute → monitor.
 ### Migration Commands
 
 ```bash
-# Analyze current environment, produce migration document
-python3 {baseDir}/scripts/migrate.py analyze
+# Deep dependency analysis — traces scripts 10 layers deep
+python3 {baseDir}/scripts/deep_analyzer.py --all
+python3 {baseDir}/scripts/deep_analyzer.py --cron self-audit
+python3 {baseDir}/scripts/deep_analyzer.py --script /path/to/script.py
+python3 {baseDir}/scripts/deep_analyzer.py --depth 5
 
-# Date-stamped backup of all affected files
-python3 {baseDir}/scripts/migrate.py backup
-
-# Execute the migration plan
-python3 {baseDir}/scripts/migrate.py execute
-
-# Post-migration health check
-python3 {baseDir}/scripts/migrate.py verify
-
-# Restore from backup if needed
-python3 {baseDir}/scripts/migrate.py rollback
-
-# Full pipeline (analyze → backup → execute → verify)
-python3 {baseDir}/scripts/migrate.py full
-
-# Preview without changing anything
-python3 {baseDir}/scripts/migrate.py dry-run
+# Migration pipeline
+python3 {baseDir}/scripts/migrate.py analyze        # Environment scan + plan
+python3 {baseDir}/scripts/migrate.py backup          # Date-stamped backup
+python3 {baseDir}/scripts/migrate.py execute         # Execute plan
+python3 {baseDir}/scripts/migrate.py verify          # Post-migration check
+python3 {baseDir}/scripts/migrate.py rollback        # Restore from backup
+python3 {baseDir}/scripts/migrate.py full            # All steps in sequence
+python3 {baseDir}/scripts/migrate.py dry-run         # Preview only
 ```
 
 ### What the migration does
 
-1. **Analyze** — scans existing cron jobs, old metacog files, tests new modules,
-   runs dry runs of both tiers, identifies blockers/warnings, documents benefits.
-   Writes analysis to `analyses/migration-analysis-YYYYMMDD-HHMMSS.md`.
+1. **Deep Analyze** — `deep_analyzer.py` traces every cron's script call chain
+   up to 10 layers deep via AST parsing (Python), regex (shell/JS), extracting:
+   imports, subprocess calls, file I/O, network calls, env vars, auth deps.
+   Builds a dependency graph per cron and overlays against new modules.
+
+   `migrate.py analyze` then runs the surface-level scan: cron classification
+   (dynamic, not hardcoded), old file discovery, module readiness checks,
+   dry-run + live demo of both tiers. Writes a migration plan JSON that
+   subsequent steps consume as single source of truth.
+
+   All output goes to `analyses/` folder.
 
 2. **Backup** — date-stamped copy of all affected files to
    `.archive/metacog-migration-YYYYMMDDTHHMMSS/`. Includes old scripts, cron job
