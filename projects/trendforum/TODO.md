@@ -29,6 +29,6 @@ No Docker available locally (use EC2 spot via aws skill if needed).
 - [ ] T007c: Tighter PostCard spacing on mobile
 
 ### Backlog
-- [ ] T008: Error boundaries in React for graceful failure
+- [ ] T008: Error boundaries in React for graceful failure (in PR #1)
 - [ ] T009: Image upload support (S3 or local storage)
 - [ ] T010: GitHub publish (grobomo account — generic tool, no PII)

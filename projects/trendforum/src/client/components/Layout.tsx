@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { SubforumSidebar } from './SubforumSidebar';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export function Layout() {
   const { logout } = useAuth();
@@ -112,7 +113,9 @@ export function Layout() {
 
       <div className="max-w-7xl mx-auto px-2 sm:px-4 py-3 sm:py-4 flex gap-6">
         <main className="flex-1 min-w-0">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </main>
         <aside className="w-72 hidden lg:block">
           <SubforumSidebar />

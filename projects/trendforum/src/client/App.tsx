@@ -7,6 +7,7 @@ import { SubforumFeed } from './components/SubforumFeed';
 import { PostDetail } from './components/PostDetail';
 import { SubmitForm } from './components/SubmitForm';
 import { SearchResults } from './components/SearchResults';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
@@ -16,6 +17,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 export function App() {
   return (
+    <ErrorBoundary>
     <AuthProvider>
       <Routes>
         <Route path="/login" element={<LoginForm />} />
@@ -29,5 +31,6 @@ export function App() {
         </Route>
       </Routes>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }
