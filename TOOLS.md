@@ -40,6 +40,7 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - Board: To Do List (`TyFBN1Bx`) — <https://trello.com/b/TyFBN1Bx/to-do-list>
 - Lists:
   - `6954d3af836b51597afff8e9` = Coconut Todo (my tasks)
+  - `69ed8859098694a1dabe4e2b` = Researching (cards being researched before spec/build)
   - `69e81730d4333e58a9aa2d0e` = Joel Next Steps
   - `6954d3af836b51597afff8e8` = Joel Todo
   - `69e8173131921413c149f962` = Justin Next Steps
@@ -52,6 +53,19 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - API creds in Linux keyring: `openclaw/TRELLO_API_KEY`, `openclaw/TRELLO_TOKEN`
 - Mark cards `dueComplete: true` → Trello automation moves to Done list
 - API: `https://api.trello.com/1/` with `key` + `token` params
+
+### Gate & Metacog Tracker Board
+- Board: Gate & Metacog Tracker (`iBDjKzko`) — <https://trello.com/b/iBDjKzko/gate-metacog-tracker>
+- Workspace: Customers (claude16)
+- Lists:
+  - `69edce6ef823ede97ad98faa` = 📋 New
+  - `69edce6f105866c730c068d6` = 📝 Log-only
+  - `69edce6f10236b61ca96e6a3` = 🔒 Enforcing
+  - `69edce6fc38abac70bcda5ee` = 🛡️ Trusted
+  - `69edce70088f8500a1424b40` = Metacog Modules
+- Flow: New → Log-only → Enforcing → Trusted (🔑 MFA at each transition)
+- Gate cards move between lists as they progress through lifecycle
+- Metacog module cards stay in their list (tracked for visibility)
 
 ### Lessons Board
 - Board: Coconut Lessons (`bZudEKUZ`) — <https://trello.com/b/bZudEKUZ/coconut-lessons>
@@ -192,6 +206,16 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - Use heredocs / `cat << EOF | python3 ...` (exec preflight blocks it)
 - Call the Graph API directly to send messages
 - Write to outbound_queue.json by hand
+
+### SearXNG (Self-hosted Web Search)
+- URL: `http://127.0.0.1:8888`
+- JSON API: `curl 'http://127.0.0.1:8888/search?q=QUERY&format=json'`
+- Helper: `~/searxng-data/search.sh "query" [num_results]`
+- Config: `~/searxng-data/settings.yml`
+- Service: `systemctl --user status searxng` (auto-starts on boot)
+- Engines: Google, DuckDuckGo, Startpage, Bing, Wikipedia, and dozens more
+- No API keys needed — self-hosted metasearch
+- Use before building anything: research existing projects, read current docs, avoid reinventing wheels
 
 ### Graph API Search
 - Endpoint: `POST /search/query` with `entityTypes: ["chatMessage"]`
