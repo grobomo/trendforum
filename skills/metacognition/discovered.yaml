@@ -18,8 +18,9 @@ discovered:
   project_name: openclaw-dm
   project_dir: /home/ubu/openclaw-dm
   found_at: '2026-04-26T08:18:45.380104+00:00'
-  manifest_hash: sha256:2902a5f3d76ad1cc
-  dir_hash: sha256:ff2286db661ffa0c
+  manifest_hash: sha256:aed611d9802f72a3
+  dir_hash: sha256:d093b21f2ead1f47
+  last_changed: '2026-04-26T08:19:40.913144+00:00'
 modules:
   openclaw-gates/gate-health:
     id: openclaw-gates/gate-health
@@ -56,6 +57,31 @@ modules:
     status: monitoring
     discovered_at: '2026-04-26T08:18:45.380104+00:00'
     monitoring_started: '2026-04-26T08:18:45.380104+00:00'
+    monitoring_hours_required: 24
+    monitoring_runs: 0
+    monitoring_findings: []
+    static_analysis:
+      safe: false
+      suspicious_count: 2
+      suspicious:
+      - "L61: subprocess.run \u2014 `r = subprocess.run(`"
+      - "L112: subprocess.run \u2014 `r = subprocess.run(`"
+      lines: 382
+      size: 12594
+    approved_at: null
+    approved_by: null
+  openclaw-dm/teams-webhook-health:
+    id: openclaw-dm/teams-webhook-health
+    project: openclaw-dm
+    name: teams-webhook-health
+    description: Verify Teams webhook server, Graph API subscriptions, state freshness,
+      todo files
+    tier: quick
+    script_path: /home/ubu/openclaw-dm/metacognition/teams-webhook-health.py
+    script_hash: sha256:d8004b41ea26f53a
+    status: monitoring
+    discovered_at: '2026-04-26T08:19:40.913144+00:00'
+    monitoring_started: '2026-04-26T08:19:40.913144+00:00'
     monitoring_hours_required: 24
     monitoring_runs: 0
     monitoring_findings: []
