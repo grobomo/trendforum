@@ -42,6 +42,10 @@ SKIP_PATTERNS = [
     r"HEARTBEAT_OK",
     r"Self-Audit",      # Self-audit is informational
     r"ℹ️.*unverified",  # Info-level, not actionable
+    r"→ Created:",      # Bridge's own output — prevents meta-loop
+    r"Scanned \d+ finding",  # Bridge summary lines
+    r"cards created",   # Bridge summary lines
+    r"Trello Bridge",   # Bridge section headers
 ]
 
 

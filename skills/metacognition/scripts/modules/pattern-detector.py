@@ -13,6 +13,7 @@ import collections
 import glob
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -59,8 +60,36 @@ def scan_for_circular_topics(since_ts: float) -> list:
     return circular
 
 
+# Skip these noisy patterns — common in tool output, not real errors
+ERROR_SKIP_PATTERNS = [
+    r'^\{',                     # JSON fragments
+    r'^\[',                     # JSON arrays
+    r'usage:',                  # CLI usage messages (argparse)
+    r'unrecognized arguments',  # argparse noise
+    r'Expected \d+ argument',   # tool validation noise
+    r'error:.*too many arguments for', # OpenClaw tool validation
+    r'HEARTBEAT_OK',
+    r'^\s*$',                   # blank
+]
+
+
+def _is_noise(snippet: str) -> bool:
+    """Return True if snippet matches known noise patterns."""
+    for pat in ERROR_SKIP_PATTERNS:
+        if re.search(pat, snippet, re.IGNORECASE):
+            return True
+    # Too short to be meaningful
+    if len(snippet.strip()) < 10:
+        return True
+    return False
+
+
 def scan_for_repeated_errors(since_ts: float) -> list:
-    """Find error patterns that repeat across sessions."""
+    """Find error patterns that repeat across sessions.
+
+    Only counts errors from tool results (role=tool), not from agent text
+    or user messages — those are too noisy.
+    """
     error_patterns = collections.Counter()
 
     for f in sorted(glob.glob(str(SESSIONS_DIR / "*.jsonl"))):
@@ -71,18 +100,40 @@ def scan_for_repeated_errors(since_ts: float) -> list:
                 for line in fh:
                     try:
                         d = json.loads(line)
-                        content = d.get("message", {}).get("content", [])
-                        if isinstance(content, str) and "error" in content.lower():
-                            # Extract first 80 chars of error-containing text
-                            idx = content.lower().index("error")
-                            snippet = content[max(0, idx - 20):idx + 60].strip()
-                            error_patterns[snippet[:80]] += 1
-                        if isinstance(content, list):
-                            for c in content:
-                                if isinstance(c, dict) and c.get("type") == "text":
-                                    text = c.get("text", "")
-                                    if "error" in text.lower() and len(text) < 500:
-                                        error_patterns[text[:80]] += 1
+                        msg = d.get("message", {})
+                        role = msg.get("role", "")
+                        # Only look at tool results — agent text is too noisy
+                        if role != "tool":
+                            continue
+                        content = msg.get("content", [])
+                        if isinstance(content, str):
+                            text = content
+                        elif isinstance(content, list):
+                            text = " ".join(
+                                c.get("text", "") for c in content
+                                if isinstance(c, dict) and c.get("type") == "text"
+                            )
+                        else:
+                            continue
+                        # Only match lines that start with "error" or contain
+                        # common error prefixes (not just any mention of the word)
+                        for err_line in text.splitlines():
+                            err_line = err_line.strip()
+                            if not err_line:
+                                continue
+                            lower = err_line.lower()
+                            is_error = (
+                                lower.startswith("error") or
+                                lower.startswith("traceback") or
+                                ": error:" in lower or
+                                "exception:" in lower or
+                                "failed:" in lower or
+                                "command exited with code" in lower
+                            )
+                            if is_error:
+                                snippet = err_line[:80]
+                                if not _is_noise(snippet):
+                                    error_patterns[snippet] += 1
                     except json.JSONDecodeError:
                         pass
         except Exception:
