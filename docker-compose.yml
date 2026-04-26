@@ -4,7 +4,8 @@ services:
     ports:
       - "3847:3847"
     environment:
-      - DATABASE_URL=file:./data/trendforum.db
-      - JWT_SECRET=${JWT_SECRET}
+      - DATABASE_URL=file:/app/data/trendforum.db
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
     volumes:
       - ./data:/app/data
+      - ./uploads:/app/uploads
