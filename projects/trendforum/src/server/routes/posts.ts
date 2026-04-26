@@ -62,7 +62,7 @@ router.get('/posts', async (req, res) => {
 });
 
 router.post('/posts', requireAuth, async (req, res) => {
-  const { subforumId, title, body, linkUrl } = req.body;
+  const { subforumId, title, body, linkUrl, imageUrl } = req.body;
 
   if (!subforumId || !title) {
     res.status(400).json({ error: 'subforumId and title are required' });
@@ -76,7 +76,7 @@ router.post('/posts', requireAuth, async (req, res) => {
   }
 
   const post = await prisma.post.create({
-    data: { subforumId, title, body: body || null, linkUrl: linkUrl || null },
+    data: { subforumId, title, body: body || null, linkUrl: linkUrl || null, imageUrl: imageUrl || null },
     include: { subforum: true },
   });
 

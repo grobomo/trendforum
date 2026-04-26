@@ -20,6 +20,9 @@ export function PostCard({ post }: { post: any }) {
           {post.body && (
             <p className="text-sm text-[#aaaacc] mt-1 line-clamp-3">{post.body}</p>
           )}
+          {post.imageUrl && (
+            <img src={post.imageUrl} alt="" className="mt-2 max-h-48 rounded border border-[#2a2a4a]" loading="lazy" />
+          )}
           {post.linkUrl && (
             <span className="text-xs text-blue-400 mt-1 block truncate">{post.linkUrl}</span>
           )}

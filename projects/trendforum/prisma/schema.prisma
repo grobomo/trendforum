@@ -23,6 +23,7 @@ model Post {
   title      String
   body       String?
   linkUrl    String?
+  imageUrl   String?
   score      Int       @default(0)
   createdAt  DateTime  @default(now())
   comments   Comment[]

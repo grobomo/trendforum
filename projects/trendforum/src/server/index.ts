@@ -12,6 +12,7 @@ import { modRouter } from './routes/mod.js';
 import { feedRouter } from './routes/feed.js';
 import { searchRouter } from './routes/search.js';
 import { coconutRouter } from './routes/coconut.js';
+import { uploadRouter } from './routes/upload.js';
 import { coconutBot } from './coconut/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,6 +41,10 @@ app.use('/api/mod', modRouter);
 app.use('/api', feedRouter);
 app.use('/api', searchRouter);
 app.use('/api/coconut', coconutRouter);
+app.use('/api', uploadRouter);
+
+// Serve uploaded images
+app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
 
 // Serve static files in production
 const clientDir = path.resolve(__dirname, '../client');

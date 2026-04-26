@@ -47,6 +47,9 @@ export function PostDetail() {
           {post.body && (
             <p className="text-[#aaaacc] mt-2 whitespace-pre-wrap">{post.body}</p>
           )}
+          {post.imageUrl && (
+            <img src={post.imageUrl} alt="" className="mt-3 max-w-full rounded border border-[#2a2a4a]" loading="lazy" />
+          )}
           {post.linkUrl && (
             <a
               href={post.linkUrl}

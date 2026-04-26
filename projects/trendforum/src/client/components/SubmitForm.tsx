@@ -10,6 +10,8 @@ export function SubmitForm() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [postType, setPostType] = useState<'text' | 'link'>('text');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -30,11 +32,17 @@ export function SubmitForm() {
     setSubmitting(true);
     setError('');
     try {
+      let imageUrl: string | undefined;
+      if (imageFile) {
+        const uploaded = await api.upload.image(imageFile);
+        imageUrl = uploaded.url;
+      }
       const post = await api.posts.create({
         subforumId,
         title: title.trim(),
         body: postType === 'text' ? body.trim() || undefined : undefined,
         linkUrl: postType === 'link' ? linkUrl.trim() || undefined : undefined,
+        imageUrl,
       });
       const sf = subforums.find((s) => s.id === subforumId);
       navigate(`/t/${sf?.slug || 'general'}/post/${post.id}`);
@@ -114,6 +122,38 @@ export function SubmitForm() {
             className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-2 text-[#e0e0e0] placeholder-[#666688] focus:outline-none focus:border-[#D5232F] transition"
           />
         )}
+
+        <div>
+          <label className="block text-sm text-[#8888aa] mb-1">Image (optional, max 5MB)</label>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/gif,image/webp"
+            onChange={(e) => {
+              const file = e.target.files?.[0] || null;
+              setImageFile(file);
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = () => setImagePreview(reader.result as string);
+                reader.readAsDataURL(file);
+              } else {
+                setImagePreview(null);
+              }
+            }}
+            className="w-full text-sm text-[#8888aa] file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-[#2a2a4a] file:text-[#e0e0e0] file:cursor-pointer hover:file:bg-[#3a3a5a] transition"
+          />
+          {imagePreview && (
+            <div className="mt-2 relative inline-block">
+              <img src={imagePreview} alt="Preview" className="max-h-32 rounded border border-[#2a2a4a]" />
+              <button
+                type="button"
+                onClick={() => { setImageFile(null); setImagePreview(null); }}
+                className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs flex items-center justify-center"
+              >
+                x
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="flex justify-end">
           <button

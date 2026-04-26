@@ -59,7 +59,7 @@ export const api = {
     bySubforum: (slug: string, sort = 'hot', page = 1) =>
       request<any[]>(`/subforums/${slug}/posts?sort=${sort}&page=${page}`),
     get: (id: number) => request<any>(`/posts/${id}`),
-    create: (data: { subforumId: number; title: string; body?: string; linkUrl?: string }) =>
+    create: (data: { subforumId: number; title: string; body?: string; linkUrl?: string; imageUrl?: string }) =>
       request<any>('/posts', { method: 'POST', body: JSON.stringify(data) }),
   },
   comments: {
@@ -69,6 +69,23 @@ export const api = {
   votes: {
     vote: (data: { postId?: number; commentId?: number; value: 1 | -1 }) =>
       request<{ voted: number | null }>('/vote', { method: 'POST', body: JSON.stringify(data) }),
+  },
+  upload: {
+    image: async (file: File): Promise<{ url: string }> => {
+      const token = getToken();
+      const form = new FormData();
+      form.append('image', file);
+      const res = await fetch(`${BASE}/upload`, {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: form,
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || 'Upload failed');
+      }
+      return res.json();
+    },
   },
   reports: {
     create: (data: { postId?: number; commentId?: number; reason: string }) =>

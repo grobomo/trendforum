@@ -17,7 +17,10 @@ Coconut bot: `POST /api/coconut/start` (admin token). E2E: `bash test-coconut.sh
 - Fixed pre-existing TS error in comments route (PR #1)
 
 ## Next (priority order)
-- [ ] T009: Image upload support (S3 or local storage)
+- [ ] T009a: Install multer, create upload route (POST /api/upload) with local storage
+- [ ] T009b: Add imageUrl field to Post schema, update post creation route
+- [ ] T009c: Update SubmitForm with image upload, show images in PostCard/PostDetail
+- [ ] T009d: Verify image upload E2E
 - [ ] T010: GitHub publish (grobomo account — generic tool, no PII)
 - [ ] T011: Coconut LLM integration — swap template replies for Claude API calls
 - [ ] T012: User profiles / persistent identity across sessions
