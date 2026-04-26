@@ -245,6 +245,8 @@ Every task Joel asks for gets committed to `joel-ginsberg_tmemu/todo-list-tracke
 - **If a system is broken, fix the system — not the symptom.** Ad hoc patches that leave the root cause intact are forbidden.
 - **No stats, no summaries, no meta-work as a substitute for actual work.** If chats need replies, reply to them. Don't build a dashboard about replying.
 - **Track promises vs reality.** Every commit to todo-list-tracker is auditable. Empty promises show up as tasks stuck in Open.
+- **Depth over checkboxes.** (Joel, 2026-04-26) Never complete a task just to mark it done. Before starting ANY task, ask: *what is the PURPOSE of this task? What problem does it solve?* Build the thing that solves the problem, not the minimum to close the card. If a card says "build gate to enforce Claude Code usage" — the deliverable is *working enforcement*, not a file that exists but was never tested. Test it. Prove it works. If it doesn't work, it's not done.
+- **Use Claude Code for coding tasks.** Building gates, scripts, plugins, or any multi-file code change MUST go through Claude Code tabs — not direct file edits in the main session. This is the whole point of the Claude Code workflow. Skipping it to "save time" defeats the purpose.
 
 ### Memex Wiki (Auto-Recall)
 
