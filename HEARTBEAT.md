@@ -1,57 +1,37 @@
 # HEARTBEAT.md
 
-## Autonomous Operation Cycle (every 15 min via cron)
+## Architecture: Delegated Cron Model (2026-04-25)
 
-This is your work loop. The cron fires every 15 min as a system event. When it fires, WORK — don't review.
+The autonomous work loop is split across model-appropriate crons. No single monolith.
 
-### 1. Slack Scan
-- Run: `python3 scripts/slack-poller/state_manager.py check`
-- If due: scan each channel using `message(action=read, channel=slack, target=<channel_id>, limit=10)`
-- Respond to unresponded human messages (ignore bot IDs: U0ATFQQ4WNS, U0AURHRR4M6)
-- After scanning: `python3 scripts/slack-poller/state_manager.py done`
+### Model Hierarchy
+- **Haiku** — mechanical tasks only (scan, run scripts, report numbers, flag things). Never responds to humans.
+- **Sonnet** — semantic analysis (triage missed messages, self-reflection, urgency assessment).
+- **Opus** — reasoning + actual work (respond to humans, execute Trello tasks, deep thinking).
 
-### 2. Trello Work — MANDATORY
-- Pull Coconut Todo list for open cards
-- Pick highest priority and DO THE WORK
-- Priority: [URGENT] > [Due today/tomorrow] > [P1] > [P2] > [P3] > everything else
-- Mark cards dueComplete=true when done (automation moves to Done)
-- If a task requires Joel's input, skip it and do the next one
-- Do NOT reply HEARTBEAT_OK while cards remain
+### Active Crons
 
-### 3. Claude Code Tab Monitor
-- Run: `python3 scripts/claude-tabs/manage.py monitor`
-- 🔴 DEAD: check transcript, verify + close if done
-- 🟡 STALE: investigate stuck process
-- ⚠️ NO CHECKIN: check stop hook
+| Job | Model | Interval | Purpose |
+|-----|-------|----------|---------|
+| slack-missed-detector | Haiku | 15m | Scan channels, flag unreplied messages, alert Joel DM |
+| trello-work | Opus | 30m | Pull + execute Coconut Todo cards |
+| session-health | Haiku | 30m | Run monitor.py, alert if CRITICAL |
+| claude-tab-monitor | Haiku | 30m | Run manage-claude-code.py monitor, alert if DEAD/STALE |
+| metacog-orchestrator | Sonnet | 1h | Run all metacog modules, detect trends, create tasks, post actionable findings |
+| schedule-briefing | Haiku | 1h | Post schedule data to #scheduling if fresh |
 
-### 4. Session Health
-- Run: `python3 /home/ubu/.openclaw/workspace/scripts/session-health/monitor.py`
-- Auto-resets main session if >15MB or >15 compactions
-- Auto-cleans orphaned tmp/checkpoint/deleted files
-- Auto-prunes stale sessions.json entries
-- If status is CRITICAL or RESET: note what happened in metacognition log
+### Pre-existing Crons (unchanged)
+| Job | Model | Schedule | Purpose |
+|-----|-------|----------|---------|
+| Memory Dreaming | default | 3 AM daily | Memory consolidation |
+| daily-squad-scheduler | default | 7 AM weekdays | Squad schedule gathering |
 
-### 5. Self-Audit + Metacognition
-- Run: `python3 /home/ubu/openclaw-dm/scripts/metacognition/self-audit.py`
-- If FAILURES: investigate and fix immediately. Post to #coco-metacognition (C0ATCRVSB71)
-- Quick self-review: 2-3 sentences max — am I repeating mistakes? Violating lessons?
-- Append to `memory/metacognition/YYYY-MM-DD.md`
+### Rules
+- Haiku NEVER responds to humans — detect and flag only
+- Opus handles all human-facing responses and complex task execution
+- Sonnet bridges the gap — semantic understanding without full reasoning cost
+- All isolated sessions, light context
+- 🌴 bookends on any outbound messages
 
-### 6. Schedule Briefing (hourly)
-- Data source: `/tmp/schedule-briefing-latest.json` (gathered by cron)
-- If fresh + unposted: synthesize and post to #scheduling (C0ATK8YJQD9)
-- Check `/tmp/schedule-briefing-last-posted.txt` to avoid dupes
-
-### 7. Continue
-- If time remains, work on the next Trello card
-- Never idle while cards exist
-- Report what you DID, not what you COULD do
-
-## Teams Monitoring — SUSPENDED
-- *Paused by Joel (2026-04-24).* Do NOT poll, respond to, or check Teams.
-
-## Rules
-- **NEVER ask "should I continue?" — the answer is always yes**
-- **NEVER reply HEARTBEAT_OK if open tasks exist**
-- Only pause for: external customer emails, public posts, infra deletion, spending money
-- Everything else: just do it
+### Teams Monitoring — SUSPENDED
+- Paused by Joel (2026-04-24). Do NOT poll, respond to, or check Teams.
