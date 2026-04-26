@@ -1,5 +1,5 @@
 /**
- * hook-runner-gates — Modular directory-based plugin.
+ * claude-code-gates — Modular directory-based plugin.
  *
  * Modules live under modules/<hook_type>/*.js (CommonJS). Each module exports
  * a single function that takes a Claude-Code style input and returns null
@@ -185,13 +185,13 @@ function tryLoadModule(fullPath: string, name: string): ModuleInfo | null {
     delete require.cache[require.resolve(fullPath)];
     const fn = require(fullPath) as ModuleFn;
     if (typeof fn !== "function") {
-      console.error(`[hook-runner-gates] ${fullPath} did not export a function`);
+      console.error(`[claude-code-gates] ${fullPath} did not export a function`);
       return null;
     }
     const meta = parseModuleMetadata(fullPath);
     return { name, path: fullPath, fn, tools: meta.tools, requires: meta.requires };
   } catch (e) {
-    console.error(`[hook-runner-gates] Failed to load ${fullPath}:`, (e as Error).message);
+    console.error(`[claude-code-gates] Failed to load ${fullPath}:`, (e as Error).message);
     return null;
   }
 }
@@ -251,7 +251,7 @@ function extractLogContext(toolName: string, params: Record<string, unknown>): {
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default definePluginEntry({
-  id: "hook-runner-gates",
+  id: "claude-code-gates",
   name: "Hook Runner Gates",
   description:
     "Modular hook-runner gates for OpenClaw. Directory-organized modules for " +
@@ -307,7 +307,7 @@ export default definePluginEntry({
         try {
           out = mod.fn({ tool_name: toolName, tool_input: toolInput });
         } catch (e) {
-          console.error(`[hook-runner-gates] Module ${mod.name} crashed:`, (e as Error).message);
+          console.error(`[claude-code-gates] Module ${mod.name} crashed:`, (e as Error).message);
         }
         const ms = Date.now() - t0;
 
@@ -346,7 +346,7 @@ export default definePluginEntry({
         try {
           out = mod.fn({ tool_name: toolName, tool_input: toolInput, result: resultStr });
         } catch (e) {
-          console.error(`[hook-runner-gates] Module ${mod.name} crashed:`, (e as Error).message);
+          console.error(`[claude-code-gates] Module ${mod.name} crashed:`, (e as Error).message);
         }
         const ms = Date.now() - t0;
 
@@ -381,7 +381,7 @@ export default definePluginEntry({
         try {
           out = mod.fn({ content });
         } catch (err) {
-          console.error(`[hook-runner-gates] Module ${mod.name} crashed:`, (err as Error).message);
+          console.error(`[claude-code-gates] Module ${mod.name} crashed:`, (err as Error).message);
         }
         const ms = Date.now() - t0;
 
@@ -417,7 +417,7 @@ export default definePluginEntry({
         try {
           out = mod.fn({});
         } catch (e) {
-          console.error(`[hook-runner-gates] Module ${mod.name} crashed:`, (e as Error).message);
+          console.error(`[claude-code-gates] Module ${mod.name} crashed:`, (e as Error).message);
         }
         const ms = Date.now() - t0;
 

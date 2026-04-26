@@ -1,7 +1,7 @@
 {
-  "name": "openclaw-hook-runner-gates",
-  "version": "0.3.0",
-  "description": "Hook-runner gate modules ported to OpenClaw Plugin SDK",
+  "name": "openclaw-claude-code-gates",
+  "version": "0.4.0",
+  "description": "Claude Code gate modules for OpenClaw — modular behavioral enforcement",
   "main": "index.ts",
   "openclaw": {
     "extensions": ["./index.ts"]

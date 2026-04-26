@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Install hook-runner-gates plugin into OpenClaw
+# Install claude-code-gates plugin into OpenClaw
 # Usage: bash openclaw-plugin/install.sh [--uninstall]
 set -euo pipefail
 
-PLUGIN_NAME="hook-runner-gates"
+PLUGIN_NAME="claude-code-gates"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Detect OpenClaw extensions directory

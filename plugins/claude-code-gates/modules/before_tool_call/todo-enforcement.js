@@ -1,4 +1,4 @@
-// TOOLS: Bash, write, edit
+// TOOLS: exec, write, edit
 // WHY: Coconut starts work without tracking it in todo.md. Joel can't trust
 // work is being done because there's no trail. Every action must be tracked
 // in the relevant openclaw-dm todo.md file FIRST.

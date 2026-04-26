@@ -1,4 +1,4 @@
-# hook-runner-gates (OpenClaw Plugin)
+# claude-code-gates (OpenClaw Plugin)
 
 Ported [hook-runner](https://github.com/grobomo/hook-runner) gate modules for OpenClaw.
 
@@ -46,7 +46,7 @@ Ported [hook-runner](https://github.com/grobomo/hook-runner) gate modules for Op
 bash openclaw-plugin/install.sh
 
 # Option 2: Manual copy to OpenClaw extensions directory
-cp -r openclaw-plugin ~/.openclaw/extensions/hook-runner-gates
+cp -r openclaw-plugin ~/.openclaw/extensions/claude-code-gates
 
 # Option 3: Install to a named profile
 OPENCLAW_HOME=~/.openclaw-myprofile bash openclaw-plugin/install.sh

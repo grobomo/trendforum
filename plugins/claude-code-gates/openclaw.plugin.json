@@ -1,7 +1,7 @@
 {
-  "id": "hook-runner-gates",
-  "name": "Hook Runner Gates",
-  "description": "Directory-based modular hook-runner gates for OpenClaw. Drop-in .js modules for git safety, secret scanning, code quality, commit hygiene, test coverage, disk safety, AI behavioral guardrails, auto-continue enforcement, and session start reminders. Cross-compatible with Claude Code hook-runner module format.",
+  "id": "claude-code-gates",
+  "name": "Claude Code Gates",
+  "description": "Directory-based modular gate modules for Claude Code sessions in OpenClaw. Drop-in .js modules for git safety, secret scanning, code quality, commit hygiene, disk safety, AI behavioral guardrails, auto-continue enforcement, and session start reminders.",
   "version": "0.5.0",
   "author": "grobomo",
   "license": "MIT",
