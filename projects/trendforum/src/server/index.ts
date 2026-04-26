@@ -11,6 +11,8 @@ import { reportsRouter } from './routes/reports.js';
 import { modRouter } from './routes/mod.js';
 import { feedRouter } from './routes/feed.js';
 import { searchRouter } from './routes/search.js';
+import { coconutRouter } from './routes/coconut.js';
+import { coconutBot } from './coconut/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -37,6 +39,7 @@ app.use('/api', reportsRouter);
 app.use('/api/mod', modRouter);
 app.use('/api', feedRouter);
 app.use('/api', searchRouter);
+app.use('/api/coconut', coconutRouter);
 
 // Serve static files in production
 const clientDir = path.resolve(__dirname, '../client');
@@ -47,4 +50,7 @@ app.get('*', (_req, res) => {
 
 app.listen(PORT, () => {
   console.log(`TrendForum running on http://localhost:${PORT}`);
+  if (process.env.COCONUT_AUTOSTART === '1') {
+    coconutBot.start();
+  }
 });

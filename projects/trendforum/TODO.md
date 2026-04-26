@@ -15,8 +15,16 @@ No Docker available locally (use EC2 spot via aws skill if needed).
 - Security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy)
 
 ## Next (priority order)
-- [ ] Coconut integration module (poll /api/feed, post replies as special user)
-- [ ] Mobile responsive polish (sidebar drawer, smaller cards on mobile)
-- [ ] Error boundaries in React for graceful failure
-- [ ] Image upload support (S3 or local storage)
-- [ ] GitHub publish (grobomo account — generic tool, no PII)
+
+### Coconut Integration Module
+- [ ] T002: Create reply generator (src/server/coconut/replies.ts) — pluggable template-based replies, ready for LLM swap
+- [ ] T003: Create CoconutBot class (src/server/coconut/index.ts) — poll /api/feed, track last-seen timestamp, post replies via Prisma
+- [ ] T004: Create admin API routes (src/server/routes/coconut.ts) — start/stop/status endpoints, admin-only
+- [ ] T005: Wire coconut into server (src/server/index.ts) — register routes, auto-start option
+- [ ] T006: Verify coconut E2E — start bot, create post, confirm bot reply appears
+
+### Backlog
+- [ ] T007: Mobile responsive polish (sidebar drawer, smaller cards on mobile)
+- [ ] T008: Error boundaries in React for graceful failure
+- [ ] T009: Image upload support (S3 or local storage)
+- [ ] T010: GitHub publish (grobomo account — generic tool, no PII)
