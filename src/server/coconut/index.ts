@@ -73,7 +73,7 @@ export class CoconutBot {
         this.processedPosts.add(post.id);
 
         if (shouldReply()) {
-          const body = generatePostReply(post);
+          const body = await generatePostReply(post);
           await prisma.comment.create({
             data: {
               postId: post.id,
@@ -90,7 +90,7 @@ export class CoconutBot {
         this.processedComments.add(comment.id);
 
         if (shouldReply()) {
-          const body = generateCommentReply(comment);
+          const body = await generateCommentReply(comment);
           await prisma.comment.create({
             data: {
               postId: comment.postId,

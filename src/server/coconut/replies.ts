@@ -1,7 +1,61 @@
+import { execFile } from 'child_process';
+import { writeFileSync, unlinkSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
+import crypto from 'crypto';
 import type { Post, Comment, Subforum } from '@prisma/client';
 
 type PostWithSubforum = Post & { subforum: Subforum };
 type CommentWithPost = Comment & { post: PostWithSubforum };
+
+const SYSTEM_PROMPT = `You are Coconut, a friendly community member on an anonymous forum called TrendForum.
+Rules:
+- Write short, natural replies (1-3 sentences max)
+- Match the tone of the subforum and conversation
+- Be genuine and conversational, not corporate or generic
+- Sometimes ask a follow-up question
+- Never mention being a bot, AI, or automated
+- Never use emojis excessively (0-1 per reply max)
+- Respond to the actual content, not just with platitudes
+- Output ONLY your reply text, nothing else`;
+
+let claudeAvailable: boolean | null = null;
+
+function checkClaudeAvailable(): boolean {
+  if (claudeAvailable !== null) return claudeAvailable;
+  try {
+    const { execFileSync } = require('child_process');
+    execFileSync('claude', ['--version'], { timeout: 5000, stdio: 'pipe' });
+    claudeAvailable = true;
+  } catch {
+    claudeAvailable = false;
+    console.log('[Coconut] claude CLI not found — using template replies');
+  }
+  return claudeAvailable;
+}
+
+function callClaude(userMessage: string): Promise<string> {
+  return new Promise((resolve) => {
+    const promptFile = join(tmpdir(), `coconut-${crypto.randomBytes(4).toString('hex')}.txt`);
+    const fullPrompt = `${SYSTEM_PROMPT}\n\n${userMessage}`;
+    writeFileSync(promptFile, fullPrompt);
+
+    execFile('claude', ['-p', '--dangerously-skip-permissions'], {
+      timeout: 30000,
+      maxBuffer: 1024 * 64,
+    }, (err, stdout, stderr) => {
+      try { unlinkSync(promptFile); } catch {}
+      if (err) {
+        console.error('[Coconut] claude -p error:', err.message);
+        resolve('');
+        return;
+      }
+      resolve(stdout.trim());
+    }).stdin?.end(fullPrompt);
+  });
+}
+
+// --- Template fallbacks (used when claude CLI is not available) ---
 
 const POST_REPLIES = [
   'Welcome to the conversation! Great topic.',
@@ -19,38 +73,24 @@ const COMMENT_REPLIES = [
   'Well said.',
 ];
 
-const SUBFORUM_REPLIES: Record<string, string[]> = {
-  engineering: [
-    'Love the technical deep-dive here.',
-    'Solid engineering discussion. What\'s the tradeoff analysis?',
-    'Has anyone benchmarked this approach?',
-  ],
-  'product-feedback': [
-    'Great feedback — this is exactly what product needs to hear.',
-    'Seconding this. Would love to see it prioritized.',
-  ],
-  random: [
-    'Ha! This made my day.',
-    'Quality shitpost. A+.',
-  ],
-};
-
 function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function generatePostReply(post: PostWithSubforum): string {
-  const subforumReplies = SUBFORUM_REPLIES[post.subforum.slug];
-  if (subforumReplies && Math.random() < 0.4) {
-    return pickRandom(subforumReplies);
+export async function generatePostReply(post: PostWithSubforum): Promise<string> {
+  if (checkClaudeAvailable()) {
+    const prompt = `Reply to this new post in the "${post.subforum.name}" subforum:\n\nTitle: ${post.title}${post.body ? `\n\n${post.body}` : ''}`;
+    const reply = await callClaude(prompt);
+    if (reply) return reply;
   }
   return pickRandom(POST_REPLIES);
 }
 
-export function generateCommentReply(_comment: CommentWithPost): string {
-  const subforumReplies = SUBFORUM_REPLIES[_comment.post.subforum.slug];
-  if (subforumReplies && Math.random() < 0.3) {
-    return pickRandom(subforumReplies);
+export async function generateCommentReply(comment: CommentWithPost): Promise<string> {
+  if (checkClaudeAvailable()) {
+    const prompt = `Reply to this comment on a post titled "${comment.post.title}" in the "${comment.post.subforum.name}" subforum:\n\nComment: ${comment.body}`;
+    const reply = await callClaude(prompt);
+    if (reply) return reply;
   }
   return pickRandom(COMMENT_REPLIES);
 }
