@@ -50,11 +50,3 @@ modules:
     config:
       default_probation_hours: "72"
       max_block_rate: "0.15"
-
-  commitment-tracker:
-    enabled: true
-    tier: quick
-    description: Scan outbound messages for commitments/promises, track deadlines, alert on overdue
-    config:
-      lookback_hours: "24"
-      overdue_alert_channel: "D0ATWPM4DTK"
