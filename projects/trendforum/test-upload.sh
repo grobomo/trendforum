@@ -14,7 +14,7 @@ done
 
 TOKEN=$(curl -s http://localhost:3847/api/auth/verify \
   -H "Content-Type: application/json" \
-  -d '{"password":"trender2026"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
+  -d '{"password":"demo2026"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
 
 # Create test image
 echo -n "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwADhQGAWjR9awAAAABJRU5ErkJggg==" | base64 -d > /tmp/test.png

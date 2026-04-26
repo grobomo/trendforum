@@ -33,7 +33,7 @@ export function LoginForm() {
       <div className="bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg p-8 w-full max-w-sm">
         <h1 className="text-2xl font-bold text-[#D5232F] text-center mb-2">TrendForum</h1>
         <p className="text-[#8888aa] text-center text-sm mb-6">
-          Enter this month's BYOD WiFi password to continue
+          Enter the shared password to continue
         </p>
 
         {error && (
@@ -47,7 +47,7 @@ export function LoginForm() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="WiFi password"
+            placeholder="Shared password"
             autoFocus
             className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-3 text-[#e0e0e0] placeholder-[#666688] focus:outline-none focus:border-[#D5232F] transition mb-4"
           />

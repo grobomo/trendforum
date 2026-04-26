@@ -1,14 +1,14 @@
 # TrendForum
 
-Anonymous internal forum for Trend Micro employees. Reddit-like UX with no identity tracking.
+Anonymous community forum with Reddit-like UX. No accounts, no tracking — just a shared password to prove you belong.
 
 ## How It Works
 
-1. Enter this month's BYOD WiFi password (proves you're a Trender)
+1. Enter the shared community password to get access
 2. Get an anonymous session token (no username, no email, no account)
 3. Post, comment, and vote — nobody can link activity to your identity
 
-Each post thread assigns you a random display name (e.g., `Trender-A7X`) so conversations are followable, but names don't carry across posts.
+Each post thread assigns you a random display name (e.g., `Anon-A7X`) so conversations are followable, but names don't carry across posts.
 
 ## Quick Start
 
@@ -24,7 +24,7 @@ npm run db:seed
 npm run dev
 ```
 
-Open http://localhost:5173 and log in with the dev WiFi password: see `prisma/seed.ts`.
+Open http://localhost:5173 and log in with the dev password: see `prisma/seed.ts`.
 
 ## Tech Stack
 
@@ -33,7 +33,7 @@ Open http://localhost:5173 and log in with the dev WiFi password: see `prisma/se
 | Frontend | React 18 + TypeScript + Tailwind CSS |
 | Backend | Node.js + Express + TypeScript |
 | Database | SQLite (dev) via Prisma ORM |
-| Auth | Shared-secret WiFi password + JWT (no user ID) |
+| Auth | Shared-secret password + JWT (no user ID) |
 
 ## Privacy Guarantees
 
@@ -42,6 +42,16 @@ Open http://localhost:5173 and log in with the dev WiFi password: see `prisma/se
 - Database stores no author field on posts/comments
 - Display names are per-post-thread only (hash of session + post ID)
 - Rate limiting by token `jti`, not by IP
+
+## Features
+
+- Subforums with hot/new/top sorting
+- Nested comments with voting
+- Image uploads (JPEG, PNG, GIF, WebP — 5MB limit)
+- Content moderation (admin reports queue)
+- Coconut bot — automated community participant
+- Mobile responsive with hamburger menu
+- React error boundaries
 
 ## API
 
@@ -58,6 +68,7 @@ POST /api/report             { postId?, commentId?, reason }
 GET  /api/feed?since=<iso>                             -> new activity (Coconut)
 GET  /api/mod/reports                                  -> admin only
 POST /api/mod/action         { action, targetId, targetType }
+POST /api/upload             multipart/form-data       -> { url }
 ```
 
 ## Docker
@@ -68,6 +79,6 @@ docker compose up --build
 
 Runs on port 3847. Set `JWT_SECRET` in environment for production.
 
-## Project Structure
+## License
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full design document.
+MIT

@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const wifiHash = await bcrypt.hash('trender2026', 10);
+  const wifiHash = await bcrypt.hash('demo2026', 10);
   const adminHash = await bcrypt.hash('admin2026', 10);
 
   await prisma.config.upsert({
@@ -20,11 +20,11 @@ async function main() {
   });
 
   const subforums = [
-    { slug: 'general', name: 'General', description: 'General discussion for all Trenders' },
+    { slug: 'general', name: 'General', description: 'General discussion for everyone' },
     { slug: 'engineering', name: 'Engineering', description: 'Code, architecture, and tech talk' },
-    { slug: 'product-feedback', name: 'Product Feedback', description: 'Ideas and feedback on our products' },
+    { slug: 'feedback', name: 'Feedback', description: 'Ideas and suggestions' },
     { slug: 'random', name: 'Random', description: 'Off-topic, memes, and fun' },
-    { slug: 'announcements', name: 'Announcements', description: 'Company-wide announcements' },
+    { slug: 'announcements', name: 'Announcements', description: 'Community announcements' },
     { slug: 'career', name: 'Career', description: 'Career growth, mentoring, and job advice' },
   ];
 
@@ -36,7 +36,7 @@ async function main() {
     });
   }
 
-  console.log('Seed complete. Dev passwords: WiFi="trender2026", Admin="admin2026"');
+  console.log('Seed complete. Dev passwords: WiFi="demo2026", Admin="admin2026"');
 }
 
 main()

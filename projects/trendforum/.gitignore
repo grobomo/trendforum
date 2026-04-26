@@ -4,3 +4,7 @@ dist/
 *.db-journal
 .env
 .env.local
+uploads/
+.workflow-state.json
+package-lock.json
+TODO.md

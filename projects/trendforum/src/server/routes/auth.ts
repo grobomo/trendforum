@@ -27,7 +27,7 @@ router.post('/verify', authLimiter, async (req, res) => {
     return;
   }
 
-  const token = generateToken('trender');
+  const token = generateToken('member');
   res.json({ token });
 });
 

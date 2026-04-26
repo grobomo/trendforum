@@ -50,7 +50,7 @@ check "$([ "$RUNNING" = "True" ] && echo true)" "Bot started"
 echo "=== 4. User login ==="
 USER_TOKEN=$(curl -s http://localhost:3847/api/auth/verify \
   -H "Content-Type: application/json" \
-  -d '{"password":"trender2026"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])" 2>/dev/null)
+  -d '{"password":"demo2026"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])" 2>/dev/null)
 check "$([ -n "$USER_TOKEN" ] && echo true)" "User token received"
 
 echo "=== 5. Create post ==="
