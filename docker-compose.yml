@@ -1,0 +1,10 @@
+services:
+  trendforum:
+    build: .
+    ports:
+      - "3847:3847"
+    environment:
+      - DATABASE_URL=file:./data/trendforum.db
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - ./data:/app/data

@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Subforum {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  posts       Post[]
+}
+
+model Post {
+  id         Int       @id @default(autoincrement())
+  subforumId Int
+  subforum   Subforum  @relation(fields: [subforumId], references: [id])
+  title      String
+  body       String?
+  linkUrl    String?
+  imageUrl   String?
+  score      Int       @default(0)
+  createdAt  DateTime  @default(now())
+  comments   Comment[]
+  votes      Vote[]
+  reports    Report[]
+}
+
+model Comment {
+  id          Int       @id @default(autoincrement())
+  postId      Int
+  post        Post      @relation(fields: [postId], references: [id])
+  parentId    Int?
+  parent      Comment?  @relation("CommentThread", fields: [parentId], references: [id])
+  children    Comment[] @relation("CommentThread")
+  displayName String
+  body        String
+  score       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  votes       Vote[]
+  reports     Report[]
+}
+
+model Vote {
+  id        Int      @id @default(autoincrement())
+  tokenJti  String
+  postId    Int?
+  post      Post?    @relation(fields: [postId], references: [id])
+  commentId Int?
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  value     Int
+
+  @@unique([tokenJti, postId])
+  @@unique([tokenJti, commentId])
+}
+
+model Report {
+  id        Int      @id @default(autoincrement())
+  postId    Int?
+  post      Post?    @relation(fields: [postId], references: [id])
+  commentId Int?
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  reason    String
+  createdAt DateTime @default(now())
+}
+
+model ModAction {
+  id         Int      @id @default(autoincrement())
+  action     String
+  targetId   Int
+  targetType String
+  reason     String?
+  createdAt  DateTime @default(now())
+}
+
+model Config {
+  key   String @id
+  value String
+}
