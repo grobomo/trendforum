@@ -2,7 +2,13 @@
 """Module: gate-lifecycle — Post-enforce monitoring + full gate lifecycle dashboard.
 
 Tracks the complete lifecycle of every gate:
-  deployed (log) → monitoring → promoted (enforce) → probation → stable
+  log:new → log:ready → enforce:watch → enforce:stable
+
+Phase names encode both the mode and monitoring state:
+  log:new          — deployed in log mode, collecting initial data
+  log:ready        — enough evidence collected, safe to promote
+  enforce:watch    — actively blocking + being monitored for false positives
+  enforce:stable   — blocking, past watch period, proven healthy
 
 During probation (post-enforce):
   - Monitors block rate for false positives
@@ -33,7 +39,7 @@ AUDIT_LOGS = [
 ]
 
 # Defaults
-DEFAULT_PROBATION_HOURS = 72  # 3 days
+DEFAULT_WATCH_HOURS = 72  # 3 days
 DEFAULT_MAX_BLOCK_RATE = 0.15  # 15% block rate triggers alert
 
 
@@ -159,7 +165,7 @@ def assess_gate_lifecycle(gate_id: str, gate_info: dict, state: dict, overrides:
     gate_state = state.get("gates", {}).get(gate_id, {})
     override = overrides.get(gate_id, {})
 
-    probation_hours = override.get("probationHours", DEFAULT_PROBATION_HOURS)
+    watch_hours = override.get("watchHours", DEFAULT_WATCH_HOURS)
     max_block_rate = DEFAULT_MAX_BLOCK_RATE
 
     all_events = count_all_events(gate_id)
@@ -168,80 +174,84 @@ def assess_gate_lifecycle(gate_id: str, gate_info: dict, state: dict, overrides:
         "gate": gate_id,
         "mode": mode,
         "plugin": gate_info["plugin"],
-        "lifecycle": "unknown",
+        "phase": "unknown",
         "total_events": all_events["total"],
         "blocked": all_events["blocked"],
         "would_block": all_events["would_block"],
-        "probation_hours": probation_hours,
+        "watch_hours": watch_hours,
         "findings": [],
     }
 
     if mode == "log":
-        entry["lifecycle"] = "monitoring"
         if all_events["total"] == 0:
-            entry["lifecycle"] = "deployed"
-            entry["findings"].append("No audit events yet — gate is freshly deployed.")
+            entry["phase"] = "log:new"
+            entry["findings"].append("Logging only. No events yet — freshly deployed.")
+        else:
+            # Check if enough evidence to be ready for promotion
+            override = overrides.get(gate_id, {})
+            min_hours = override.get("minHours", 24)
+            min_events = override.get("minEvents", 20)
+            entry["phase"] = "log:new"
+            entry["findings"].append(
+                f"Logging only. {all_events['total']} events so far "
+                f"(need {min_events} events over {min_hours}h to be ready)."
+            )
+
     elif mode == "enforce":
-        # Check if we have a recorded enforcement timestamp
         enforced_at = gate_state.get("enforced_at")
 
         if not enforced_at:
-            # First time seeing this gate in enforce — record it now
-            if gate_id not in state.get("gates", {}):
-                state.setdefault("gates", {})[gate_id] = {}
+            state.setdefault("gates", {})[gate_id] = state.get("gates", {}).get(gate_id, {})
             state["gates"][gate_id]["enforced_at"] = now.isoformat()
             enforced_at = now.isoformat()
-            entry["lifecycle"] = "probation"
+            entry["phase"] = "enforce:watch"
             entry["findings"].append(
-                f"Gate just entered enforce mode. Probation period: {probation_hours}h."
+                f"Blocking + watching. Just entered enforce mode. Watch period: {watch_hours}h."
             )
         else:
-            # Calculate probation status
             try:
                 enforced_dt = datetime.fromisoformat(enforced_at.replace("Z", "+00:00"))
                 hours_in_enforce = (now - enforced_dt).total_seconds() / 3600
                 entry["hours_in_enforce"] = round(hours_in_enforce, 1)
 
-                if hours_in_enforce < probation_hours:
-                    entry["lifecycle"] = "probation"
-                    remaining = probation_hours - hours_in_enforce
-                    entry["probation_remaining_hours"] = round(remaining, 1)
+                if hours_in_enforce < watch_hours:
+                    entry["phase"] = "enforce:watch"
+                    remaining = watch_hours - hours_in_enforce
+                    entry["watch_remaining_hours"] = round(remaining, 1)
 
-                    # Check block rate during probation
-                    probation_events = count_events_since(gate_id, enforced_dt.timestamp())
-                    entry["probation_events"] = probation_events
+                    watch_events = count_events_since(gate_id, enforced_dt.timestamp())
+                    entry["watch_events"] = watch_events
 
-                    if probation_events["total"] > 5:
-                        block_rate = probation_events["blocked"] / probation_events["total"]
-                        entry["probation_block_rate"] = round(block_rate, 3)
+                    if watch_events["total"] > 5:
+                        block_rate = watch_events["blocked"] / watch_events["total"]
+                        entry["watch_block_rate"] = round(block_rate, 3)
 
                         if block_rate > max_block_rate:
                             entry["findings"].append(
-                                f"⚠️ High block rate during probation: {block_rate:.1%} "
+                                f"⚠️ Blocking + watching. High block rate: {block_rate:.1%} "
                                 f"(threshold: {max_block_rate:.0%}). "
-                                f"{probation_events['blocked']}/{probation_events['total']} events blocked. "
-                                f"Consider rolling back to log mode to investigate."
+                                f"{watch_events['blocked']}/{watch_events['total']} events blocked. "
+                                f"Consider rolling back to log mode."
                             )
                         else:
                             entry["findings"].append(
-                                f"Probation healthy: {block_rate:.1%} block rate, "
+                                f"Blocking + watching. Healthy: {block_rate:.1%} block rate, "
                                 f"{remaining:.1f}h remaining."
                             )
                     else:
                         entry["findings"].append(
-                            f"Probation active: {remaining:.1f}h remaining, "
-                            f"{probation_events['total']} events so far (need more data)."
+                            f"Blocking + watching. {remaining:.1f}h remaining, "
+                            f"{watch_events['total']} events so far."
                         )
                 else:
-                    # Probation period complete
-                    entry["lifecycle"] = "stable"
+                    entry["phase"] = "enforce:stable"
                     state["gates"][gate_id]["stable_at"] = now.isoformat()
                     entry["findings"].append(
-                        f"✅ Probation complete ({hours_in_enforce:.0f}h). Gate is stable."
+                        f"Blocking + stable. Watch complete ({hours_in_enforce:.0f}h). Proven healthy."
                     )
             except (ValueError, TypeError):
-                entry["lifecycle"] = "probation"
-                entry["findings"].append("Could not parse enforcement timestamp.")
+                entry["phase"] = "enforce:watch"
+                entry["findings"].append("Blocking + watching. Could not parse enforcement timestamp.")
 
     return entry
 
@@ -254,20 +264,29 @@ def build_dashboard(assessments: list) -> str:
     lines.append(f"  {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}")
     lines.append("=" * 60)
 
-    # Group by lifecycle stage
-    stages = {"deployed": [], "monitoring": [], "probation": [], "stable": [], "unknown": []}
+    # Group by phase
+    stages = {"log:new": [], "log:ready": [], "enforce:watch": [], "enforce:stable": [], "unknown": []}
     for a in assessments:
-        stages.get(a["lifecycle"], stages["unknown"]).append(a)
+        stages.get(a["phase"], stages["unknown"]).append(a)
 
     stage_icons = {
-        "deployed": "📦", "monitoring": "🔍", "probation": "⏱️",
-        "stable": "✅", "unknown": "❓",
+        "log:new": "📝", "log:ready": "🟢", "enforce:watch": "🔒👀",
+        "enforce:stable": "🔒✅", "unknown": "❓",
+    }
+
+    stage_labels = {
+        "log:new": "LOG:NEW — logging only, collecting data",
+        "log:ready": "LOG:READY — enough evidence, safe to promote",
+        "enforce:watch": "ENFORCE:WATCH — blocking + actively monitored",
+        "enforce:stable": "ENFORCE:STABLE — blocking, proven healthy",
+        "unknown": "UNKNOWN",
     }
 
     for stage, items in stages.items():
         if not items:
             continue
-        lines.append(f"\n{stage_icons.get(stage, '❓')} {stage.upper()} ({len(items)})")
+        label = stage_labels.get(stage, stage.upper())
+        lines.append(f"\n{stage_icons.get(stage, '❓')} {label} ({len(items)})")
         lines.append("-" * 40)
         for item in items:
             mode_tag = f"[{item['mode']}]"
@@ -308,9 +327,9 @@ def main():
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "module": "gate-lifecycle",
         "total_gates": len(assessments),
-        "by_stage": {
-            stage: sum(1 for a in assessments if a["lifecycle"] == stage)
-            for stage in ["deployed", "monitoring", "probation", "stable", "unknown"]
+        "by_phase": {
+            phase: sum(1 for a in assessments if a["phase"] == phase)
+            for phase in ["log:new", "log:ready", "enforce:watch", "enforce:stable", "unknown"]
         },
         "alerts": [a for a in assessments if any("⚠️" in f for f in a["findings"])],
         "assessments": assessments,
