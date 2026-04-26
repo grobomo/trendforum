@@ -1,0 +1,21 @@
+{
+  "created_findings": [
+    "[metacog] Resolve: Unresolved CR: CR-001: Hook-Runner Module vs Plugin SDK for Blocking Gates (CR-0",
+    "[metacog] Review: \ud83d\udccb 001-verify-before-claiming.md: hook status is 'new' \u2014 verify if implemented",
+    "[metacog] Cleanup: \ud83d\udfe1 004-context-reset-new-session.md: missing sections: Lesson/Principle",
+    "[metacog] \ud83d\udd34 \ud83d\udd34 Duplicate lesson number 004: 004-context-reset-new-session.md and 004-poll-all",
+    "[metacog] Fix repeated error (239x): {...",
+    "[metacog] Fix repeated error (26x): usage: check_gaps.py [-h] [--minutes MINUTES] [--enriched]...",
+    "[metacog] Fix repeated error (22x): usage: tracker.py [-h]...",
+    "[metacog] Fix repeated error (22x): error: too many arguments for 'message'. Expected 0 argument...",
+    "[metacog] Fix regression: NEW REGRESSION: `slack-channel-health:Reply latency` \u2014 avg 137s across 5 channel",
+    "[metacog] Resolve: \u2192 Created: [metacog] Resolve: Unresolved CR: CR-001: Hook-Runner Module vs Plugi",
+    "[metacog] Review: \u2192 Created: [metacog] Review: \ud83d\udccb 001-verify-before-claiming.md: hook status is 'ne",
+    "[metacog] Cleanup: \u2192 Created: [metacog] Cleanup: \ud83d\udfe1 004-context-reset-new-session.md: missing sectio",
+    "[metacog] \ud83d\udd34 \u2192 Created: [metacog] \ud83d\udd34 \ud83d\udd34 Duplicate lesson number 004: 004-context-reset-new-sess",
+    "[metacog] Fix regression: \u2192 Created: [metacog] Fix regression: NEW REGRESSION: `slack-channel-health:Reply",
+    "[metacog] Token exposure detected \u2014 sanitized"
+  ],
+  "last_processed_line": 121,
+  "date": "2026-04-26"
+}

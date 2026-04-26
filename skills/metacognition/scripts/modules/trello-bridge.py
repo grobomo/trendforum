@@ -141,10 +141,20 @@ def extract_actionable_findings(log_path: Path, since_line: int = 0) -> list[dic
     return findings
 
 
+def sanitize_credentials(text: str) -> str:
+    """Strip any credentials, API keys, or tokens from text before writing to Trello."""
+    text = re.sub(r'(?:TRELLO_KEY|key)\s*[=:]\s*["\']?[a-f0-9]{32}["\']?', '[CREDENTIAL_REDACTED]', text)
+    text = re.sub(r'(?:TRELLO_TOKEN|token)\s*[=:]\s*["\']?ATTA[a-fA-F0-9]{40,}["\']?', '[CREDENTIAL_REDACTED]', text)
+    text = re.sub(r'(?:API_KEY|SECRET|PASSWORD|APIKEY)\s*[=:]\s*["\'][^"\']+["\']', '[CREDENTIAL_REDACTED]', text)
+    text = re.sub(r'key=[a-f0-9]{16,}', 'key=***', text)
+    text = re.sub(r'token=[a-zA-Z0-9]{16,}', 'token=***', text)
+    return text
+
+
 def finding_to_card_name(finding: dict) -> str:
     """Generate a Trello card name from a finding."""
     prefix = "[metacog]"
-    text = finding["text"]
+    text = sanitize_credentials(finding["text"])
 
     # Shorten common patterns
     if finding["category"] == "repeated_error":
@@ -175,11 +185,12 @@ def finding_to_card_name(finding: dict) -> str:
 
 def finding_to_card_desc(finding: dict) -> str:
     """Generate card description from finding."""
+    safe_text = sanitize_credentials(finding["text"])
     return (
         f"**Source:** Metacognition {finding['section']} ({finding['time']} CT)\n"
         f"**Category:** {finding['category']}\n"
         f"**Severity:** {finding['severity']}\n\n"
-        f"**Finding:**\n{finding['text']}\n\n"
+        f"**Finding:**\n{safe_text}\n\n"
         f"---\n*Auto-created by metacog trello-bridge on {datetime.now().strftime('%Y-%m-%d %H:%M')}*"
     )
 
