@@ -40,5 +40,12 @@ Publish workflow: edit in worktree, patch to /tmp/tmp.F3IMnHJEQV, push via gh_au
 
 - T026: Dark/light theme toggle — CSS variables, 218 color migrations, localStorage
 
+## Verified (this session)
+- npm install: 322 packages, 0 vulnerabilities
+- prisma generate + db push + seed: 8 subforums, 2 example posts
+- Express server starts on :3847
+- API E2E: 15/15 pass (auth, subforums, posts, comments, votes, reports, feed, search, bad-auth)
+- Vite build: 55 modules, 264KB JS + 34KB CSS, 3s build
+
 ## Next (priority order)
 - [ ] T027: WebSocket for real-time post/comment updates
