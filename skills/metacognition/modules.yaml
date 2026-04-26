@@ -40,5 +40,13 @@ modules:
     tier: quick
     description: Gate deployment change control — ensures log-before-enforce, monitors readiness
     config:
-      min_monitoring_hours: "24"
-      min_trigger_events: "20"
+      default_min_monitoring_hours: "24"
+      default_min_trigger_events: "20"
+
+  gate-lifecycle:
+    enabled: true
+    tier: quick
+    description: Full gate lifecycle tracking — deployed/monitoring/probation/stable dashboard + post-enforce monitoring
+    config:
+      default_probation_hours: "72"
+      max_block_rate: "0.15"
