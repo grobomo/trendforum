@@ -3,6 +3,7 @@ import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { SubforumSidebar } from './SubforumSidebar';
 import { ErrorBoundary } from './ErrorBoundary';
+import { ProfileMenu } from './ProfileMenu';
 
 export function Layout() {
   const { logout } = useAuth();
@@ -67,6 +68,7 @@ export function Layout() {
           </button>
 
           <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            <ProfileMenu />
             <Link
               to="/submit"
               className="px-2 sm:px-3 py-1 bg-[#D5232F] text-white rounded text-xs sm:text-sm hover:bg-red-700 transition"

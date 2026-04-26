@@ -76,7 +76,14 @@ router.post('/posts', requireAuth, async (req, res) => {
   }
 
   const post = await prisma.post.create({
-    data: { subforumId, title, body: body || null, linkUrl: linkUrl || null, imageUrl: imageUrl || null },
+    data: {
+      subforumId,
+      title,
+      body: body || null,
+      linkUrl: linkUrl || null,
+      imageUrl: imageUrl || null,
+      profileId: req.token?.profileId || null,
+    },
     include: { subforum: true },
   });
 

@@ -28,7 +28,7 @@ router.post('/posts/:id/comments', requireAuth, async (req, res) => {
     }
   }
 
-  const displayName = generateDisplayName(req.token!.jti, postId);
+  const displayName = generateDisplayName(req.token!.jti, postId, req.token?.pseudonym);
 
   const comment = await prisma.comment.create({
     data: {
@@ -36,6 +36,7 @@ router.post('/posts/:id/comments', requireAuth, async (req, res) => {
       body,
       parentId: parentId || null,
       displayName,
+      profileId: req.token?.profileId || null,
     },
   });
 

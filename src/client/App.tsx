@@ -8,6 +8,7 @@ import { PostDetail } from './components/PostDetail';
 import { SubmitForm } from './components/SubmitForm';
 import { SearchResults } from './components/SearchResults';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { ProfilePage } from './components/ProfilePage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
@@ -28,6 +29,7 @@ export function App() {
           <Route path="t/:slug/submit" element={<SubmitForm />} />
           <Route path="submit" element={<SubmitForm />} />
           <Route path="search" element={<SearchResults />} />
+          <Route path="u/:pseudonym" element={<ProfilePage />} />
         </Route>
       </Routes>
     </AuthProvider>
