@@ -31,7 +31,7 @@ export function App() {
           <Route path="submit" element={<SubmitForm />} />
           <Route path="search" element={<SearchResults />} />
           <Route path="u/:pseudonym" element={<ProfilePage />} />
-          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="mod" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </AuthProvider>
