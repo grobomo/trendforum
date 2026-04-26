@@ -4,6 +4,7 @@ import { api } from '../lib/api';
 import { VoteButton } from './VoteButton';
 import { CommentTree } from './CommentTree';
 import { formatTimeAgo } from '../lib/time';
+import { Markdown } from './Markdown';
 
 export function PostDetail() {
   const { id, slug } = useParams<{ id: string; slug: string }>();
@@ -45,7 +46,7 @@ export function PostDetail() {
           </div>
           <h1 className="text-xl font-bold text-[#e0e0e0]">{post.title}</h1>
           {post.body && (
-            <p className="text-[#aaaacc] mt-2 whitespace-pre-wrap">{post.body}</p>
+            <Markdown content={post.body} className="mt-2 text-[#aaaacc]" />
           )}
           {post.imageUrl && (
             <img src={post.imageUrl} alt="" className="mt-3 max-w-full rounded border border-[#2a2a4a]" loading="lazy" />

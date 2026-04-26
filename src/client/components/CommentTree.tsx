@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { VoteButton } from './VoteButton';
 import { api } from '../lib/api';
 import { formatTimeAgo } from '../lib/time';
+import { Markdown } from './Markdown';
 
 interface Comment {
   id: number;
@@ -66,7 +67,7 @@ function CommentNode({
         <span className="text-[#666688]">&middot;</span>
         <span className="text-[#666688]">{formatTimeAgo(comment.createdAt)}</span>
       </div>
-      <p className="text-[#e0e0e0] text-sm mt-1 whitespace-pre-wrap">{comment.body}</p>
+      <Markdown content={comment.body} className="text-[#e0e0e0] text-sm mt-1" />
       <div className="flex items-center gap-3 mt-1">
         <VoteButton score={comment.score} commentId={comment.id} compact />
         <button
