@@ -1,0 +1,10 @@
+{
+  "requests": {},
+  "delivered": {},
+  "stats": {
+    "total_recorded": 0,
+    "total_delivered": 0,
+    "total_expired": 0,
+    "cross_channel_deliveries": 0
+  }
+}
