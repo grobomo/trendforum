@@ -16,12 +16,12 @@ No Docker available locally (use EC2 spot via aws skill if needed).
 
 ## Next (priority order)
 
-### Coconut Integration Module
-- [ ] T002: Create reply generator (src/server/coconut/replies.ts) — pluggable template-based replies, ready for LLM swap
-- [ ] T003: Create CoconutBot class (src/server/coconut/index.ts) — poll /api/feed, track last-seen timestamp, post replies via Prisma
-- [ ] T004: Create admin API routes (src/server/routes/coconut.ts) — start/stop/status endpoints, admin-only
-- [ ] T005: Wire coconut into server (src/server/index.ts) — register routes, auto-start option
-- [ ] T006: Verify coconut E2E — start bot, create post, confirm bot reply appears
+### Coconut Integration Module (DONE)
+- [x] T002: Create reply generator (src/server/coconut/replies.ts) — pluggable template-based replies (PR #1)
+- [x] T003: Create CoconutBot class (src/server/coconut/index.ts) — poll feed, reply via Prisma (PR #1)
+- [x] T004: Create admin API routes (src/server/routes/coconut.ts) — start/stop/status, admin-only (PR #1)
+- [x] T005: Wire coconut into server (src/server/index.ts) — routes + COCONUT_AUTOSTART env var (PR #1)
+- [x] T006: Verify coconut E2E — 7/7 tests pass, bot replied, admin guard works (PR #1)
 
 ### Backlog
 - [ ] T007: Mobile responsive polish (sidebar drawer, smaller cards on mobile)
