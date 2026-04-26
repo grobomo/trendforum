@@ -172,9 +172,12 @@ def discover_manifests() -> list:
         if not scan_dir.exists():
             continue
 
-        # Look for metacognition/metacog.yaml at any depth (up to 3 levels)
-        for depth in range(1, 4):
-            pattern = "/".join(["*"] * depth) + "/metacognition/metacog.yaml"
+        # Look for metacognition/metacog.yaml at root and up to 3 levels deep
+        for depth in range(0, 4):
+            if depth == 0:
+                pattern = "metacognition/metacog.yaml"
+            else:
+                pattern = "/".join(["*"] * depth) + "/metacognition/metacog.yaml"
             for manifest in scan_dir.glob(pattern):
                 # Determine project name from parent structure
                 metacog_dir = manifest.parent
