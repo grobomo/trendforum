@@ -49,6 +49,10 @@ export const api = {
   subforums: {
     list: () => request<any[]>('/subforums'),
   },
+  search: {
+    query: (q: string, page = 1) =>
+      request<any[]>(`/search?q=${encodeURIComponent(q)}&page=${page}`),
+  },
   posts: {
     list: (sort = 'hot', page = 1) =>
       request<any[]>(`/posts?sort=${sort}&page=${page}`),

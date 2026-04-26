@@ -6,6 +6,7 @@ import { HomeFeed } from './components/HomeFeed';
 import { SubforumFeed } from './components/SubforumFeed';
 import { PostDetail } from './components/PostDetail';
 import { SubmitForm } from './components/SubmitForm';
+import { SearchResults } from './components/SearchResults';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
@@ -24,6 +25,7 @@ export function App() {
           <Route path="t/:slug/post/:id" element={<PostDetail />} />
           <Route path="t/:slug/submit" element={<SubmitForm />} />
           <Route path="submit" element={<SubmitForm />} />
+          <Route path="search" element={<SearchResults />} />
         </Route>
       </Routes>
     </AuthProvider>
