@@ -21,7 +21,7 @@ export function HomeFeed() {
     <div>
       <SortTabs current={sort} />
       {posts.length === 0 ? (
-        <div className="text-center text-[#8888aa] py-12">No posts yet. Be the first!</div>
+        <div className="text-center text-muted py-12">No posts yet. Be the first!</div>
       ) : (
         posts.map((post) => <PostCard key={post.id} post={post} />)
       )}

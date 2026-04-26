@@ -24,10 +24,10 @@ export function Markdown({ content, className = '' }: MarkdownProps) {
   return (
     <div
       className={`prose prose-invert prose-sm max-w-none
-        prose-p:my-1 prose-pre:bg-[#16162a] prose-pre:border prose-pre:border-[#2a2a4a]
-        prose-code:text-[#D5232F] prose-code:bg-[#16162a] prose-code:px-1 prose-code:rounded
+        prose-p:my-1 prose-pre:bg-input prose-pre:border prose-pre:border-border
+        prose-code:text-accent prose-code:bg-input prose-code:px-1 prose-code:rounded
         prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-        prose-blockquote:border-[#2a2a4a] prose-blockquote:text-[#8888aa]
+        prose-blockquote:border-border prose-blockquote:text-muted
         ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />

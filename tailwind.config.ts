@@ -5,15 +5,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        trend: {
-          red: '#D5232F',
-          dark: '#1a1a2e',
-          darker: '#16162a',
-          card: '#1e1e3a',
-          border: '#2a2a4a',
-          text: '#e0e0e0',
-          muted: '#8888aa',
-        },
+        page: 'var(--bg-page)',
+        header: 'var(--bg-header)',
+        card: 'var(--bg-card)',
+        input: 'var(--bg-input)',
+        border: 'var(--border)',
+        'border-hover': 'var(--border-hover)',
+        text: 'var(--text)',
+        muted: 'var(--text-muted)',
+        dim: 'var(--text-dim)',
+        accent: 'var(--accent)',
+        'accent-hover': 'var(--accent-hover)',
       },
     },
   },

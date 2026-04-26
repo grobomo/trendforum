@@ -28,14 +28,14 @@ export function VoteButton({ score, postId, commentId, compact }: VoteButtonProp
     } catch {}
   };
 
-  const upClass = voted === 1 ? 'text-[#D5232F]' : 'text-[#8888aa]';
-  const downClass = voted === -1 ? 'text-blue-400' : 'text-[#8888aa]';
-  const scoreClass = currentScore > 0 ? 'text-[#D5232F]' : currentScore < 0 ? 'text-blue-400' : 'text-[#8888aa]';
+  const upClass = voted === 1 ? 'text-accent' : 'text-muted';
+  const downClass = voted === -1 ? 'text-blue-400' : 'text-muted';
+  const scoreClass = currentScore > 0 ? 'text-accent' : currentScore < 0 ? 'text-blue-400' : 'text-muted';
 
   if (compact) {
     return (
       <span className="inline-flex items-center gap-1 text-xs">
-        <button onClick={() => handleVote(1)} className={`${upClass} hover:text-[#D5232F] transition`}>
+        <button onClick={() => handleVote(1)} className={`${upClass} hover:text-accent transition`}>
           +
         </button>
         <span className={`font-bold ${scoreClass}`}>{currentScore}</span>
@@ -47,10 +47,10 @@ export function VoteButton({ score, postId, commentId, compact }: VoteButtonProp
   }
 
   return (
-    <div className="flex flex-col items-center w-10 py-2 bg-[#16162a] rounded-l-md shrink-0">
+    <div className="flex flex-col items-center w-10 py-2 bg-input rounded-l-md shrink-0">
       <button
         onClick={() => handleVote(1)}
-        className={`text-lg leading-none ${upClass} hover:text-[#D5232F] transition`}
+        className={`text-lg leading-none ${upClass} hover:text-accent transition`}
       >
         &#9650;
       </button>

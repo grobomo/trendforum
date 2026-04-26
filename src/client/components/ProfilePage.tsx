@@ -17,14 +17,14 @@ export function ProfilePage() {
       .finally(() => setLoading(false));
   }, [pseudonym]);
 
-  if (loading) return <div className="text-[#8888aa] py-8 text-center">Loading...</div>;
-  if (!profile) return <div className="text-[#8888aa] py-8 text-center">Profile not found.</div>;
+  if (loading) return <div className="text-muted py-8 text-center">Loading...</div>;
+  if (!profile) return <div className="text-muted py-8 text-center">Profile not found.</div>;
 
   return (
     <div>
-      <div className="bg-[#1e1e3a] border border-[#2a2a4a] rounded-md p-4 mb-4">
-        <h1 className="text-xl font-bold text-[#e0e0e0]">{profile.pseudonym}</h1>
-        <div className="text-sm text-[#8888aa] mt-1">
+      <div className="bg-card border border-border rounded-md p-4 mb-4">
+        <h1 className="text-xl font-bold text-text">{profile.pseudonym}</h1>
+        <div className="text-sm text-muted mt-1">
           Joined {new Date(profile.createdAt).toLocaleDateString()}
           {' · '}
           {profile._count.posts} posts
@@ -33,9 +33,9 @@ export function ProfilePage() {
         </div>
       </div>
 
-      <h2 className="text-sm font-bold text-[#8888aa] uppercase tracking-wide mb-3">Recent Posts</h2>
+      <h2 className="text-sm font-bold text-muted uppercase tracking-wide mb-3">Recent Posts</h2>
       {profile.posts.length === 0 ? (
-        <div className="text-[#8888aa] text-sm py-4">No posts yet.</div>
+        <div className="text-muted text-sm py-4">No posts yet.</div>
       ) : (
         profile.posts.map((post: any) => <PostCard key={post.id} post={post} />)
       )}

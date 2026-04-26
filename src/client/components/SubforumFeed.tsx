@@ -23,17 +23,17 @@ export function SubforumFeed() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold text-[#e0e0e0]">t/{slug}</h1>
+        <h1 className="text-xl font-bold text-text">t/{slug}</h1>
         <Link
           to={`/t/${slug}/submit`}
-          className="px-3 py-1 bg-[#D5232F] text-white rounded text-sm hover:bg-red-700 transition"
+          className="px-3 py-1 bg-accent text-white rounded text-sm hover:bg-accent-hover transition"
         >
           New Post
         </Link>
       </div>
       <SortTabs current={sort} />
       {posts.length === 0 ? (
-        <div className="text-center text-[#8888aa] py-12">No posts in this subforum yet.</div>
+        <div className="text-center text-muted py-12">No posts in this subforum yet.</div>
       ) : (
         posts.map((post) => <PostCard key={post.id} post={post} />)
       )}

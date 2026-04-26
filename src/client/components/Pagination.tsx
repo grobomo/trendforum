@@ -25,15 +25,15 @@ export function Pagination({ hasMore }: PaginationProps) {
       <button
         onClick={() => go(page - 1)}
         disabled={page <= 1}
-        className="px-4 py-1.5 rounded text-sm transition bg-[#1e1e3a] border border-[#2a2a4a] text-[#e0e0e0] hover:border-[#D5232F] disabled:opacity-30 disabled:hover:border-[#2a2a4a]"
+        className="px-4 py-1.5 rounded text-sm transition bg-card border border-border text-text hover:border-accent disabled:opacity-30 disabled:hover:border-border"
       >
         Prev
       </button>
-      <span className="text-sm text-[#8888aa]">Page {page}</span>
+      <span className="text-sm text-muted">Page {page}</span>
       <button
         onClick={() => go(page + 1)}
         disabled={!hasMore}
-        className="px-4 py-1.5 rounded text-sm transition bg-[#1e1e3a] border border-[#2a2a4a] text-[#e0e0e0] hover:border-[#D5232F] disabled:opacity-30 disabled:hover:border-[#2a2a4a]"
+        className="px-4 py-1.5 rounded text-sm transition bg-card border border-border text-text hover:border-accent disabled:opacity-30 disabled:hover:border-border"
       >
         Next
       </button>

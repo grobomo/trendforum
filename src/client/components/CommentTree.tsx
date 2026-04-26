@@ -60,26 +60,26 @@ function CommentNode({
   const isCoconut = comment.displayName === 'Coconut';
 
   return (
-    <div className={`${depth > 0 ? 'ml-6 border-l-2 border-[#2a2a4a] pl-4' : ''} mt-3`}>
+    <div className={`${depth > 0 ? 'ml-6 border-l-2 border-border pl-4' : ''} mt-3`}>
       <div className="flex items-center gap-2 text-xs">
         {!isCoconut && !comment.displayName.startsWith('Anon-') ? (
-          <Link to={`/u/${comment.displayName}`} className="font-medium text-[#D5232F] hover:underline">
+          <Link to={`/u/${comment.displayName}`} className="font-medium text-accent hover:underline">
             {comment.displayName}
           </Link>
         ) : (
-          <span className={`font-medium ${isCoconut ? 'text-yellow-400' : 'text-[#D5232F]'}`}>
+          <span className={`font-medium ${isCoconut ? 'text-yellow-400' : 'text-accent'}`}>
             {isCoconut ? 'Coconut' : comment.displayName}
           </span>
         )}
-        <span className="text-[#666688]">&middot;</span>
-        <span className="text-[#666688]">{formatTimeAgo(comment.createdAt)}</span>
+        <span className="text-dim">&middot;</span>
+        <span className="text-dim">{formatTimeAgo(comment.createdAt)}</span>
       </div>
-      <Markdown content={comment.body} className="text-[#e0e0e0] text-sm mt-1" />
+      <Markdown content={comment.body} className="text-text text-sm mt-1" />
       <div className="flex items-center gap-3 mt-1">
         <VoteButton score={comment.score} commentId={comment.id} compact />
         <button
           onClick={() => setReplying(!replying)}
-          className="text-xs text-[#8888aa] hover:text-white transition"
+          className="text-xs text-muted hover:text-text transition"
         >
           Reply
         </button>
@@ -91,21 +91,21 @@ function CommentNode({
             value={replyBody}
             onChange={(e) => setReplyBody(e.target.value)}
             placeholder="Write a reply..."
-            className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-2 text-sm text-[#e0e0e0] placeholder-[#666688] resize-y focus:outline-none focus:border-[#D5232F] transition"
+            className="w-full bg-input border border-border rounded p-2 text-sm text-text placeholder-dim resize-y focus:outline-none focus:border-accent transition"
             rows={2}
           />
           <div className="flex gap-2 mt-1">
             <button
               type="submit"
               disabled={submitting || !replyBody.trim()}
-              className="px-3 py-1 bg-[#D5232F] text-white rounded text-xs hover:bg-red-700 disabled:opacity-50 transition"
+              className="px-3 py-1 bg-accent text-white rounded text-xs hover:bg-accent-hover disabled:opacity-50 transition"
             >
               Reply
             </button>
             <button
               type="button"
               onClick={() => setReplying(false)}
-              className="px-3 py-1 text-[#8888aa] text-xs hover:text-white transition"
+              className="px-3 py-1 text-muted text-xs hover:text-text transition"
             >
               Cancel
             </button>
@@ -140,7 +140,7 @@ export function CommentTree({
   const roots = tree.get(null) || [];
 
   if (roots.length === 0) {
-    return <div className="text-[#8888aa] text-sm py-4">No comments yet.</div>;
+    return <div className="text-muted text-sm py-4">No comments yet.</div>;
   }
 
   return (

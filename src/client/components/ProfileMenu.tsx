@@ -16,13 +16,13 @@ export function ProfileMenu() {
       <div className="flex items-center gap-2">
         <Link
           to={`/u/${profile.pseudonym}`}
-          className="text-[#D5232F] text-xs sm:text-sm font-medium hover:text-red-400 transition"
+          className="text-accent text-xs sm:text-sm font-medium hover:text-red-400 transition"
         >
           {profile.pseudonym}
         </Link>
         <button
           onClick={() => dropProfile()}
-          className="text-[#666688] text-xs hover:text-[#8888aa] transition"
+          className="text-dim text-xs hover:text-muted transition"
           title="Go anonymous"
         >
           Drop ID
@@ -55,7 +55,7 @@ export function ProfileMenu() {
     <>
       <button
         onClick={() => setShowModal(true)}
-        className="text-[#8888aa] text-xs sm:text-sm hover:text-white transition"
+        className="text-muted text-xs sm:text-sm hover:text-text transition"
       >
         Claim ID
       </button>
@@ -64,13 +64,13 @@ export function ProfileMenu() {
         <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={() => setShowModal(false)}>
           <div className="absolute inset-0 bg-black/60" />
           <div
-            className="relative bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg p-6 w-full max-w-sm"
+            className="relative bg-card border border-border rounded-lg p-6 w-full max-w-sm"
             onClick={e => e.stopPropagation()}
           >
-            <h2 className="text-lg font-bold text-[#e0e0e0] mb-1">
+            <h2 className="text-lg font-bold text-text mb-1">
               {mode === 'register' ? 'Claim a Pseudonym' : 'Sign In'}
             </h2>
-            <p className="text-[#8888aa] text-xs mb-4">
+            <p className="text-muted text-xs mb-4">
               {mode === 'register'
                 ? 'Pick a name that persists across sessions.'
                 : 'Log in with your existing pseudonym.'}
@@ -89,19 +89,19 @@ export function ProfileMenu() {
                 onChange={e => setPseudonym(e.target.value)}
                 placeholder="Pseudonym"
                 autoFocus
-                className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-2 text-sm text-[#e0e0e0] placeholder-[#666688] focus:outline-none focus:border-[#D5232F] transition"
+                className="w-full bg-input border border-border rounded p-2 text-sm text-text placeholder-dim focus:outline-none focus:border-accent transition"
               />
               <input
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="Password (6+ chars)"
-                className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-2 text-sm text-[#e0e0e0] placeholder-[#666688] focus:outline-none focus:border-[#D5232F] transition"
+                className="w-full bg-input border border-border rounded p-2 text-sm text-text placeholder-dim focus:outline-none focus:border-accent transition"
               />
               <button
                 type="submit"
                 disabled={loading || !pseudonym || !password}
-                className="w-full py-2 bg-[#D5232F] text-white rounded text-sm font-medium hover:bg-red-700 disabled:opacity-50 transition"
+                className="w-full py-2 bg-accent text-white rounded text-sm font-medium hover:bg-accent-hover disabled:opacity-50 transition"
               >
                 {loading ? 'Working...' : mode === 'register' ? 'Claim' : 'Sign In'}
               </button>
@@ -109,7 +109,7 @@ export function ProfileMenu() {
 
             <button
               onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}
-              className="text-[#8888aa] text-xs mt-3 hover:text-white transition block text-center w-full"
+              className="text-muted text-xs mt-3 hover:text-text transition block text-center w-full"
             >
               {mode === 'login' ? 'Need a pseudonym? Register' : 'Already have one? Sign in'}
             </button>

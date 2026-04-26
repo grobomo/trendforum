@@ -58,11 +58,11 @@ export function AdminDashboard() {
     }
   };
 
-  if (!token) return <div className="text-[#8888aa] py-8 text-center">Not authenticated.</div>;
+  if (!token) return <div className="text-muted py-8 text-center">Not authenticated.</div>;
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-[#e0e0e0] mb-4">Moderation Queue</h1>
+      <h1 className="text-xl font-bold text-text mb-4">Moderation Queue</h1>
 
       {actionMsg && (
         <div className="bg-green-900/20 border border-green-800 text-green-400 text-sm rounded p-2 mb-4">
@@ -71,25 +71,25 @@ export function AdminDashboard() {
       )}
 
       {loading ? (
-        <div className="text-[#8888aa] py-8 text-center">Loading...</div>
+        <div className="text-muted py-8 text-center">Loading...</div>
       ) : reports.length === 0 ? (
-        <div className="text-[#8888aa] py-8 text-center">No reports. All clear!</div>
+        <div className="text-muted py-8 text-center">No reports. All clear!</div>
       ) : (
         <div className="space-y-3">
           {reports.map(report => (
-            <div key={report.id} className="bg-[#1e1e3a] border border-[#2a2a4a] rounded-md p-4">
+            <div key={report.id} className="bg-card border border-border rounded-md p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs text-[#8888aa] mb-1">
+                  <div className="text-xs text-muted mb-1">
                     Report #{report.id} · {formatTimeAgo(report.createdAt)}
                   </div>
-                  <div className="text-sm text-[#e0e0e0] mb-2">
-                    <span className="text-[#8888aa]">Reason:</span> {report.reason}
+                  <div className="text-sm text-text mb-2">
+                    <span className="text-muted">Reason:</span> {report.reason}
                   </div>
 
                   {report.post && (
-                    <div className="bg-[#16162a] rounded p-2 text-sm">
-                      <span className="text-[#8888aa]">Post:</span>{' '}
+                    <div className="bg-input rounded p-2 text-sm">
+                      <span className="text-muted">Post:</span>{' '}
                       <Link
                         to={`/t/${report.post.subforum.slug}/post/${report.post.id}`}
                         className="text-blue-400 hover:underline"
@@ -100,9 +100,9 @@ export function AdminDashboard() {
                   )}
 
                   {report.comment && (
-                    <div className="bg-[#16162a] rounded p-2 text-sm">
-                      <span className="text-[#8888aa]">Comment by {report.comment.displayName}:</span>{' '}
-                      <span className="text-[#e0e0e0]">
+                    <div className="bg-input rounded p-2 text-sm">
+                      <span className="text-muted">Comment by {report.comment.displayName}:</span>{' '}
+                      <span className="text-text">
                         {report.comment.body.length > 200
                           ? report.comment.body.slice(0, 200) + '...'
                           : report.comment.body}
@@ -115,7 +115,7 @@ export function AdminDashboard() {
                   {report.post && (
                     <button
                       onClick={() => handleAction('remove_post', report.post!.id, 'post')}
-                      className="px-3 py-1 bg-red-800 text-white rounded text-xs hover:bg-red-700 transition"
+                      className="px-3 py-1 bg-red-800 text-white rounded text-xs hover:bg-accent-hover transition"
                     >
                       Remove Post
                     </button>
@@ -123,7 +123,7 @@ export function AdminDashboard() {
                   {report.comment && (
                     <button
                       onClick={() => handleAction('remove_comment', report.comment!.id, 'comment')}
-                      className="px-3 py-1 bg-red-800 text-white rounded text-xs hover:bg-red-700 transition"
+                      className="px-3 py-1 bg-red-800 text-white rounded text-xs hover:bg-accent-hover transition"
                     >
                       Remove Comment
                     </button>

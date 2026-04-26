@@ -29,10 +29,10 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1a2e] flex items-center justify-center">
-      <div className="bg-[#1e1e3a] border border-[#2a2a4a] rounded-lg p-8 w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-[#D5232F] text-center mb-2">TrendForum</h1>
-        <p className="text-[#8888aa] text-center text-sm mb-6">
+    <div className="min-h-screen bg-page flex items-center justify-center">
+      <div className="bg-card border border-border rounded-lg p-8 w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-accent text-center mb-2">TrendForum</h1>
+        <p className="text-muted text-center text-sm mb-6">
           Enter the shared password to continue
         </p>
 
@@ -49,18 +49,18 @@ export function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Shared password"
             autoFocus
-            className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-3 text-[#e0e0e0] placeholder-[#666688] focus:outline-none focus:border-[#D5232F] transition mb-4"
+            className="w-full bg-input border border-border rounded p-3 text-text placeholder-dim focus:outline-none focus:border-accent transition mb-4"
           />
           <button
             type="submit"
             disabled={loading || !password}
-            className="w-full py-3 bg-[#D5232F] text-white rounded font-medium hover:bg-red-700 disabled:opacity-50 transition"
+            className="w-full py-3 bg-accent text-white rounded font-medium hover:bg-accent-hover disabled:opacity-50 transition"
           >
             {loading ? 'Verifying...' : 'Enter'}
           </button>
         </form>
 
-        <p className="text-[#666688] text-xs text-center mt-4">
+        <p className="text-dim text-xs text-center mt-4">
           Anonymous. No accounts. No tracking.
         </p>
       </div>

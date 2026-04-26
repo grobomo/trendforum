@@ -18,13 +18,13 @@ export function SearchResults() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-[#e0e0e0] mb-4">
+      <h1 className="text-xl font-bold text-text mb-4">
         Search results for "{q}"
       </h1>
       {loading ? (
-        <div className="text-[#8888aa] py-8 text-center">Searching...</div>
+        <div className="text-muted py-8 text-center">Searching...</div>
       ) : posts.length === 0 ? (
-        <div className="text-[#8888aa] py-8 text-center">No posts found.</div>
+        <div className="text-muted py-8 text-center">No posts found.</div>
       ) : (
         posts.map((post) => <PostCard key={post.id} post={post} />)
       )}
