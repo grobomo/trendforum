@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db.js';
 import { verifyPassword, generateToken } from '../auth.js';
 import { authLimiter } from '../middleware/rateLimit.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.post('/verify', authLimiter, async (req, res) => {
   const { password } = req.body;

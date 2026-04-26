@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.post('/report', requireAuth, async (req, res) => {
   const { postId, commentId, reason } = req.body;

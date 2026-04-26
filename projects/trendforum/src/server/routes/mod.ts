@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db.js';
 import { requireAdmin } from '../middleware/requireAuth.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.get('/reports', requireAdmin, async (_req, res) => {
   const reports = await prisma.report.findMany({

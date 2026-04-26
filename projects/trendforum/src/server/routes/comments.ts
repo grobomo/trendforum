@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { generateDisplayName } from '../auth.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.post('/posts/:id/comments', requireAuth, async (req, res) => {
   const postId = parseInt(req.params.id, 10);
