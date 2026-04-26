@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { VoteButton } from './VoteButton';
 import { formatTimeAgo } from '../lib/time';
+import { Markdown } from './Markdown';
 
 export function PostCard({ post }: { post: any }) {
   return (
@@ -18,7 +19,9 @@ export function PostCard({ post }: { post: any }) {
             {post.title}
           </h2>
           {post.body && (
-            <p className="text-sm text-[#aaaacc] mt-1 line-clamp-3">{post.body}</p>
+            <div className="line-clamp-3">
+              <Markdown content={post.body} className="text-sm text-[#aaaacc] mt-1" />
+            </div>
           )}
           {post.imageUrl && (
             <img src={post.imageUrl} alt="" className="mt-2 max-h-48 rounded border border-[#2a2a4a]" loading="lazy" />
