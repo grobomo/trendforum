@@ -1,0 +1,359 @@
+{
+  "timestamp": "2026-04-26T01:03:41.596099",
+  "existing_crons": [
+    {
+      "id": "633120b5-69af-41d5-a802-ef216344e8ee",
+      "name": "self-audit",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1777153842250
+      },
+      "model": "trendmicro-aiendpoint/claude-4.6-sonnet",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run: python3 /home/ubu/openclaw-dm/scripts/metacognition/self-audit.py \u2014 analyze the output. If FAILURES are found, investigate root causes and post actionable findings to #coco-metacognition (C0ATCRV"
+    },
+    {
+      "id": "96410e5b-30d7-4049-9010-b95b42721db3",
+      "name": "schedule-briefing",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1777153860981
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Check if /tmp/schedule-briefing-latest.json exists and has fresh data (modified in the last 2 hours). Also check /tmp/schedule-briefing-last-posted.txt for the last posted timestamp. If fresh data exi"
+    },
+    {
+      "id": "7f6ab6b7-19de-4f25-8170-0e873b841fef",
+      "name": "session-health",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1777153797409
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run: python3 /home/ubu/.openclaw/workspace/scripts/session-health/monitor.py and report the output verbatim. If status is CRITICAL or RESET, post to Joel DM (D0ATWPM4DTK) via message(action=send, chan"
+    },
+    {
+      "id": "d3a30cd0-4bab-4a0d-aad4-467515c2676e",
+      "name": "claude-tab-monitor",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1777153809348
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run: python3 /home/ubu/.openclaw/workspace/scripts/claude-tabs/manage-claude-code.py monitor \u2014 report the output verbatim. If any tabs are \ud83d\udd34 DEAD or \ud83d\udfe1 STALE, post to Joel DM (D0ATWPM4DTK) via message("
+    },
+    {
+      "id": "6ad7aa96-f849-4742-accc-0ed628eace09",
+      "name": "slack-missed-detector",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 900000,
+        "anchorMs": 1777153783513
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Missed message detector. Read the last 10 messages from each Slack channel below. For each channel, check if the most recent human message (not from bot IDs U0ATFQQ4WNS or U0AURHRR4M6) has a reply fro"
+    },
+    {
+      "id": "116a81e7-f134-4c08-8979-323c84dcf1b1",
+      "name": "trello-work",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 900000,
+        "anchorMs": 1777153827717
+      },
+      "model": "trendmicro-aiendpoint/claude-4.6-opus",
+      "target": "isolated",
+      "last_status": "error",
+      "last_error": "cron: job execution timed out",
+      "consecutive_errors": 1,
+      "prompt_preview": "Check Trello Coconut Todo list (list ID 6954d3af836b51597afff8e9, board TyFBN1Bx). Use Trello API with key+token from Linux keyring (openclaw/TRELLO_API_KEY and openclaw/TRELLO_TOKEN). Pull open cards"
+    },
+    {
+      "id": "d6837634-39bb-4f68-b44b-133362f5dedb",
+      "name": "Memory Dreaming Promotion",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 3 * * *"
+      },
+      "model": "default",
+      "target": "main",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": ""
+    },
+    {
+      "id": "b8b0e5ea-c649-4138-972f-c6084d393dde",
+      "name": "daily-squad-scheduler",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * 1-5",
+        "tz": "America/Chicago",
+        "staggerMs": 0
+      },
+      "model": "default",
+      "target": "isolated",
+      "last_status": "unknown",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run the daily squad scheduler: python3 /home/ubu/.openclaw/workspace/scripts/squad-scheduler/daily_schedule.py (no --dry-run). Then post the summary from /tmp/squad-schedule-today.txt to #scheduling ("
+    }
+  ],
+  "old_metacog_files": [
+    {
+      "path": "/home/ubu/openclaw-dm/scripts/metacognition/self-audit.py",
+      "size": 11811,
+      "modified": "2026-04-25T18:57:10.234926",
+      "exists": true
+    },
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition/analyze_sessions.py",
+      "size": 9031,
+      "modified": "2026-04-25T23:36:59.965261",
+      "exists": true
+    },
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition-check.md",
+      "size": 4079,
+      "modified": "2026-04-23T17:51:07.193954",
+      "exists": true
+    },
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition-rules.md",
+      "size": 2273,
+      "modified": "2026-04-22T17:08:38.807416",
+      "exists": true
+    },
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition-big-review.md",
+      "size": 3586,
+      "modified": "2026-04-21T23:07:15.606633",
+      "exists": true
+    }
+  ],
+  "new_skill_modules": [
+    {
+      "name": "conflict-resolution",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/conflict-resolution.py",
+      "size": 5719
+    },
+    {
+      "name": "decision-check",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/decision-check.py",
+      "size": 2290
+    },
+    {
+      "name": "lesson-review",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/lesson-review.py",
+      "size": 3930
+    },
+    {
+      "name": "pattern-detector",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/pattern-detector.py",
+      "size": 5087
+    },
+    {
+      "name": "session-analyzer",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/session-analyzer.py",
+      "size": 5576
+    }
+  ],
+  "migration_candidates": [
+    {
+      "id": "633120b5-69af-41d5-a802-ef216344e8ee",
+      "name": "self-audit",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1777153842250
+      },
+      "model": "trendmicro-aiendpoint/claude-4.6-sonnet",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run: python3 /home/ubu/openclaw-dm/scripts/metacognition/self-audit.py \u2014 analyze the output. If FAILURES are found, investigate root causes and post actionable findings to #coco-metacognition (C0ATCRV"
+    }
+  ],
+  "non_migration_crons": [
+    {
+      "id": "96410e5b-30d7-4049-9010-b95b42721db3",
+      "name": "schedule-briefing",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000,
+        "anchorMs": 1777153860981
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Check if /tmp/schedule-briefing-latest.json exists and has fresh data (modified in the last 2 hours). Also check /tmp/schedule-briefing-last-posted.txt for the last posted timestamp. If fresh data exi"
+    },
+    {
+      "id": "7f6ab6b7-19de-4f25-8170-0e873b841fef",
+      "name": "session-health",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1777153797409
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run: python3 /home/ubu/.openclaw/workspace/scripts/session-health/monitor.py and report the output verbatim. If status is CRITICAL or RESET, post to Joel DM (D0ATWPM4DTK) via message(action=send, chan"
+    },
+    {
+      "id": "d3a30cd0-4bab-4a0d-aad4-467515c2676e",
+      "name": "claude-tab-monitor",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 1800000,
+        "anchorMs": 1777153809348
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run: python3 /home/ubu/.openclaw/workspace/scripts/claude-tabs/manage-claude-code.py monitor \u2014 report the output verbatim. If any tabs are \ud83d\udd34 DEAD or \ud83d\udfe1 STALE, post to Joel DM (D0ATWPM4DTK) via message("
+    },
+    {
+      "id": "6ad7aa96-f849-4742-accc-0ed628eace09",
+      "name": "slack-missed-detector",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 900000,
+        "anchorMs": 1777153783513
+      },
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "target": "isolated",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Missed message detector. Read the last 10 messages from each Slack channel below. For each channel, check if the most recent human message (not from bot IDs U0ATFQQ4WNS or U0AURHRR4M6) has a reply fro"
+    },
+    {
+      "id": "116a81e7-f134-4c08-8979-323c84dcf1b1",
+      "name": "trello-work",
+      "enabled": true,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 900000,
+        "anchorMs": 1777153827717
+      },
+      "model": "trendmicro-aiendpoint/claude-4.6-opus",
+      "target": "isolated",
+      "last_status": "error",
+      "last_error": "cron: job execution timed out",
+      "consecutive_errors": 1,
+      "prompt_preview": "Check Trello Coconut Todo list (list ID 6954d3af836b51597afff8e9, board TyFBN1Bx). Use Trello API with key+token from Linux keyring (openclaw/TRELLO_API_KEY and openclaw/TRELLO_TOKEN). Pull open cards"
+    },
+    {
+      "id": "d6837634-39bb-4f68-b44b-133362f5dedb",
+      "name": "Memory Dreaming Promotion",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 3 * * *"
+      },
+      "model": "default",
+      "target": "main",
+      "last_status": "ok",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": ""
+    },
+    {
+      "id": "b8b0e5ea-c649-4138-972f-c6084d393dde",
+      "name": "daily-squad-scheduler",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * 1-5",
+        "tz": "America/Chicago",
+        "staggerMs": 0
+      },
+      "model": "default",
+      "target": "isolated",
+      "last_status": "unknown",
+      "last_error": "",
+      "consecutive_errors": 0,
+      "prompt_preview": "Run the daily squad scheduler: python3 /home/ubu/.openclaw/workspace/scripts/squad-scheduler/daily_schedule.py (no --dry-run). Then post the summary from /tmp/squad-schedule-today.txt to #scheduling ("
+    }
+  ],
+  "blockers": [],
+  "warnings": [],
+  "benefits": [
+    "Modular enable/disable per metacognition task (no monolithic cron prompts)",
+    "Two-tier model: quick (15m) for cheap checks, deep (1h) for expensive analysis",
+    "Independent module testing via --module flag",
+    "Structured output to daily logs instead of ad-hoc appending",
+    "Conflict resolution: automated detection of lesson/spec contradictions",
+    "Pattern detection: catches circular rebuilds and token waste automatically",
+    "Lesson review: structural integrity checks on lesson files",
+    "Dry-run mode for previewing what each cycle would do",
+    "Shareable as an OpenClaw skill (.skill package)"
+  ],
+  "dry_run_results": {
+    "quick": {
+      "stdout": "\ud83e\udde0 Metacognition quick tier \u2014 2026-04-26 01:03\n   Modules: session-analyzer, decision-check\n  [DRY RUN] session-analyzer \u2014 \u2705\n  [DRY RUN] decision-check \u2014 \u2705",
+      "stderr": "",
+      "exit_code": 0
+    },
+    "deep": {
+      "stdout": "\ud83e\udde0 Metacognition deep tier \u2014 2026-04-26 01:03\n   Modules: conflict-resolution, lesson-review, pattern-detector\n  [DRY RUN] conflict-resolution \u2014 \u2705\n  [DRY RUN] lesson-review \u2014 \u2705\n  [DRY RUN] pattern-detector \u2014 \u2705",
+      "stderr": "",
+      "exit_code": 0
+    },
+    "quick_live": {
+      "stdout": "\ud83e\udde0 Metacognition quick tier \u2014 2026-04-26 01:03\n   Modules: session-analyzer, decision-check\n\n--- session-analyzer ---\n\u2705 Sessions: 210 | Compactions: 11 | Top tools: exec=2433, read=387, message=320, process=303, mcp-manager__mcpm=189\n  Result: \u2705 ok\n\n--- decision-check ---\n\u2139\ufe0f  0 active, 0 blocked decisions\n  Result: \u2705 ok\n\n--- Summary ---\n  \u2705 session-analyzer\n  \u2705 decision-check",
+      "stderr": "",
+      "exit_code": 0
+    },
+    "deep_live": {
+      "stdout": "\ud83e\udde0 Metacognition deep tier \u2014 2026-04-26 01:03\n   Modules: conflict-resolution, lesson-review, pattern-detector\n\n--- conflict-resolution ---\nScanned 7 lessons, 1 CR docs\n\ud83d\udccb 1 finding(s):\n  - Unresolved CR: CR-001: Hook-Runner Module vs Plugin SDK for Blocking Gates (CR-001-hook-architecture-blocking.md)\n  Result: \ud83d\udccb findings\n\n--- lesson-review ---\n\u2139\ufe0f  Scanned 7 lesson files\n\ud83d\udccb 9 finding(s):\n  \ud83d\udccb 001-verify-before-claiming.md: hook status is 'new' \u2014 verify if implemented\n  \u2139\ufe0f 001-verify-before-claiming.md: 3 unverified item(s)\n  \ud83d\udccb 003-customer-data-in-slack.md: hook status is 'new' \u2014 verify if implemented\n  \u2139\ufe0f 003-customer-data-in-slack.md: 6 unverified item(s)\n  \ud83d\udfe1 004-context-reset-new-session.md: missing sections: Lesson/Principle\n  \ud83d\udccb 004-poll-all-permanently-dead.md: hook status is 'new' \u2014 verify if implemented\n  \u2139\ufe0f 004-poll-all-permanently-dead.md: 3 unverified item(s)\n  \ud83d\udfe1 005-gh-auto-account-switching.md: missing sections: Lesson/Principle\n  \ud83d\udd34 Duplicate lesson number 004: 004-context-reset-new-session.md and 004-poll-all-permanently-dead.md\n  Result: \ud83d\udccb findings\n\n--- pattern-detector ---\n\ud83d\udccb 5 pattern(s) detected:\n  \ud83d\udfe1 Repeated error (239x): {\n  \"status\": \"error\",\n  \"tool\": \"exec\",\n  \"error\": \"exec pr...\n  \ud83d\udfe1 Repeated error (26x): usage: check_gaps.py [-h] [--minutes MINUTES] [--enriched]\nc...\n  \ud83d\udfe1 Repeated error (22x): usage: tracker.py [-h]\n                  {record,respond,pen...\n  \ud83d\udfe1 Repeated error (22x): error: too many arguments for 'message'. Expected 0 argument...\n  \ud83d\udfe1 Repeated error (12x): {\n  \"status\": \"error\",\n  \"tool\": \"edit\",\n  \"error\": \"TODO EN...\n  Result: \ud83d\udccb findings\n\n--- Summary ---\n  \ud83d\udccb conflict-resolution\n  \ud83d\udccb lesson-review\n  \ud83d\udccb pattern-detector",
+      "stderr": "",
+      "exit_code": 0
+    }
+  }
+}

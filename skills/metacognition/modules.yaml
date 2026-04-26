@@ -1,0 +1,44 @@
+# Metacognition Module Registry
+# Each module is independently enable/disable-able
+# Tier: quick (15-min cron) or deep (1-hour cron)
+
+modules:
+  session-analyzer:
+    enabled: true
+    tier: quick
+    description: Quantitative session analysis — tool counts, command frequency, anti-patterns
+
+  conflict-resolution:
+    enabled: true
+    tier: deep
+    description: Detect and resolve conflicts between lessons, specs, and hooks
+    config:
+      cr_directory: memory/conflict-resolutions
+      lessons_directory: memory/lessons
+      auto_resolve_factual: true
+      escalate_architecture: true
+
+  lesson-review:
+    enabled: true
+    tier: deep
+    description: Review lessons board, check for new lessons, apply resolved ones
+    config:
+      lessons_board_id: bZudEKUZ
+
+  decision-check:
+    enabled: true
+    tier: quick
+    description: Check DECISIONS.md for contradictions or stale decisions
+
+  pattern-detector:
+    enabled: true
+    tier: deep
+    description: Detect circular rebuilds, repeated failures, token hemorrhage
+
+  change-control:
+    enabled: true
+    tier: quick
+    description: Gate deployment change control — ensures log-before-enforce, monitors readiness
+    config:
+      min_monitoring_hours: "24"
+      min_trigger_events: "20"
