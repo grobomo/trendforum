@@ -21,7 +21,6 @@ modules:
     task-tracking-gate: true
     teams-access-guard: true
   after_tool_call:
-    audit-logger: true
     commit-msg-check: true
     crlf-detector: true
     test-coverage-check: true

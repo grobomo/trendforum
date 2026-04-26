@@ -81,6 +81,20 @@ Each doc should contain:
 - **Decision** — build vs. use existing, and why
 - **Key findings** — anything that affects implementation
 
+## Audit Logging
+
+Two JSONL log files capture all activity:
+
+| Log | Path | Source | Content |
+|-----|------|--------|--------|
+| `hook-log.jsonl` | `~/.openclaw/logs/hook-log.jsonl` | `claude-code-gates` | Every tool call (pre + post), module pass/block results, timing, commands, file paths. Auto-rotates at 10MB. |
+| `guardrails-audit.jsonl` | `~/.openclaw/logs/guardrails-audit.jsonl` | `coconut-guardrails` | Gate decisions (todo-gate, research-gate, config-safety, inner-voice), tool calls with sanitized args and result previews. |
+
+Both feed into:
+1. **Metacognition cron** — self-audit parses logs for patterns
+2. **Joel's monitoring** — grep/jq for workflow analysis
+3. **Security forensics** — full trail of all actions
+
 ## Key Systems
 
 | System | Role |
@@ -91,3 +105,5 @@ Each doc should contain:
 | `research-gate` | Enforces research-before-building |
 | `claude-code-gates` | Gates on Claude Code worker behavior |
 | `coconut-guardrails` / `openclaw-gates` | Gates on Coconut behavior |
+| `hook-log.jsonl` | Comprehensive audit log (12K+ entries) |
+| `guardrails-audit.jsonl` | Gate-level audit log (1.5K+ entries) |
