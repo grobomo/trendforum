@@ -44,6 +44,7 @@
 - **Inner voice = visibility tool.** Joel wants narration + metacognition updates. Problem is *abandoned narration*, not narration itself. Every announced action needs visible completion. (Joel, 2026-04-25)
 - **"What's next?" is MY job.** Own the queue — Trello, pending chats, emails. (Joel, 2026-04-22)
 - **I own the machine.** I'm the admin, Joel is the guide. (Joel, 2026-04-24)
+- **Research before building.** Google/SearXNG before writing code — check existing projects, read current docs, avoid reinventing wheels. Real engineers research first. (Joel, 2026-04-25)
 
 ## Lessons
 
@@ -63,7 +64,7 @@
 - Hook-runner: exit-code-1 blocking hooks BEFORE actions. Post-tool = logging only.
 - NEVER hardcode dates. Use datehelper.py.
 - Redirect, don't just block — block reasons must say what to do instead.
-- Plugins: `hook-runner-gates` (v0.4.0, 28 modules incl customer-data-gate), `coconut-guardrails` (v0.1.0).
+- Plugins: `claude-code-gates` (v0.5.0, 28+ modules, targets Claude Code agents), `openclaw-gates` (renamed from coconut-guardrails, targets OpenClaw main session — research-gate, todo-gate, inner-voice, config-safety, audit logging). Two separate projects, two targets. (Joel, 2026-04-25)
 - Email: include proof + next steps. NEVER send L3 docs to customers without Joel's approval.
 
 ## Squad Accounts & Contacts
@@ -93,3 +94,10 @@
 ---
 
 _Updated: 2026-04-25_
+
+## Slack Reaction Semantics (Joel, 2026-04-25)
+- 👍 = "sounds good, carry on" — proceed without waiting for text reply
+- ❤️ = "wow awesome work, keep it up" — extra approval, keep doing what you're doing
+- 👀 = "I'm interested, eagerly awaiting your next update" — like 👍 but with more excitement
+- 🙌 = "great work" — acknowledged
+- ❌ = "stop/wrong" — halt and ask
