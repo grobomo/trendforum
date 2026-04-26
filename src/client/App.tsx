@@ -9,6 +9,7 @@ import { SubmitForm } from './components/SubmitForm';
 import { SearchResults } from './components/SearchResults';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ProfilePage } from './components/ProfilePage';
+import { AdminDashboard } from './components/AdminDashboard';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
@@ -30,6 +31,7 @@ export function App() {
           <Route path="submit" element={<SubmitForm />} />
           <Route path="search" element={<SearchResults />} />
           <Route path="u/:pseudonym" element={<ProfilePage />} />
+          <Route path="admin" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </AuthProvider>
