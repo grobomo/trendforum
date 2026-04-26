@@ -1,19 +1,15 @@
 #!/usr/bin/env python3
 """Module: change-control — Gate deployment change control monitor.
 
-Analyzes gate deployments to ensure proper change control:
-1. New gates should deploy in "log" mode first
-2. Must have monitoring evidence before flipping to "enforce"
-3. Flags gates that were deployed directly to enforce (or flipped too fast)
+Delegates to the UNIFIED APPROVAL PIPELINE for all evidence checking
+and status tracking. This module is now a thin wrapper that:
 
-Reads:
-  - openclaw.json plugin config (gate modes)
-  - audit logs (openclaw-gates-audit.jsonl, audit-logger.jsonl)
-  - git log for config changes
+1. Syncs current gates from openclaw.json into the pipeline
+2. Queries the pipeline for each gate's status
+3. Reports findings in metacognition output format
 
-Outputs:
-  - Findings to metacognition daily file
-  - JSON summary to output-dir
+The unified pipeline (approval-pipeline/pipeline.py) is the single
+source of truth for approval status of both gates and metacog modules.
 
 Tier: quick (15-min cron)
 """
@@ -21,213 +17,198 @@ Tier: quick (15-min cron)
 import argparse
 import json
 import os
-import subprocess
 import sys
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 
-OPENCLAW_JSON = Path.home() / ".openclaw" / "openclaw.json"
-LOGS_DIR = Path.home() / ".openclaw" / "logs"
+# Add approval-pipeline to path
 WORKSPACE = Path.home() / ".openclaw" / "workspace"
+sys.path.insert(0, str(WORKSPACE / "approval-pipeline"))
 
-# Audit log files to check for evidence
-AUDIT_LOGS = [
-    LOGS_DIR / "openclaw-gates-audit.jsonl",
-    LOGS_DIR / "audit-logger.jsonl",
-]
+OPENCLAW_JSON = Path.home() / ".openclaw" / "openclaw.json"
 
-# Default thresholds — can be overridden per-gate via config
-DEFAULT_MIN_MONITORING_HOURS = int(os.environ.get("METACOG_DEFAULT_MIN_MONITORING_HOURS", "24"))
-DEFAULT_MIN_TRIGGER_EVENTS = int(os.environ.get("METACOG_DEFAULT_MIN_TRIGGER_EVENTS", "20"))
-
-# Per-gate overrides (JSON string from env, e.g. '{"change-control": {"minHours": 4, "minEvents": 10}}')
-GATE_OVERRIDES = {}
+# Try to import unified pipeline
 try:
-    _raw = os.environ.get("METACOG_GATE_OVERRIDES", "{}")
-    GATE_OVERRIDES = json.loads(_raw)
-except (json.JSONDecodeError, ValueError):
-    pass
+    from pipeline import ApprovalPipeline, EvidenceConfig
+    PIPELINE_AVAILABLE = True
+except ImportError:
+    PIPELINE_AVAILABLE = False
 
 
 def load_gate_configs() -> dict:
     """Load all gate configs from openclaw.json."""
     if not OPENCLAW_JSON.exists():
         return {}
-    
+
     with open(OPENCLAW_JSON) as f:
         cfg = json.load(f)
-    
+
     gates = {}
-    
-    # Check openclaw-gates plugin
     oc_gates = (cfg.get("plugins", {}).get("entries", {})
                 .get("openclaw-gates", {}).get("config", {}))
-    
-    # Research gate
-    rg = oc_gates.get("researchGate", {})
-    if rg.get("enabled"):
-        gates["research-gate"] = {
-            "mode": rg.get("mode", "log"),
-            "plugin": "openclaw-gates",
-            "config_path": "plugins.entries.openclaw-gates.config.researchGate",
-        }
-    
-    # Todo gate
-    tg = oc_gates.get("todoGate", {})
-    if tg.get("enabled"):
-        gates["todo-gate"] = {
-            "mode": tg.get("mode", "log"),
-            "plugin": "openclaw-gates",
-            "config_path": "plugins.entries.openclaw-gates.config.todoGate",
-        }
-    
+
+    # Named gates
+    named_map = {
+        "researchGate": "research-gate",
+        "todoGate": "todo-gate",
+        "changeControl": "change-control",
+        "configSafety": "config-safety",
+        "threadFidelity": "thread-fidelity",
+        "projectScoping": "project-scoping",
+    }
+    for config_key, gate_name in named_map.items():
+        g = oc_gates.get(config_key, {})
+        if g.get("enabled"):
+            gates[gate_name] = {
+                "mode": g.get("mode", "log"),
+                "plugin": "openclaw-gates",
+                "config_path": f"plugins.entries.openclaw-gates.config.{config_key}",
+            }
+
     # Static rules
     rules = oc_gates.get("rules", {})
     for rule_name, rule_cfg in rules.items():
         if rule_cfg.get("enabled"):
-            gates[f"rule:{rule_name}"] = {
+            gates[rule_name] = {
                 "mode": rule_cfg.get("mode", "enforce"),
                 "plugin": "openclaw-gates",
                 "config_path": f"plugins.entries.openclaw-gates.config.rules.{rule_name}",
             }
-    
+
     return gates
 
 
-def count_audit_events(gate_id: str) -> dict:
-    """Count audit log events for a specific gate, with timestamps."""
-    events = {"total": 0, "oldest": None, "newest": None, "would_block": 0, "blocked": 0}
-    
-    # Map gate ID to what appears in audit logs
-    rule_id_patterns = [gate_id, f"_{gate_id}"]
-    
-    for log_path in AUDIT_LOGS:
-        if not log_path.exists():
-            continue
-        try:
-            with open(log_path) as f:
-                for line in f:
-                    try:
-                        entry = json.loads(line.strip())
-                    except (json.JSONDecodeError, ValueError):
-                        continue
-                    
-                    rule_id = entry.get("ruleId", "")
-                    # Check if this entry relates to our gate
-                    if not any(p in rule_id for p in rule_id_patterns):
-                        continue
-                    
-                    events["total"] += 1
-                    ts = entry.get("timestamp") or entry.get("ts")
-                    if ts:
-                        if events["oldest"] is None or ts < events["oldest"]:
-                            events["oldest"] = ts
-                        if events["newest"] is None or ts > events["newest"]:
-                            events["newest"] = ts
-                    
-                    result = entry.get("result", "")
-                    if "would_block" in result:
-                        events["would_block"] += 1
-                    elif "block" in result:
-                        events["blocked"] += 1
-        except Exception:
-            continue
-    
-    return events
+def run_with_pipeline(output_dir: Path):
+    """Run using the unified approval pipeline."""
+    pipeline = ApprovalPipeline()
+    gates = load_gate_configs()
+    now = datetime.now(timezone.utc)
 
-
-def get_recent_config_changes() -> list:
-    """Check git log for recent config changes to gate modes."""
-    changes = []
+    # Get per-gate overrides from env
+    gate_overrides = {}
     try:
-        # Check workspace git log for openclaw.json changes
-        result = subprocess.run(
-            ["git", "log", "--oneline", "--since=7 days ago", "-20",
-             "--", "*.json", "*.yaml", "*.ts"],
-            cwd=str(WORKSPACE),
-            capture_output=True, text=True, timeout=10
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            for line in result.stdout.strip().split("\n"):
-                if any(kw in line.lower() for kw in [
-                    "gate", "enforce", "log", "mode", "guardrail", "openclaw-gates"
-                ]):
-                    changes.append(line.strip())
-    except Exception:
+        raw = os.environ.get("METACOG_GATE_OVERRIDES", "{}")
+        gate_overrides = json.loads(raw)
+    except (json.JSONDecodeError, ValueError):
         pass
-    
-    return changes
 
+    default_min_hours = float(os.environ.get("METACOG_DEFAULT_MIN_MONITORING_HOURS", "24"))
+    default_min_events = int(os.environ.get("METACOG_DEFAULT_MIN_TRIGGER_EVENTS", "20"))
 
-def assess_gate(gate_id: str, gate_info: dict) -> dict:
-    """Assess change control posture for a single gate."""
-    mode = gate_info["mode"]
-    audit = count_audit_events(gate_id)
-    
-    # Resolve per-gate thresholds
-    override = GATE_OVERRIDES.get(gate_id, {})
-    min_hours = override.get("minHours", DEFAULT_MIN_MONITORING_HOURS)
-    min_events = override.get("minEvents", DEFAULT_MIN_TRIGGER_EVENTS)
-    
-    finding = {
-        "gate": gate_id,
-        "mode": mode,
-        "plugin": gate_info["plugin"],
-        "audit_events": audit["total"],
-        "oldest_event": audit["oldest"],
-        "newest_event": audit["newest"],
-        "would_block_count": audit["would_block"],
-        "blocked_count": audit["blocked"],
-        "thresholds": {"minHours": min_hours, "minEvents": min_events},
-        "status": "ok",
-        "findings": [],
-    }
-    
-    if mode == "enforce":
-        # Check if there's enough monitoring evidence
-        if audit["total"] < min_events:
-            finding["status"] = "warning"
-            finding["findings"].append(
-                f"Gate is in ENFORCE mode but only has {audit['total']} audit events "
-                f"(minimum: {min_events}). Was log-mode monitoring sufficient?"
-            )
-        
-        if audit["oldest"]:
-            try:
-                oldest_dt = datetime.fromisoformat(audit["oldest"].replace("Z", "+00:00"))
-                age_hours = (datetime.now(timezone.utc) - oldest_dt).total_seconds() / 3600
-                if age_hours < min_hours:
+    findings = []
+
+    for gate_name, gate_info in gates.items():
+        item_id = f"gate:{gate_name}"
+        override = gate_overrides.get(gate_name, {})
+        min_hours = override.get("minHours", default_min_hours)
+        min_events = override.get("minEvents", default_min_events)
+
+        # Submit to pipeline if not tracked
+        ec = EvidenceConfig(
+            min_monitoring_hours=min_hours,
+            min_trigger_events=min_events,
+        )
+        pipeline.submit(
+            item_id,
+            kind="gate",
+            display_name=f"{gate_name} ({gate_info['mode']})",
+            evidence_config=ec,
+            metadata={"current_mode": gate_info["mode"]},
+        )
+
+        # Check pipeline status
+        result = pipeline.check(item_id)
+
+        finding = {
+            "gate": gate_name,
+            "mode": gate_info["mode"],
+            "plugin": gate_info["plugin"],
+            "pipeline_stage": result.stage,
+            "pipeline_ready": result.ready,
+            "audit_events": result.evidence.event_count,
+            "oldest_event": result.evidence.oldest_event,
+            "newest_event": result.evidence.newest_event,
+            "would_block_count": result.evidence.would_block_count,
+            "blocked_count": result.evidence.blocked_count,
+            "monitoring_hours": round(result.evidence.monitoring_hours, 1),
+            "thresholds": {"minHours": min_hours, "minEvents": min_events},
+            "status": "ok",
+            "findings": [],
+        }
+
+        # Map pipeline status to human-readable findings
+        if gate_info["mode"] == "enforce":
+            if result.stage != "approved" and not pipeline.is_exempt(item_id):
+                if result.evidence.event_count == 0:
+                    finding["status"] = "critical"
+                    finding["findings"].append(
+                        "Gate in ENFORCE mode with ZERO audit evidence. "
+                        "Deployed directly to enforce without log-mode monitoring."
+                    )
+                else:
                     finding["status"] = "warning"
                     finding["findings"].append(
-                        f"Gate in ENFORCE mode but monitoring history is only {age_hours:.1f}h old "
-                        f"(minimum: {min_hours}h). Flipped to enforce too quickly?"
+                        f"Gate in ENFORCE mode but pipeline stage is '{result.stage}'. "
+                        f"Reason: {result.reason}"
                     )
-            except (ValueError, TypeError):
-                pass
-        elif audit["total"] == 0:
-            finding["status"] = "critical"
-            finding["findings"].append(
-                "Gate is in ENFORCE mode with ZERO audit evidence. "
-                "This gate was likely deployed directly to enforce without any log-mode monitoring."
-            )
-    
-    elif mode == "log":
-        # Log mode is fine — just report readiness
-        if audit["total"] >= min_events and audit["oldest"]:
-            try:
-                oldest_dt = datetime.fromisoformat(audit["oldest"].replace("Z", "+00:00"))
-                age_hours = (datetime.now(timezone.utc) - oldest_dt).total_seconds() / 3600
-                if age_hours >= min_hours:
-                    finding["status"] = "ready"
-                    finding["findings"].append(
-                        f"Gate has {audit['total']} events over {age_hours:.1f}h. "
-                        f"Ready to consider flipping to enforce mode. "
-                        f"({audit['would_block_count']} would-block events found.)"
-                    )
-            except (ValueError, TypeError):
-                pass
-    
-    return finding
+        elif gate_info["mode"] == "log":
+            if result.ready and result.stage == "pending-approval":
+                finding["status"] = "ready"
+                finding["findings"].append(
+                    f"Ready for promotion: {result.evidence.event_count} events "
+                    f"over {result.evidence.monitoring_hours:.1f}h. "
+                    f"Pipeline says: {result.reason}"
+                )
+
+        findings.append(finding)
+
+    # Build summary
+    summary = {
+        "timestamp": now.isoformat(),
+        "module": "change-control",
+        "pipeline": "unified (approval-pipeline/pipeline.py)",
+        "gates_assessed": len(findings),
+        "warnings": sum(1 for f in findings if f["status"] == "warning"),
+        "critical": sum(1 for f in findings if f["status"] == "critical"),
+        "ready_to_enforce": sum(1 for f in findings if f["status"] == "ready"),
+        "findings": findings,
+        "sop": {
+            "deploy": "New gates → always deploy in 'log' mode",
+            "monitor": f"Minimum {default_min_hours}h and {default_min_events} events before enforce",
+            "review": "Review would-block counts and false positive rate",
+            "promote": "Flip to 'enforce' only after pipeline approval",
+            "pipeline": "All approvals tracked in ~/.openclaw/state/approval-pipeline.json",
+        },
+    }
+
+    # Write output
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / f"change-control-{now.strftime('%Y-%m-%d')}.json"
+    with open(output_file, "w") as f:
+        json.dump(summary, f, indent=2)
+        f.write("\n")
+
+    # Print human-readable
+    print(f"\n=== Change Control Assessment ({now.strftime('%Y-%m-%d %H:%M UTC')}) ===")
+    print(f"Pipeline: unified (approval-pipeline/pipeline.py)")
+    print(f"Gates assessed: {len(findings)}")
+
+    for f in findings:
+        status_icon = {"ok": "✅", "warning": "⚠️", "critical": "🚨", "ready": "🟢"}.get(f["status"], "❓")
+        pipe_icon = {"approved": "✅", "monitoring": "👁️", "pending-approval": "⏳",
+                     "suspended": "🚨"}.get(f["pipeline_stage"], "?")
+        print(f"\n{status_icon} {f['gate']} [{f['mode']}] — {f['audit_events']} events — pipeline: {pipe_icon} {f['pipeline_stage']}")
+        for note in f["findings"]:
+            print(f"   → {note}")
+
+    if summary["critical"] > 0:
+        print(f"\n🚨 {summary['critical']} CRITICAL: Gates deployed to enforce without monitoring!")
+    elif summary["warnings"] > 0:
+        print(f"\n⚠️  {summary['warnings']} warnings — some gates may need more monitoring.")
+    elif summary["ready_to_enforce"] > 0:
+        print(f"\n🟢 {summary['ready_to_enforce']} gate(s) ready to consider promoting to enforce mode.")
+    else:
+        print("\n✅ All gates following proper change control.")
 
 
 def main():
@@ -236,67 +217,14 @@ def main():
     parser.add_argument("--json", action="store_true", help="Output JSON only")
     args = parser.parse_args()
 
-    now = datetime.now(timezone.utc)
-    gates = load_gate_configs()
-    config_changes = get_recent_config_changes()
-    
-    findings = []
-    for gate_id, gate_info in gates.items():
-        finding = assess_gate(gate_id, gate_info)
-        findings.append(finding)
-    
-    # Build summary
-    summary = {
-        "timestamp": now.isoformat(),
-        "module": "change-control",
-        "gates_assessed": len(findings),
-        "warnings": sum(1 for f in findings if f["status"] == "warning"),
-        "critical": sum(1 for f in findings if f["status"] == "critical"),
-        "ready_to_enforce": sum(1 for f in findings if f["status"] == "ready"),
-        "recent_config_changes": config_changes,
-        "findings": findings,
-        "sop": {
-            "deploy": "New gates → always deploy in 'log' mode",
-            "monitor": f"Minimum {MIN_MONITORING_HOURS}h and {MIN_TRIGGER_EVENTS} events before enforce",
-            "review": "Review would-block counts and false positive rate",
-            "promote": "Flip to 'enforce' only after validation",
-        },
-    }
-    
-    # Write JSON output
     output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    output_file = output_dir / f"change-control-{now.strftime('%Y-%m-%d')}.json"
-    with open(output_file, "w") as f:
-        json.dump(summary, f, indent=2)
-        f.write("\n")
-    
-    # Print human-readable summary
-    if not args.json:
-        print(f"\n=== Change Control Assessment ({now.strftime('%Y-%m-%d %H:%M UTC')}) ===")
-        print(f"Gates assessed: {len(findings)}")
-        
-        for f in findings:
-            status_icon = {"ok": "✅", "warning": "⚠️", "critical": "🚨", "ready": "🟢"}.get(f["status"], "❓")
-            print(f"\n{status_icon} {f['gate']} [{f['mode']}] — {f['audit_events']} audit events")
-            for note in f["findings"]:
-                print(f"   → {note}")
-        
-        if config_changes:
-            print(f"\n📋 Recent gate-related config changes:")
-            for c in config_changes[:5]:
-                print(f"   {c}")
-        
-        if summary["critical"] > 0:
-            print(f"\n🚨 {summary['critical']} CRITICAL: Gates deployed to enforce without monitoring!")
-        elif summary["warnings"] > 0:
-            print(f"\n⚠️  {summary['warnings']} warnings — some gates may need more monitoring.")
-        elif summary["ready_to_enforce"] > 0:
-            print(f"\n🟢 {summary['ready_to_enforce']} gate(s) ready to consider promoting to enforce mode.")
-        else:
-            print("\n✅ All gates following proper change control.")
-    else:
-        print(json.dumps(summary, indent=2))
+
+    if not PIPELINE_AVAILABLE:
+        print("⚠️  Unified approval pipeline not available (approval-pipeline/pipeline.py)")
+        print("   Change control module requires the pipeline. Exiting.")
+        sys.exit(1)
+
+    run_with_pipeline(output_dir)
 
 
 if __name__ == "__main__":

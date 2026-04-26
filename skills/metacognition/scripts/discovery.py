@@ -2,7 +2,8 @@
 """Metacognition Module Discovery — scans for metacog.yaml manifests.
 
 Discovers metacognition modules contributed by extensions, projects, and skills.
-Enforces: discover → monitor (24h) → pending-approval → approved pipeline.
+Delegates approval tracking to the UNIFIED APPROVAL PIPELINE when available,
+falls back to local registry otherwise.
 
 Usage:
     python3 discovery.py scan              # Scan for new metacog.yaml files
@@ -28,6 +29,14 @@ except ImportError:
 WORKSPACE = Path.home() / ".openclaw" / "workspace"
 EXTENSIONS_DIR = Path.home() / ".openclaw" / "extensions"
 SKILL_DIR = Path(__file__).resolve().parent.parent
+
+# Try to import unified pipeline
+sys.path.insert(0, str(WORKSPACE / "approval-pipeline"))
+try:
+    from pipeline import ApprovalPipeline, EvidenceConfig
+    PIPELINE_AVAILABLE = True
+except ImportError:
+    PIPELINE_AVAILABLE = False
 REGISTRY_PATH = SKILL_DIR / "discovered.yaml"
 
 # How long a module must be monitored before it can be approved
@@ -414,6 +423,18 @@ def do_approve(module_id_str: str):
     mod["script_hash"] = hash_file(script_path) if script_path.exists() else mod.get("script_hash")
 
     save_registry(registry)
+
+    # Sync to unified pipeline
+    if PIPELINE_AVAILABLE:
+        try:
+            pipeline = ApprovalPipeline()
+            pipeline_id = f"module:{module_id_str}"
+            pipeline.submit(pipeline_id, kind="module", display_name=module_id_str)
+            pipeline.approve(pipeline_id, approved_by="human")
+            print(f"   ✅ Synced to unified approval pipeline")
+        except Exception as e:
+            print(f"   ⚠️  Pipeline sync failed: {e}")
+
     print(f"✅ Approved: {module_id_str}")
     print(f"   Approved at: {now}")
     print(f"   Note: Future versions will require MFA for approval")
@@ -434,6 +455,16 @@ def do_suspend(module_id_str: str):
     mod["suspend_reason"] = "Manual suspension"
 
     save_registry(registry)
+
+    # Sync to unified pipeline
+    if PIPELINE_AVAILABLE:
+        try:
+            pipeline = ApprovalPipeline()
+            pipeline_id = f"module:{module_id_str}"
+            pipeline.suspend(pipeline_id, reason="Manual suspension")
+        except Exception:
+            pass
+
     print(f"🚨 Suspended: {module_id_str}")
 
 
