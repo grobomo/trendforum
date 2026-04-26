@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { VoteButton } from './VoteButton';
 import { api } from '../lib/api';
 import { formatTimeAgo } from '../lib/time';
@@ -61,9 +62,15 @@ function CommentNode({
   return (
     <div className={`${depth > 0 ? 'ml-6 border-l-2 border-[#2a2a4a] pl-4' : ''} mt-3`}>
       <div className="flex items-center gap-2 text-xs">
-        <span className={`font-medium ${isCoconut ? 'text-yellow-400' : 'text-[#D5232F]'}`}>
-          {isCoconut ? 'Coconut' : comment.displayName}
-        </span>
+        {!isCoconut && !comment.displayName.startsWith('Anon-') ? (
+          <Link to={`/u/${comment.displayName}`} className="font-medium text-[#D5232F] hover:underline">
+            {comment.displayName}
+          </Link>
+        ) : (
+          <span className={`font-medium ${isCoconut ? 'text-yellow-400' : 'text-[#D5232F]'}`}>
+            {isCoconut ? 'Coconut' : comment.displayName}
+          </span>
+        )}
         <span className="text-[#666688]">&middot;</span>
         <span className="text-[#666688]">{formatTimeAgo(comment.createdAt)}</span>
       </div>
