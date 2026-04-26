@@ -14,6 +14,7 @@ import { searchRouter } from './routes/search.js';
 import { coconutRouter } from './routes/coconut.js';
 import { uploadRouter } from './routes/upload.js';
 import { profileRouter } from './routes/profile.js';
+import { apiLimiter } from './middleware/rateLimit.js';
 import { coconutBot } from './coconut/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -32,6 +33,7 @@ app.use((_req, res, next) => {
   next();
 });
 
+app.use('/api', apiLimiter);
 app.use('/api/auth', authRouter);
 app.use('/api/subforums', subforumsRouter);
 app.use('/api', postsRouter);

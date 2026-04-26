@@ -64,8 +64,18 @@ router.get('/posts', async (req, res) => {
 router.post('/posts', requireAuth, async (req, res) => {
   const { subforumId, title, body, linkUrl, imageUrl } = req.body;
 
-  if (!subforumId || !title) {
+  if (!subforumId || !title || typeof title !== 'string') {
     res.status(400).json({ error: 'subforumId and title are required' });
+    return;
+  }
+
+  if (title.length > 300) {
+    res.status(400).json({ error: 'Title must be 300 characters or less' });
+    return;
+  }
+
+  if (body && typeof body === 'string' && body.length > 40000) {
+    res.status(400).json({ error: 'Post body must be 40,000 characters or less' });
     return;
   }
 
