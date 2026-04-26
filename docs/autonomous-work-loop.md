@@ -87,7 +87,7 @@ Two JSONL log files capture all activity:
 
 | Log | Path | Source | Content |
 |-----|------|--------|--------|
-| `hook-log.jsonl` | `~/.openclaw/logs/hook-log.jsonl` | `claude-code-gates` | Every tool call (pre + post), module pass/block results, timing, commands, file paths. Auto-rotates at 10MB. |
+| `audit-logger.jsonl` | `~/.openclaw/logs/audit-logger.jsonl` | `claude-code-gates` | Every tool call (pre + post), module pass/block results, timing, commands, file paths. Auto-rotates at 10MB. |
 | `guardrails-audit.jsonl` | `~/.openclaw/logs/guardrails-audit.jsonl` | `coconut-guardrails` | Gate decisions (todo-gate, research-gate, config-safety, inner-voice), tool calls with sanitized args and result previews. |
 
 Both feed into:
@@ -105,5 +105,5 @@ Both feed into:
 | `research-gate` | Enforces research-before-building |
 | `claude-code-gates` | Gates on Claude Code worker behavior |
 | `coconut-guardrails` / `openclaw-gates` | Gates on Coconut behavior |
-| `hook-log.jsonl` | Comprehensive audit log (12K+ entries) |
+| `audit-logger.jsonl` | Comprehensive audit log (12K+ entries) |
 | `guardrails-audit.jsonl` | Gate-level audit log (1.5K+ entries) |

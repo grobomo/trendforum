@@ -37,7 +37,7 @@ import { homedir } from "node:os";
 // ── Central Hook Log ───────────────────────────────────────────────────────
 
 const HOOK_LOG_DIR = join(homedir(), ".openclaw", "logs");
-const HOOK_LOG_PATH = join(HOOK_LOG_DIR, "hook-log.jsonl");
+const HOOK_LOG_PATH = join(HOOK_LOG_DIR, "audit-logger.jsonl");
 const HOOK_LOG_MAX_BYTES = 10 * 1024 * 1024;
 
 function ensureLogDir(): void {
