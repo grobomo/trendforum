@@ -156,6 +156,13 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 - V1 Console: `portal.xdr.trendmicro.com` — public, needs V1 sign-in
 - Sharp module: installed linux-x64 variant for screenshot support from WSL
 
+### Claude Code Tabs
+- Max simultaneous tabs: 3 (Windows memory/CPU constraint, Joel 2026-04-26)
+- Use parallel tabs for independent tasks — pull top cards from Coconut Todo
+- Monitor via claude-tab-monitor cron (every 30 min)
+- When a tab finishes, backfill with next card
+- Coding tasks (gates, scripts, plugins, multi-file changes) MUST go through CC tabs, not main session edits
+
 ### Slack
 
 - Joel's user ID: `U0ATB4AAGJF`
