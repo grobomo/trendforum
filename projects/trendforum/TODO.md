@@ -23,8 +23,12 @@ No Docker available locally (use EC2 spot via aws skill if needed).
 - [x] T005: Wire coconut into server (src/server/index.ts) — routes + COCONUT_AUTOSTART env var (PR #1)
 - [x] T006: Verify coconut E2E — 7/7 tests pass, bot replied, admin guard works (PR #1)
 
+### Mobile Responsive (In Progress)
+- [ ] T007a: Add hamburger menu + sidebar drawer overlay on mobile (Layout.tsx)
+- [ ] T007b: Compact header on small screens (collapsible search)
+- [ ] T007c: Tighter PostCard spacing on mobile
+
 ### Backlog
-- [ ] T007: Mobile responsive polish (sidebar drawer, smaller cards on mobile)
 - [ ] T008: Error boundaries in React for graceful failure
 - [ ] T009: Image upload support (S3 or local storage)
 - [ ] T010: GitHub publish (grobomo account — generic tool, no PII)
