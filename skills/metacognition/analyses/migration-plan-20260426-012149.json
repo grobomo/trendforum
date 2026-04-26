@@ -1,0 +1,33 @@
+{
+  "generated": "2026-04-26T01:21:49.516539",
+  "analysis_doc": "/home/ubu/.openclaw/workspace/skills/metacognition/analyses/migration-analysis-20260426-012149.md",
+  "crons_to_replace": [],
+  "crons_to_coexist": [],
+  "crons_to_review": [],
+  "files_to_archive": [
+    "/home/ubu/.openclaw/workspace/scripts/metacognition/analyze_sessions.py",
+    "/home/ubu/.openclaw/workspace/scripts/metacognition-big-review.md",
+    "/home/ubu/.openclaw/workspace/scripts/metacognition-check.md",
+    "/home/ubu/.openclaw/workspace/scripts/metacognition-rules.md",
+    "/home/ubu/openclaw-dm/scripts/metacognition/self-audit.py"
+  ],
+  "new_crons": [
+    {
+      "name": "metacog-quick",
+      "schedule": "every 15m",
+      "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+      "thinking": "off",
+      "timeout": 120,
+      "tier": "quick"
+    },
+    {
+      "name": "metacog-deep",
+      "schedule": "every 1h",
+      "model": "trendmicro-aiendpoint/claude-4.6-sonnet",
+      "thinking": "low",
+      "timeout": 300,
+      "tier": "deep"
+    }
+  ],
+  "blockers": []
+}

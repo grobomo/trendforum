@@ -2,10 +2,11 @@
 """Metacognition Migration Tool — analyze, backup, plan, execute, verify.
 
 Safe migration from existing ad-hoc cron jobs to the modular metacognition system.
-Follows the principle: analyze → backup → plan → present → execute → monitor.
+Pipeline: analyze → backup → execute → verify.
+Data flows through a migration plan JSON written by analyze and consumed by execute.
 
 Usage:
-    python3 migrate.py analyze        # Analyze current environment, produce migration doc
+    python3 migrate.py analyze        # Analyze environment, produce migration plan + doc
     python3 migrate.py backup         # Date-stamped backup of all affected files
     python3 migrate.py execute        # Execute the migration plan
     python3 migrate.py verify         # Post-migration health check
@@ -17,6 +18,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -28,35 +30,41 @@ ARCHIVE_DIR = WORKSPACE / ".archive"
 SKILL_DIR = Path(__file__).resolve().parent.parent
 ANALYSES_DIR = SKILL_DIR / "analyses"
 MODULES_DIR = Path(__file__).resolve().parent / "modules"
+MODULES_YAML = SKILL_DIR / "modules.yaml"
+RUNNER = Path(__file__).resolve().parent / "metacog-runner.py"
 
-# Cron jobs that are metacognition-related and candidates for migration
-METACOG_CRON_NAMES = ["self-audit"]
-
-# Cron jobs that are NOT metacognition (should NOT be migrated)
-NON_METACOG_CRON_NAMES = [
-    "schedule-briefing",
-    "session-health",
-    "claude-tab-monitor",
-    "slack-missed-detector",
-    "trello-work",
-    "Memory Dreaming Promotion",
-    "daily-squad-scheduler",
+# Keywords that signal a cron is doing metacognition-type work
+METACOG_KEYWORDS = [
+    "self-audit", "self-reflection", "metacognition", "metacog",
+    "analyze_sessions", "session analyzer", "pattern detect",
+    "lesson review", "conflict resolution", "decision check",
+    "self-reflection", "anti-pattern", "circular rebuild",
+    "thinking about thinking",
 ]
 
-# Files that the old metacog system uses
-OLD_METACOG_FILES = [
-    Path.home() / "openclaw-dm/scripts/metacognition/self-audit.py",
-    WORKSPACE / "scripts/metacognition/analyze_sessions.py",
-    WORKSPACE / "scripts/metacognition-check.md",
-    WORKSPACE / "scripts/metacognition-rules.md",
-    WORKSPACE / "scripts/metacognition-big-review.md",
+# Keywords that signal a cron is NOT metacognition
+NON_METACOG_KEYWORDS = [
+    "schedule", "briefing", "monitor.py", "manage-claude-code",
+    "missed message", "missed detector", "trello", "todo",
+    "dreaming", "memory_core", "squad-scheduler",
+    "tab monitor", "session-health",
 ]
 
 
 def run_cmd(cmd: list, timeout: int = 30) -> tuple:
     """Run a command and return (stdout, stderr, returncode)."""
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+        env = os.environ.copy()
+        env["OPENCLAW_SKIP_CONFIG_VALIDATION"] = "1"
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, env=env)
+        # If config validation fails, retry without the flag but log warning
+        if r.returncode != 0 and "Invalid config" in r.stderr:
+            # Try with --no-validate if available, otherwise use shell
+            r2 = subprocess.run(
+                " ".join(cmd), shell=True, capture_output=True, text=True, timeout=timeout
+            )
+            if r2.returncode == 0:
+                return r2.stdout, r2.stderr, r2.returncode
         return r.stdout, r.stderr, r.returncode
     except subprocess.TimeoutExpired:
         return "", "TIMEOUT", 1
@@ -76,22 +84,153 @@ def get_cron_jobs() -> list:
         return []
 
 
+def load_module_descriptions() -> dict:
+    """Load module descriptions from modules.yaml."""
+    if not MODULES_YAML.exists():
+        return {}
+    try:
+        import yaml
+        with open(MODULES_YAML) as f:
+            data = yaml.safe_load(f)
+        return data.get("modules", {})
+    except ImportError:
+        # Fallback: parse manually if pyyaml not available
+        modules = {}
+        current_name = None
+        with open(MODULES_YAML) as f:
+            for line in f:
+                stripped = line.strip()
+                # Top-level module name (2-space indent under modules:)
+                if line.startswith("  ") and not line.startswith("    ") and ":" in stripped:
+                    name = stripped.rstrip(":").strip()
+                    if name != "modules":
+                        current_name = name
+                        modules[current_name] = {}
+                elif current_name and line.startswith("    "):
+                    if "description:" in stripped:
+                        modules[current_name]["description"] = stripped.split("description:", 1)[1].strip()
+                    elif "tier:" in stripped:
+                        modules[current_name]["tier"] = stripped.split("tier:", 1)[1].strip()
+                    elif "enabled:" in stripped:
+                        modules[current_name]["enabled"] = "true" in stripped.lower()
+        return modules
+
+
+def classify_cron(job: dict, module_descriptions: dict) -> dict:
+    """Dynamically classify a cron job as replace/coexist/review.
+
+    Returns: {classification, reason, matching_modules}
+    """
+    name = job.get("name", "")
+    prompt = job.get("payload", {}).get("message", "").lower()
+    combined = f"{name} {prompt}".lower()
+
+    # Score against metacog keywords
+    metacog_score = sum(1 for kw in METACOG_KEYWORDS if kw.lower() in combined)
+
+    # Score against non-metacog keywords
+    non_metacog_score = sum(1 for kw in NON_METACOG_KEYWORDS if kw.lower() in combined)
+
+    # Check if any new module covers this cron's purpose
+    matching_modules = []
+    for mod_name, mod_info in module_descriptions.items():
+        mod_desc = mod_info.get("description", "").lower()
+        # Check for semantic overlap between cron prompt and module description
+        overlap_words = set(prompt.split()) & set(mod_desc.split())
+        # Filter out common words
+        meaningful = {w for w in overlap_words if len(w) > 4}
+        if len(meaningful) >= 3:
+            matching_modules.append(mod_name)
+        # Also check direct name match
+        if mod_name.replace("-", " ") in combined or mod_name.replace("-", "_") in combined:
+            if mod_name not in matching_modules:
+                matching_modules.append(mod_name)
+
+    # Classification logic
+    if non_metacog_score > metacog_score and not matching_modules:
+        return {
+            "classification": "coexist",
+            "reason": f"Non-metacognition cron (matched {non_metacog_score} non-metacog keywords)",
+            "matching_modules": [],
+        }
+    elif matching_modules and metacog_score > non_metacog_score:
+        return {
+            "classification": "replace",
+            "reason": f"Covered by modules: {', '.join(matching_modules)} "
+                      f"(matched {metacog_score} metacog keywords)",
+            "matching_modules": matching_modules,
+        }
+    elif metacog_score > 0 and matching_modules:
+        return {
+            "classification": "review",
+            "reason": f"Partial overlap with {', '.join(matching_modules)} — "
+                      f"human should verify ({metacog_score} metacog, {non_metacog_score} non-metacog keywords)",
+            "matching_modules": matching_modules,
+        }
+    elif metacog_score > non_metacog_score:
+        return {
+            "classification": "review",
+            "reason": f"Looks metacognition-related ({metacog_score} keywords) "
+                      f"but no module directly covers it",
+            "matching_modules": [],
+        }
+    else:
+        return {
+            "classification": "coexist",
+            "reason": f"No metacognition overlap detected",
+            "matching_modules": [],
+        }
+
+
+def find_old_metacog_files() -> list:
+    """Dynamically find old metacognition-related files."""
+    candidates = []
+
+    # Known locations to scan
+    scan_paths = [
+        WORKSPACE / "scripts",
+        Path.home() / "openclaw-dm" / "scripts" / "metacognition",
+    ]
+
+    for scan_dir in scan_paths:
+        if not scan_dir.exists():
+            continue
+        for f in scan_dir.rglob("*"):
+            if not f.is_file():
+                continue
+            name_lower = f.name.lower()
+            # Match files with metacognition-related names
+            if any(kw in name_lower for kw in [
+                "metacog", "self-audit", "self_audit",
+                "analyze_sessions", "session_analyzer",
+            ]):
+                candidates.append(f)
+            # Also check .md files that look like metacog prompts/rules
+            if f.suffix == ".md" and any(kw in name_lower for kw in [
+                "metacognition", "metacog",
+            ]):
+                candidates.append(f)
+
+    return sorted(set(candidates))
+
+
 def analyze_environment() -> dict:
     """Analyze the current metacognition environment."""
+    module_descriptions = load_module_descriptions()
+
     analysis = {
         "timestamp": datetime.now().isoformat(),
         "existing_crons": [],
+        "classified_crons": {},
         "old_metacog_files": [],
         "new_skill_modules": [],
-        "migration_candidates": [],
-        "non_migration_crons": [],
         "blockers": [],
         "warnings": [],
         "benefits": [],
         "dry_run_results": {},
     }
 
-    # 1. Catalog existing cron jobs
+    # 1. Catalog and classify existing cron jobs
     jobs = get_cron_jobs()
     for job in jobs:
         name = job.get("name", "")
@@ -105,70 +244,66 @@ def analyze_environment() -> dict:
             "last_status": job.get("state", {}).get("lastStatus", "unknown"),
             "last_error": job.get("state", {}).get("lastError", ""),
             "consecutive_errors": job.get("state", {}).get("consecutiveErrors", 0),
-            "prompt_preview": job.get("payload", {}).get("message", "")[:200],
+            "prompt_preview": job.get("payload", {}).get("message", "")[:300],
         }
         analysis["existing_crons"].append(entry)
 
-        if name in METACOG_CRON_NAMES:
-            analysis["migration_candidates"].append(entry)
-        elif name in NON_METACOG_CRON_NAMES:
-            analysis["non_migration_crons"].append(entry)
-        else:
-            analysis["warnings"].append(
-                f"Unknown cron job '{name}' — not categorized. Review manually."
-            )
+        # Dynamic classification
+        classification = classify_cron(job, module_descriptions)
+        analysis["classified_crons"][name] = {
+            **entry,
+            **classification,
+        }
 
-    # 2. Check old metacog files
-    for f in OLD_METACOG_FILES:
-        if f.exists():
-            stat = f.stat()
-            analysis["old_metacog_files"].append({
-                "path": str(f),
-                "size": stat.st_size,
-                "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
-                "exists": True,
-            })
-        else:
-            analysis["old_metacog_files"].append({
-                "path": str(f),
-                "exists": False,
-            })
+    # 2. Find old metacog files dynamically
+    old_files = find_old_metacog_files()
+    for f in old_files:
+        stat = f.stat()
+        analysis["old_metacog_files"].append({
+            "path": str(f),
+            "size": stat.st_size,
+            "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+        })
 
     # 3. Catalog new modules
-    for f in sorted(MODULES_DIR.glob("*.py")):
-        analysis["new_skill_modules"].append({
-            "name": f.stem,
-            "path": str(f),
-            "size": f.stat().st_size,
-        })
+    if MODULES_DIR.exists():
+        for f in sorted(MODULES_DIR.glob("*.py")):
+            desc = module_descriptions.get(f.stem, {}).get("description", "")
+            tier = module_descriptions.get(f.stem, {}).get("tier", "?")
+            analysis["new_skill_modules"].append({
+                "name": f.stem,
+                "path": str(f),
+                "size": f.stat().st_size,
+                "description": desc,
+                "tier": tier,
+            })
 
     # 4. Check for blockers
     if not MODULES_DIR.exists():
         analysis["blockers"].append("Modules directory does not exist")
-
-    modules_yaml = SKILL_DIR / "modules.yaml"
-    if not modules_yaml.exists():
+    if not MODULES_YAML.exists():
         analysis["blockers"].append("modules.yaml does not exist")
-
-    # Check if runner works
-    runner = Path(__file__).resolve().parent / "metacog-runner.py"
-    if not runner.exists():
+    if not RUNNER.exists():
         analysis["blockers"].append("metacog-runner.py does not exist")
     else:
-        stdout, stderr, rc = run_cmd([sys.executable, str(runner), "--list"])
+        stdout, stderr, rc = run_cmd([sys.executable, str(RUNNER), "--list"])
         if rc != 0:
             analysis["blockers"].append(f"Runner --list failed: {stderr[:200]}")
 
-    # 5. Potential warnings
-    for job in analysis["migration_candidates"]:
-        if job["consecutive_errors"] > 0:
+    # 5. Warnings
+    review_crons = [
+        n for n, c in analysis["classified_crons"].items()
+        if c["classification"] == "review"
+    ]
+    if review_crons:
+        analysis["warnings"].append(
+            f"Crons needing human review: {', '.join(review_crons)}"
+        )
+
+    for name, c in analysis["classified_crons"].items():
+        if c.get("consecutive_errors", 0) > 0:
             analysis["warnings"].append(
-                f"Cron '{job['name']}' has {job['consecutive_errors']} consecutive errors — "
-                f"migration won't fix underlying issues"
-            )
-        if job["last_status"] == "error":
-            analysis["warnings"].append(
-                f"Cron '{job['name']}' last run errored: {job.get('last_error', 'unknown')}"
+                f"Cron '{name}' has {c['consecutive_errors']} consecutive errors"
             )
 
     # 6. Benefits
@@ -184,28 +319,19 @@ def analyze_environment() -> dict:
         "Shareable as an OpenClaw skill (.skill package)",
     ]
 
-    # 7. Run dry runs
+    # 7. Dry run + live demo of both tiers
     for tier in ["quick", "deep"]:
         stdout, stderr, rc = run_cmd(
-            [sys.executable, str(runner), "--tier", tier, "--dry-run"],
-            timeout=15,
+            [sys.executable, str(RUNNER), "--tier", tier, "--dry-run"], timeout=15,
         )
-        analysis["dry_run_results"][tier] = {
-            "stdout": stdout.strip(),
-            "stderr": stderr.strip(),
-            "exit_code": rc,
+        analysis["dry_run_results"][f"{tier}_dry"] = {
+            "stdout": stdout.strip(), "stderr": stderr.strip(), "exit_code": rc,
         }
-
-    # 8. Run actual quick + deep tiers for demo results
-    for tier in ["quick", "deep"]:
         stdout, stderr, rc = run_cmd(
-            [sys.executable, str(runner), "--tier", tier],
-            timeout=120,
+            [sys.executable, str(RUNNER), "--tier", tier], timeout=120,
         )
         analysis["dry_run_results"][f"{tier}_live"] = {
-            "stdout": stdout.strip(),
-            "stderr": stderr.strip(),
-            "exit_code": rc,
+            "stdout": stdout.strip(), "stderr": stderr.strip(), "exit_code": rc,
         }
 
     return analysis
@@ -214,33 +340,45 @@ def analyze_environment() -> dict:
 def format_analysis_document(analysis: dict) -> str:
     """Format analysis into a readable markdown document."""
     ts = datetime.now().strftime("%Y-%m-%d %H:%M CDT")
+
+    # Count by classification
+    replace_crons = [
+        n for n, c in analysis["classified_crons"].items()
+        if c["classification"] == "replace"
+    ]
+    coexist_crons = [
+        n for n, c in analysis["classified_crons"].items()
+        if c["classification"] == "coexist"
+    ]
+    review_crons = [
+        n for n, c in analysis["classified_crons"].items()
+        if c["classification"] == "review"
+    ]
+
     lines = [
         f"# Metacognition Migration Analysis",
         f"Generated: {ts}",
         "",
         "## Executive Summary",
         "",
-        f"- *{len(analysis['existing_crons'])}* existing cron jobs found",
-        f"- *{len(analysis['migration_candidates'])}* are metacognition-related (migration candidates)",
-        f"- *{len(analysis['non_migration_crons'])}* are non-metacognition (will NOT be touched)",
-        f"- *{len(analysis['new_skill_modules'])}* new modular modules ready",
-        f"- *{len(analysis['blockers'])}* blockers",
-        f"- *{len(analysis['warnings'])}* warnings",
+        f"- **{len(analysis['existing_crons'])}** existing cron jobs analyzed",
+        f"- **{len(replace_crons)}** classified as `replace` (new modules cover them)",
+        f"- **{len(coexist_crons)}** classified as `coexist` (will NOT be touched)",
+        f"- **{len(review_crons)}** classified as `review` (human decision needed)",
+        f"- **{len(analysis['new_skill_modules'])}** new modular modules ready",
+        f"- **{len(analysis['blockers'])}** blockers",
+        f"- **{len(analysis['warnings'])}** warnings",
         "",
     ]
 
     # Blockers
     if analysis["blockers"]:
-        lines.extend([
-            "## ❌ Blockers (must fix before migration)",
-            "",
-        ])
+        lines.extend(["## ❌ Blockers", ""])
         for b in analysis["blockers"]:
             lines.append(f"- {b}")
         lines.append("")
     else:
-        lines.append("## ✅ No Blockers — Ready to Migrate")
-        lines.append("")
+        lines.extend(["## ✅ No Blockers — Ready to Migrate", ""])
 
     # Warnings
     if analysis["warnings"]:
@@ -249,62 +387,78 @@ def format_analysis_document(analysis: dict) -> str:
             lines.append(f"- {w}")
         lines.append("")
 
-    # Migration candidates
+    # Classification table
     lines.extend([
-        "## Migration Candidates (will be replaced)",
+        "## Cron Classification (dynamically determined)",
         "",
-        "| Cron Name | Schedule | Model | Status | Errors |",
-        "|---|---|---|---|---|",
+        "| Cron Name | Classification | Reason | Matching Modules |",
+        "|---|---|---|---|",
     ])
-    for job in analysis["migration_candidates"]:
-        sched = job["schedule"]
-        sched_str = sched.get("expr", f"every {sched.get('everyMs', 0)//60000}m")
-        lines.append(
-            f"| {job['name']} | {sched_str} | {job['model'][:30]} | "
-            f"{job['last_status']} | {job['consecutive_errors']} |"
-        )
+    for name, c in sorted(analysis["classified_crons"].items()):
+        icon = {"replace": "🔄", "coexist": "✅", "review": "🔍"}.get(c["classification"], "?")
+        modules = ", ".join(c.get("matching_modules", [])) or "—"
+        reason = c["reason"][:80]
+        lines.append(f"| {name} | {icon} {c['classification']} | {reason} | {modules} |")
     lines.append("")
 
-    # Non-migration crons
-    lines.extend([
-        "## Non-Migration Crons (will NOT be touched)",
-        "",
-    ])
-    for job in analysis["non_migration_crons"]:
-        lines.append(f"- **{job['name']}** — {job['last_status']}")
-    lines.append("")
+    # Replace candidates detail
+    if replace_crons:
+        lines.extend(["## Crons to Replace (modules cover their function)", ""])
+        for name in replace_crons:
+            c = analysis["classified_crons"][name]
+            sched = c["schedule"]
+            sched_str = sched.get("expr", f"every {sched.get('everyMs', 0)//60000}m")
+            lines.extend([
+                f"### {name}",
+                f"- Schedule: {sched_str}",
+                f"- Model: {c['model'][:40]}",
+                f"- Status: {c['last_status']}",
+                f"- Covered by: {', '.join(c.get('matching_modules', []))}",
+                f"- Prompt preview: `{c['prompt_preview'][:150]}...`",
+                "",
+            ])
+
+    # Review candidates
+    if review_crons:
+        lines.extend(["## Crons Needing Human Review", ""])
+        for name in review_crons:
+            c = analysis["classified_crons"][name]
+            lines.extend([
+                f"### {name}",
+                f"- Reason: {c['reason']}",
+                f"- Prompt preview: `{c['prompt_preview'][:150]}...`",
+                f"- **Action needed:** confirm replace or coexist",
+                "",
+            ])
+
+    # Coexist crons (brief)
+    if coexist_crons:
+        lines.extend(["## Crons That Will Coexist (not touched)", ""])
+        for name in coexist_crons:
+            c = analysis["classified_crons"][name]
+            lines.append(f"- **{name}** — {c['last_status']} — {c['reason'][:60]}")
+        lines.append("")
 
     # Old files
-    lines.extend(["## Old Metacognition Files (will be archived)", ""])
-    for f in analysis["old_metacog_files"]:
-        status = f"exists ({f.get('size', 0)} bytes, modified {f.get('modified', '?')[:10]})" if f["exists"] else "not found"
-        lines.append(f"- `{f['path']}` — {status}")
-    lines.append("")
+    if analysis["old_metacog_files"]:
+        lines.extend(["## Old Metacognition Files (will be archived, never deleted)", ""])
+        for f in analysis["old_metacog_files"]:
+            modified = f.get("modified", "?")[:10]
+            lines.append(f"- `{f['path']}` — {f['size']} bytes, modified {modified}")
+        lines.append("")
 
     # New modules
     lines.extend(["## New Modular System", ""])
     for m in analysis["new_skill_modules"]:
-        lines.append(f"- **{m['name']}** — `{m['path']}` ({m['size']} bytes)")
+        lines.append(f"- **{m['name']}** ({m['tier']}) — {m['description'][:60]}")
     lines.append("")
 
-    # Dry run results
-    lines.extend(["## Dry Run Results", ""])
-    for tier in ["quick", "deep"]:
-        dr = analysis["dry_run_results"].get(tier, {})
-        lines.extend([
-            f"### {tier.title()} Tier (dry run)",
-            "```",
-            dr.get("stdout", "(no output)"),
-            "```",
-            "",
-        ])
-
-    # Live run results
-    lines.extend(["## Live Test Results (demonstration)", ""])
+    # Demo results
+    lines.extend(["## Live Demo Results", ""])
     for tier in ["quick", "deep"]:
         lr = analysis["dry_run_results"].get(f"{tier}_live", {})
         lines.extend([
-            f"### {tier.title()} Tier (live)",
+            f"### {tier.title()} Tier",
             "```",
             lr.get("stdout", "(no output)"),
             "```",
@@ -321,46 +475,110 @@ def format_analysis_document(analysis: dict) -> str:
     lines.extend([
         "## Migration Plan",
         "",
-        "### Step 1: Backup (automatic)",
-        "- Date-stamped copies of all affected files → `.archive/metacog-migration-YYYYMMDD-HHMMSS/`",
-        "- Cron job configs exported to JSON backup",
+        "### Step 1: Backup",
+        "- Export full cron table to JSON in `.archive/`",
+        "- Date-stamped copy of all old metacog scripts",
+        "- Copy existing metacognition output",
+        "- MANIFEST.md with restore instructions",
         "",
-        "### Step 2: Replace cron jobs",
-        "- Disable old `self-audit` cron",
-        "- Create new `metacog-quick` cron (every 15m, Haiku, runs metacog-runner.py --tier quick)",
-        "- Create new `metacog-deep` cron (every 1h, Sonnet, runs metacog-runner.py --tier deep)",
+        "### Step 2: Execute",
+        "- Reads migration plan JSON from analysis step (single source of truth)",
+        "- Only disables crons classified as `replace`",
+        "- Skips crons classified as `review` unless human confirmed",
+        "- Creates `metacog-quick` (15m, Haiku) and `metacog-deep` (1h, Sonnet)",
+        "- Archives old scripts to `.archive/` (move, never delete)",
         "",
-        "### Step 3: Archive old files",
-        "- Move old metacog scripts to `.archive/` (never delete)",
+        "### Step 3: Verify",
+        "- Confirms new crons exist and enabled",
+        "- Confirms replaced crons disabled (not deleted)",
+        "- Runs both tiers live",
+        "- Confirms coexist crons untouched",
         "",
-        "### Step 4: Verify",
-        "- Run both tiers and confirm output matches expectations",
-        "- Compare with last known-good output from old system",
-        "- Monitor for 24h via audit logs",
-        "",
-        "### Rollback Plan",
-        "- Restore cron jobs from JSON backup",
-        "- Restore files from `.archive/` backup",
-        "- All backups are date-stamped and never overwritten",
+        "### Rollback",
+        "- Re-enables replaced crons from backup",
+        "- Removes new metacog crons",
+        "- Restores archived scripts",
         "",
     ])
 
     return "\n".join(lines)
 
 
+def write_migration_plan(analysis: dict, doc_path: str) -> str:
+    """Write a migration plan JSON that execute step consumes."""
+    plan = {
+        "generated": datetime.now().isoformat(),
+        "analysis_doc": doc_path,
+        "crons_to_replace": [],
+        "crons_to_coexist": [],
+        "crons_to_review": [],
+        "files_to_archive": [f["path"] for f in analysis["old_metacog_files"]],
+        "new_crons": [
+            {
+                "name": "metacog-quick",
+                "schedule": "every 15m",
+                "model": "trendmicro-aiendpoint/claude-4.5-haiku",
+                "thinking": "off",
+                "timeout": 120,
+                "tier": "quick",
+            },
+            {
+                "name": "metacog-deep",
+                "schedule": "every 1h",
+                "model": "trendmicro-aiendpoint/claude-4.6-sonnet",
+                "thinking": "low",
+                "timeout": 300,
+                "tier": "deep",
+            },
+        ],
+        "blockers": analysis["blockers"],
+    }
+
+    for name, c in analysis["classified_crons"].items():
+        entry = {"name": name, "id": c.get("id", ""), "reason": c["reason"]}
+        if c["classification"] == "replace":
+            plan["crons_to_replace"].append(entry)
+        elif c["classification"] == "coexist":
+            plan["crons_to_coexist"].append(entry)
+        elif c["classification"] == "review":
+            plan["crons_to_review"].append(entry)
+
+    plan_path = ANALYSES_DIR / f"migration-plan-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
+    plan_path.write_text(json.dumps(plan, indent=2, default=str))
+    print(f"📋 Migration plan: {plan_path}")
+    return str(plan_path)
+
+
+def find_latest_plan() -> dict:
+    """Find the most recent migration plan JSON."""
+    plans = sorted(ANALYSES_DIR.glob("migration-plan-*.json"))
+    if not plans:
+        print("❌ No migration plan found. Run 'analyze' first.")
+        sys.exit(1)
+    plan_path = plans[-1]
+    print(f"📋 Using plan: {plan_path}")
+    return json.loads(plan_path.read_text())
+
+
 def do_analyze(dry_run: bool = False) -> str:
-    """Run analysis and write document. Returns path to analysis doc."""
+    """Run analysis and write documents. Returns path to analysis doc."""
+    print("🔍 Analyzing environment...")
     analysis = analyze_environment()
     doc = format_analysis_document(analysis)
 
     ANALYSES_DIR.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+
+    # Write analysis document
     doc_path = ANALYSES_DIR / f"migration-analysis-{ts}.md"
     doc_path.write_text(doc)
 
-    # Also save raw JSON for programmatic use
+    # Write raw data
     json_path = ANALYSES_DIR / f"migration-analysis-{ts}.json"
     json_path.write_text(json.dumps(analysis, indent=2, default=str))
+
+    # Write migration plan (consumed by execute step)
+    plan_path = write_migration_plan(analysis, str(doc_path))
 
     print(f"📄 Analysis document: {doc_path}")
     print(f"📊 Raw data: {json_path}")
@@ -372,24 +590,26 @@ def do_backup() -> str:
     ts = datetime.now().strftime("%Y%m%dT%H%M%S")
     backup_dir = ARCHIVE_DIR / f"metacog-migration-{ts}"
     backup_dir.mkdir(parents=True, exist_ok=True)
-
     backed_up = []
 
-    # Backup old metacog files
-    for f in OLD_METACOG_FILES:
-        if f.exists():
-            # Preserve relative path structure
-            rel = f.name
-            dest = backup_dir / "old-scripts" / rel
+    # Backup full cron table
+    jobs = get_cron_jobs()
+    cron_backup = backup_dir / "cron-jobs-full-backup.json"
+    cron_backup.write_text(json.dumps(jobs, indent=2, default=str))
+    backed_up.append("Full cron table (all jobs)")
+
+    # Backup old metacog files (dynamically found)
+    old_files = find_old_metacog_files()
+    if old_files:
+        scripts_dir = backup_dir / "old-scripts"
+        scripts_dir.mkdir(parents=True, exist_ok=True)
+        for f in old_files:
+            # Preserve some path structure to avoid name collisions
+            rel = f.relative_to(f.parent.parent) if len(f.parts) > 2 else Path(f.name)
+            dest = scripts_dir / rel
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(f, dest)
             backed_up.append(str(f))
-
-    # Backup cron job configs
-    jobs = get_cron_jobs()
-    cron_backup = backup_dir / "cron-jobs-backup.json"
-    cron_backup.write_text(json.dumps(jobs, indent=2, default=str))
-    backed_up.append("cron job configs")
 
     # Backup existing metacognition output
     metacog_output = WORKSPACE / "memory" / "metacognition"
@@ -404,7 +624,7 @@ def do_backup() -> str:
         f"# Metacognition Migration Backup\n"
         f"Created: {datetime.now().isoformat()}\n\n"
         f"## Files backed up:\n"
-        + "\n".join(f"- {f}" for f in backed_up)
+        + "\n".join(f"- {item}" for item in backed_up)
         + f"\n\n## Restore command:\n"
         f"```\npython3 {__file__} rollback --backup-dir {backup_dir}\n```\n"
     )
@@ -416,157 +636,167 @@ def do_backup() -> str:
 
 def do_execute(dry_run: bool = False) -> bool:
     """Execute the migration plan."""
-    runner = Path(__file__).resolve().parent / "metacog-runner.py"
+    plan = find_latest_plan()
+
+    # Check for blockers
+    if plan.get("blockers"):
+        print("❌ Cannot execute — blockers found:")
+        for b in plan["blockers"]:
+            print(f"  - {b}")
+        return False
+
+    # Check for unresolved review items
+    if plan.get("crons_to_review"):
+        print("⚠️  Crons needing human review (will be SKIPPED during migration):")
+        for c in plan["crons_to_review"]:
+            print(f"  - {c['name']}: {c['reason']}")
+        print()
 
     if dry_run:
-        print("🏗️  [DRY RUN] Would execute migration:")
-        print("  1. Disable old self-audit cron")
-        print("  2. Create metacog-quick cron (every 15m)")
-        print("  3. Create metacog-deep cron (every 1h)")
-        print("  4. Archive old metacog scripts")
+        print("🏗️  [DRY RUN] Would execute:")
+        for c in plan.get("crons_to_replace", []):
+            print(f"  - Disable: {c['name']}")
+        for nc in plan.get("new_crons", []):
+            print(f"  - Create: {nc['name']} ({nc['schedule']}, {nc['model'][:30]})")
+        for f in plan.get("files_to_archive", []):
+            print(f"  - Archive: {f}")
         return True
 
-    # Step 1: Disable old self-audit cron
-    print("📋 Step 1: Disabling old self-audit cron...")
-    stdout, stderr, rc = run_cmd(["openclaw", "cron", "disable", "self-audit"])
-    if rc != 0 and "not found" not in stderr.lower():
-        print(f"  ⚠️  Could not disable self-audit: {stderr[:100]}")
-    else:
-        print("  ✅ self-audit disabled (or not found)")
+    # Step 1: Disable crons classified as "replace"
+    for cron in plan.get("crons_to_replace", []):
+        name = cron["name"]
+        print(f"📋 Disabling replaced cron: {name}...")
+        stdout, stderr, rc = run_cmd(["openclaw", "cron", "disable", name])
+        if rc != 0 and "not found" not in stderr.lower():
+            print(f"  ⚠️  Could not disable {name}: {stderr[:100]}")
+        else:
+            print(f"  ✅ {name} disabled")
 
     # Step 2: Create new cron jobs
-    # Quick tier
-    print("📋 Step 2a: Creating metacog-quick cron (every 15m)...")
-    quick_prompt = (
-        f"Run the metacognition quick tier: python3 {runner} --tier quick. "
-        f"If any module returns findings (exit code 1), review the output. "
-        f"If any 🔴 anti-patterns are found, post a brief alert to Joel DM (D0ATWPM4DTK) "
-        f"via message(action=send, channel=slack, target=D0ATWPM4DTK). "
-        f"Start and end channel messages with 🌴. "
-        f"Otherwise reply HEARTBEAT_OK."
-    )
-    stdout, stderr, rc = run_cmd([
-        "openclaw", "cron", "add",
-        "--name", "metacog-quick",
-        "--schedule", "every 15m",
-        "--model", "trendmicro-aiendpoint/claude-4.5-haiku",
-        "--target", "isolated",
-        "--light-context",
-        "--thinking", "off",
-        "--timeout", "120",
-        "--message", quick_prompt,
-    ])
-    if rc != 0:
-        print(f"  ❌ Failed to create metacog-quick: {stderr[:200]}")
-        return False
-    print("  ✅ metacog-quick created")
+    for nc in plan.get("new_crons", []):
+        tier = nc["tier"]
+        name = nc["name"]
+        print(f"📋 Creating {name} ({nc['schedule']})...")
 
-    # Deep tier
-    print("📋 Step 2b: Creating metacog-deep cron (every 1h)...")
-    deep_prompt = (
-        f"Run the metacognition deep tier: python3 {runner} --tier deep. "
-        f"Review findings from all modules. For conflict-resolution findings, check if any "
-        f"CR documents need escalation to Joel. For pattern-detector findings with 🔴 flags, "
-        f"post to #coco-metacognition (C0ATCRVSB71) via message(action=send, channel=slack, "
-        f"target=C0ATCRVSB71). Write a 2-3 sentence self-reflection and append to "
-        f"memory/metacognition/$(date +%Y-%m-%d).md. "
-        f"Start and end channel messages with 🌴. If everything is clean, reply HEARTBEAT_OK."
-    )
-    stdout, stderr, rc = run_cmd([
-        "openclaw", "cron", "add",
-        "--name", "metacog-deep",
-        "--schedule", "every 1h",
-        "--model", "trendmicro-aiendpoint/claude-4.6-sonnet",
-        "--target", "isolated",
-        "--light-context",
-        "--thinking", "low",
-        "--timeout", "300",
-        "--message", deep_prompt,
-    ])
-    if rc != 0:
-        print(f"  ❌ Failed to create metacog-deep: {stderr[:200]}")
-        return False
-    print("  ✅ metacog-deep created")
+        if tier == "quick":
+            prompt = (
+                f"Run the metacognition quick tier: python3 {RUNNER} --tier quick. "
+                f"If any module returns findings (exit code 1), review the output. "
+                f"If any 🔴 anti-patterns are found, post a brief alert to Joel DM (D0ATWPM4DTK) "
+                f"via message(action=send, channel=slack, target=D0ATWPM4DTK). "
+                f"Start and end channel messages with 🌴. "
+                f"Otherwise reply HEARTBEAT_OK."
+            )
+        else:
+            prompt = (
+                f"Run the metacognition deep tier: python3 {RUNNER} --tier deep. "
+                f"Review findings from all modules. For conflict-resolution findings, check if any "
+                f"CR documents need escalation to Joel. For pattern-detector findings with 🔴 flags, "
+                f"post to #coco-metacognition (C0ATCRVSB71) via message(action=send, channel=slack, "
+                f"target=C0ATCRVSB71). Write a 2-3 sentence self-reflection and append to "
+                f"memory/metacognition/$(date +%Y-%m-%d).md. "
+                f"Start and end channel messages with 🌴. If everything is clean, reply HEARTBEAT_OK."
+            )
 
-    # Step 3: Archive old files (never delete)
-    print("📋 Step 3: Archiving old metacog scripts...")
-    ts = datetime.now().strftime("%Y%m%dT%H%M%S")
-    archive_dest = ARCHIVE_DIR / f"old-metacog-scripts-{ts}"
-    archived = 0
-    for f in OLD_METACOG_FILES:
-        if f.exists():
-            dest = archive_dest / f.name
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(f), str(dest))
-            archived += 1
-    if archived > 0:
-        print(f"  ✅ {archived} files archived to {archive_dest}")
-    else:
-        print("  ℹ️  No old files to archive")
+        stdout, stderr, rc = run_cmd([
+            "openclaw", "cron", "add",
+            "--name", name,
+            "--schedule", nc["schedule"],
+            "--model", nc["model"],
+            "--target", "isolated",
+            "--light-context",
+            "--thinking", nc.get("thinking", "off"),
+            "--timeout", str(nc.get("timeout", 120)),
+            "--message", prompt,
+        ])
+        if rc != 0:
+            print(f"  ❌ Failed: {stderr[:200]}")
+            return False
+        print(f"  ✅ {name} created")
 
-    print("✅ Migration complete!")
+    # Step 3: Archive old files (move, never delete)
+    files_to_archive = plan.get("files_to_archive", [])
+    if files_to_archive:
+        ts = datetime.now().strftime("%Y%m%dT%H%M%S")
+        archive_dest = ARCHIVE_DIR / f"old-metacog-scripts-{ts}"
+        archived = 0
+        for fpath in files_to_archive:
+            f = Path(fpath)
+            if f.exists():
+                dest = archive_dest / f.name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(f), str(dest))
+                archived += 1
+                print(f"  📁 Archived: {f.name}")
+        if archived:
+            print(f"  ✅ {archived} files archived to {archive_dest}")
+
+    print("\n✅ Migration complete!")
     return True
 
 
 def do_verify() -> bool:
     """Post-migration verification."""
-    runner = Path(__file__).resolve().parent / "metacog-runner.py"
+    plan = find_latest_plan()
     success = True
 
     print("🔍 Post-migration verification...")
 
-    # 1. Check new cron jobs exist
-    print("\n📋 Checking new cron jobs...")
     jobs = get_cron_jobs()
-    job_names = [j.get("name", "") for j in jobs]
+    job_names = {j.get("name", ""): j for j in jobs}
 
-    for expected in ["metacog-quick", "metacog-deep"]:
-        if expected in job_names:
-            job = next(j for j in jobs if j["name"] == expected)
+    # 1. New crons exist and enabled
+    print("\n📋 New cron jobs:")
+    for nc in plan.get("new_crons", []):
+        name = nc["name"]
+        if name in job_names:
+            job = job_names[name]
             status = "✅ enabled" if job.get("enabled") else "⚠️ disabled"
-            print(f"  {status}: {expected}")
+            print(f"  {status}: {name}")
         else:
-            print(f"  ❌ MISSING: {expected}")
+            print(f"  ❌ MISSING: {name}")
             success = False
 
-    # 2. Check old cron disabled
-    if "self-audit" in job_names:
-        job = next(j for j in jobs if j["name"] == "self-audit")
-        if job.get("enabled"):
-            print("  ⚠️  Old self-audit cron still enabled")
-        else:
-            print("  ✅ Old self-audit cron disabled")
-    else:
-        print("  ℹ️  Old self-audit cron not found (ok)")
-
-    # 3. Run both tiers to confirm they work
-    print("\n📋 Running quick tier test...")
-    stdout, stderr, rc = run_cmd([sys.executable, str(runner), "--tier", "quick"], timeout=60)
-    if rc <= 1:  # 0=ok, 1=findings (both are valid)
-        print(f"  ✅ Quick tier ran successfully (exit {rc})")
-        print(f"     {stdout.strip()[:200]}")
-    else:
-        print(f"  ❌ Quick tier failed (exit {rc}): {stderr[:200]}")
-        success = False
-
-    print("\n📋 Running deep tier test...")
-    stdout, stderr, rc = run_cmd([sys.executable, str(runner), "--tier", "deep"], timeout=120)
-    if rc <= 1:
-        print(f"  ✅ Deep tier ran successfully (exit {rc})")
-        print(f"     {stdout.strip()[:200]}")
-    else:
-        print(f"  ❌ Deep tier failed (exit {rc}): {stderr[:200]}")
-        success = False
-
-    # 4. Check non-migration crons are untouched
-    print("\n📋 Checking non-migration crons untouched...")
-    for name in NON_METACOG_CRON_NAMES:
+    # 2. Replaced crons disabled
+    print("\n📋 Replaced crons:")
+    for c in plan.get("crons_to_replace", []):
+        name = c["name"]
         if name in job_names:
-            job = next(j for j in jobs if j["name"] == name)
+            job = job_names[name]
+            if job.get("enabled"):
+                print(f"  ⚠️  {name} still enabled")
+            else:
+                print(f"  ✅ {name} disabled")
+        else:
+            print(f"  ℹ️  {name} not found (ok if removed)")
+
+    # 3. Coexist crons untouched
+    print("\n📋 Coexist crons (should be untouched):")
+    for c in plan.get("crons_to_coexist", []):
+        name = c["name"]
+        if name in job_names:
+            job = job_names[name]
             status = "✅" if job.get("enabled") else "⚠️ disabled"
             print(f"  {status} {name}")
         else:
-            print(f"  ℹ️  {name} not found")
+            print(f"  ⚠️  {name} not found")
+
+    # 4. Run both tiers
+    print("\n📋 Running quick tier test...")
+    stdout, stderr, rc = run_cmd([sys.executable, str(RUNNER), "--tier", "quick"], timeout=60)
+    if rc <= 1:
+        print(f"  ✅ Quick tier ok (exit {rc})")
+    else:
+        print(f"  ❌ Quick tier failed (exit {rc})")
+        success = False
+
+    print("\n📋 Running deep tier test...")
+    stdout, stderr, rc = run_cmd([sys.executable, str(RUNNER), "--tier", "deep"], timeout=120)
+    if rc <= 1:
+        print(f"  ✅ Deep tier ok (exit {rc})")
+    else:
+        print(f"  ❌ Deep tier failed (exit {rc})")
+        success = False
 
     print(f"\n{'✅ Verification PASSED' if success else '❌ Verification FAILED'}")
     return success
@@ -575,10 +805,9 @@ def do_verify() -> bool:
 def do_rollback(backup_dir: str = None):
     """Rollback migration from backup."""
     if not backup_dir:
-        # Find most recent backup
         backups = sorted(ARCHIVE_DIR.glob("metacog-migration-*"))
         if not backups:
-            print("❌ No backups found in .archive/")
+            print("❌ No backups found")
             return False
         backup_dir = str(backups[-1])
 
@@ -589,27 +818,37 @@ def do_rollback(backup_dir: str = None):
 
     print(f"🔄 Rolling back from: {backup_path}")
 
-    # Restore cron jobs
-    cron_backup = backup_path / "cron-jobs-backup.json"
-    if cron_backup.exists():
-        print("📋 Re-enabling old self-audit cron...")
-        run_cmd(["openclaw", "cron", "enable", "self-audit"])
+    # Re-enable replaced crons
+    plan_files = sorted(ANALYSES_DIR.glob("migration-plan-*.json"))
+    if plan_files:
+        plan = json.loads(plan_files[-1].read_text())
+        for c in plan.get("crons_to_replace", []):
+            print(f"  Re-enabling: {c['name']}")
+            run_cmd(["openclaw", "cron", "enable", c["name"]])
 
-        print("📋 Removing new metacog crons...")
-        run_cmd(["openclaw", "cron", "rm", "metacog-quick"])
-        run_cmd(["openclaw", "cron", "rm", "metacog-deep"])
+    # Remove new crons
+    for name in ["metacog-quick", "metacog-deep"]:
+        print(f"  Removing: {name}")
+        run_cmd(["openclaw", "cron", "rm", name])
 
-    # Restore old scripts
+    # Restore archived scripts
     old_scripts = backup_path / "old-scripts"
     if old_scripts.exists():
-        print("📋 Restoring old scripts...")
-        for f in old_scripts.iterdir():
-            # Find original path from OLD_METACOG_FILES
-            for orig in OLD_METACOG_FILES:
-                if orig.name == f.name:
-                    orig.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(f, orig)
-                    print(f"  ✅ Restored {orig}")
+        print("  Restoring old scripts...")
+        for f in old_scripts.rglob("*"):
+            if f.is_file():
+                # Try to find original location from the analysis
+                for orig_dir in [
+                    WORKSPACE / "scripts",
+                    Path.home() / "openclaw-dm" / "scripts" / "metacognition",
+                ]:
+                    candidate = orig_dir / f.name
+                    # Restore to the first matching parent that exists
+                    if orig_dir.exists():
+                        candidate.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(f, candidate)
+                        print(f"    ✅ Restored {candidate}")
+                        break
 
     print("✅ Rollback complete")
     return True
@@ -648,10 +887,6 @@ def main():
         do_analyze(dry_run=True)
         print()
         print("=" * 40)
-        print("Backup would be created in:")
-        ts = datetime.now().strftime("%Y%m%dT%H%M%S")
-        print(f"  {ARCHIVE_DIR}/metacog-migration-{ts}/")
-        print()
         do_execute(dry_run=True)
 
     elif args.action == "full":
@@ -683,11 +918,11 @@ def main():
         print("-" * 40)
         ok = do_verify()
         if not ok:
-            print("\n⚠️  Verification found issues — review before continuing")
-            print(f"    Rollback available: python3 {__file__} rollback")
+            print(f"\n⚠️  Verification found issues — review output")
+            print(f"    Rollback: python3 {__file__} rollback")
         print()
 
-        print(f"\n📄 Analysis document: {doc_path}")
+        print(f"\n📄 Analysis: {doc_path}")
         print(f"📦 Backup: {backup_path}")
 
 

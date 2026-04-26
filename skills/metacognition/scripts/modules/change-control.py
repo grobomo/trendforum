@@ -36,9 +36,17 @@ AUDIT_LOGS = [
     LOGS_DIR / "audit-logger.jsonl",
 ]
 
-# Minimum monitoring period before enforce is considered safe
-MIN_MONITORING_HOURS = int(os.environ.get("METACOG_MIN_MONITORING_HOURS", "24"))
-MIN_TRIGGER_EVENTS = int(os.environ.get("METACOG_MIN_TRIGGER_EVENTS", "20"))
+# Default thresholds — can be overridden per-gate via config
+DEFAULT_MIN_MONITORING_HOURS = int(os.environ.get("METACOG_DEFAULT_MIN_MONITORING_HOURS", "24"))
+DEFAULT_MIN_TRIGGER_EVENTS = int(os.environ.get("METACOG_DEFAULT_MIN_TRIGGER_EVENTS", "20"))
+
+# Per-gate overrides (JSON string from env, e.g. '{"change-control": {"minHours": 4, "minEvents": 10}}')
+GATE_OVERRIDES = {}
+try:
+    _raw = os.environ.get("METACOG_GATE_OVERRIDES", "{}")
+    GATE_OVERRIDES = json.loads(_raw)
+except (json.JSONDecodeError, ValueError):
+    pass
 
 
 def load_gate_configs() -> dict:
@@ -156,6 +164,11 @@ def assess_gate(gate_id: str, gate_info: dict) -> dict:
     mode = gate_info["mode"]
     audit = count_audit_events(gate_id)
     
+    # Resolve per-gate thresholds
+    override = GATE_OVERRIDES.get(gate_id, {})
+    min_hours = override.get("minHours", DEFAULT_MIN_MONITORING_HOURS)
+    min_events = override.get("minEvents", DEFAULT_MIN_TRIGGER_EVENTS)
+    
     finding = {
         "gate": gate_id,
         "mode": mode,
@@ -165,28 +178,29 @@ def assess_gate(gate_id: str, gate_info: dict) -> dict:
         "newest_event": audit["newest"],
         "would_block_count": audit["would_block"],
         "blocked_count": audit["blocked"],
+        "thresholds": {"minHours": min_hours, "minEvents": min_events},
         "status": "ok",
         "findings": [],
     }
     
     if mode == "enforce":
         # Check if there's enough monitoring evidence
-        if audit["total"] < MIN_TRIGGER_EVENTS:
+        if audit["total"] < min_events:
             finding["status"] = "warning"
             finding["findings"].append(
                 f"Gate is in ENFORCE mode but only has {audit['total']} audit events "
-                f"(minimum: {MIN_TRIGGER_EVENTS}). Was log-mode monitoring sufficient?"
+                f"(minimum: {min_events}). Was log-mode monitoring sufficient?"
             )
         
         if audit["oldest"]:
             try:
                 oldest_dt = datetime.fromisoformat(audit["oldest"].replace("Z", "+00:00"))
                 age_hours = (datetime.now(timezone.utc) - oldest_dt).total_seconds() / 3600
-                if age_hours < MIN_MONITORING_HOURS:
+                if age_hours < min_hours:
                     finding["status"] = "warning"
                     finding["findings"].append(
                         f"Gate in ENFORCE mode but monitoring history is only {age_hours:.1f}h old "
-                        f"(minimum: {MIN_MONITORING_HOURS}h). Flipped to enforce too quickly?"
+                        f"(minimum: {min_hours}h). Flipped to enforce too quickly?"
                     )
             except (ValueError, TypeError):
                 pass
@@ -199,11 +213,11 @@ def assess_gate(gate_id: str, gate_info: dict) -> dict:
     
     elif mode == "log":
         # Log mode is fine — just report readiness
-        if audit["total"] >= MIN_TRIGGER_EVENTS and audit["oldest"]:
+        if audit["total"] >= min_events and audit["oldest"]:
             try:
                 oldest_dt = datetime.fromisoformat(audit["oldest"].replace("Z", "+00:00"))
                 age_hours = (datetime.now(timezone.utc) - oldest_dt).total_seconds() / 3600
-                if age_hours >= MIN_MONITORING_HOURS:
+                if age_hours >= min_hours:
                     finding["status"] = "ready"
                     finding["findings"].append(
                         f"Gate has {audit['total']} events over {age_hours:.1f}h. "

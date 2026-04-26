@@ -1,0 +1,111 @@
+{
+  "timestamp": "2026-04-26T01:21:39.755156",
+  "existing_crons": [],
+  "classified_crons": {},
+  "old_metacog_files": [
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition/analyze_sessions.py",
+      "size": 9031,
+      "modified": "2026-04-25T23:36:59.965261"
+    },
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition-big-review.md",
+      "size": 3586,
+      "modified": "2026-04-21T23:07:15.606633"
+    },
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition-check.md",
+      "size": 4079,
+      "modified": "2026-04-23T17:51:07.193954"
+    },
+    {
+      "path": "/home/ubu/.openclaw/workspace/scripts/metacognition-rules.md",
+      "size": 2273,
+      "modified": "2026-04-22T17:08:38.807416"
+    },
+    {
+      "path": "/home/ubu/openclaw-dm/scripts/metacognition/self-audit.py",
+      "size": 11811,
+      "modified": "2026-04-25T18:57:10.234926"
+    }
+  ],
+  "new_skill_modules": [
+    {
+      "name": "change-control",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/change-control.py",
+      "size": 10956,
+      "description": "Gate deployment change control \u2014 ensures log-before-enforce, monitors readiness",
+      "tier": "quick"
+    },
+    {
+      "name": "conflict-resolution",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/conflict-resolution.py",
+      "size": 5719,
+      "description": "Detect and resolve conflicts between lessons, specs, and hooks",
+      "tier": "deep"
+    },
+    {
+      "name": "decision-check",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/decision-check.py",
+      "size": 2290,
+      "description": "Check DECISIONS.md for contradictions or stale decisions",
+      "tier": "quick"
+    },
+    {
+      "name": "lesson-review",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/lesson-review.py",
+      "size": 3930,
+      "description": "Review lessons board, check for new lessons, apply resolved ones",
+      "tier": "deep"
+    },
+    {
+      "name": "pattern-detector",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/pattern-detector.py",
+      "size": 5087,
+      "description": "Detect circular rebuilds, repeated failures, token hemorrhage",
+      "tier": "deep"
+    },
+    {
+      "name": "session-analyzer",
+      "path": "/home/ubu/.openclaw/workspace/skills/metacognition/scripts/modules/session-analyzer.py",
+      "size": 5576,
+      "description": "Quantitative session analysis \u2014 tool counts, command frequency, anti-patterns",
+      "tier": "quick"
+    }
+  ],
+  "blockers": [],
+  "warnings": [],
+  "benefits": [
+    "Modular enable/disable per metacognition task (no monolithic cron prompts)",
+    "Two-tier model: quick (15m) for cheap checks, deep (1h) for expensive analysis",
+    "Independent module testing via --module flag",
+    "Structured output to daily logs instead of ad-hoc appending",
+    "Conflict resolution: automated detection of lesson/spec contradictions",
+    "Pattern detection: catches circular rebuilds and token waste automatically",
+    "Lesson review: structural integrity checks on lesson files",
+    "Dry-run mode for previewing what each cycle would do",
+    "Shareable as an OpenClaw skill (.skill package)"
+  ],
+  "dry_run_results": {
+    "quick_dry": {
+      "stdout": "\ud83e\udde0 Metacognition quick tier \u2014 2026-04-26 01:21\n   Modules: session-analyzer, decision-check, change-control\n  [DRY RUN] session-analyzer \u2014 \u2705\n  [DRY RUN] decision-check \u2014 \u2705\n  [DRY RUN] change-control \u2014 \u2705",
+      "stderr": "",
+      "exit_code": 0
+    },
+    "quick_live": {
+      "stdout": "\ud83e\udde0 Metacognition quick tier \u2014 2026-04-26 01:21\n   Modules: session-analyzer, decision-check, change-control\n\n--- session-analyzer ---\n\u2705 Sessions: 216 | Compactions: 12 | Top tools: exec=2563, read=397, message=324, process=304, mcp-manager__mcpm=205\n  Result: \u2705 ok\n\n--- decision-check ---\n\u2139\ufe0f  0 active, 0 blocked decisions\n  Result: \u2705 ok\n\n--- change-control ---\n=== Change Control Assessment (2026-04-26 06:21 UTC) ===\nGates assessed: 4\n\n\u2705 research-gate [log] \u2014 0 audit events\n\n\u2705 todo-gate [log] \u2014 0 audit events\n\n\ud83d\udea8 rule:bias-to-action [enforce] \u2014 0 audit events\n   \u2192 Gate is in ENFORCE mode but only has 0 audit events (minimum: 20). Was log-mode monitoring sufficient?\n   \u2192 Gate is in ENFORCE mode with ZERO audit evidence. This gate was likely deployed directly to enforce without any log-mode monitoring.\n\n\ud83d\udea8 rule:archive-before-delete [enforce] \u2014 0 audit events\n   \u2192 Gate is in ENFORCE mode but only has 0 audit events (minimum: 20). Was log-mode monitoring sufficient?\n   \u2192 Gate is in ENFORCE mode with ZERO audit evidence. This gate was likely deployed directly to enforce without any log-mode monitoring.\n\n\ud83d\udccb Recent gate-related config changes:\n   de2e4a1 rename: hook-log.jsonl \u2192 audit-logger.jsonl\n   4d7d27c fix: use existing hook-log.jsonl, archive redundant audit-logger\n   5c28902 feat: research-gate + autonomous work loop spec\n   f87df82 feat: add audit-logger module to claude-code-gates\n   8ddc73c feat: add task-tracking-gate hook (P0) \u2014 blocks work without registered task\n\n\ud83d\udea8 2 CRITICAL: Gates deployed to enforce without monitoring!\n  Result: \u2705 ok\n\n--- Summary ---\n  \u2705 session-analyzer\n  \u2705 decision-check\n  \u2705 change-control",
+      "stderr": "",
+      "exit_code": 0
+    },
+    "deep_dry": {
+      "stdout": "\ud83e\udde0 Metacognition deep tier \u2014 2026-04-26 01:21\n   Modules: conflict-resolution, lesson-review, pattern-detector\n  [DRY RUN] conflict-resolution \u2014 \u2705\n  [DRY RUN] lesson-review \u2014 \u2705\n  [DRY RUN] pattern-detector \u2014 \u2705",
+      "stderr": "",
+      "exit_code": 0
+    },
+    "deep_live": {
+      "stdout": "\ud83e\udde0 Metacognition deep tier \u2014 2026-04-26 01:21\n   Modules: conflict-resolution, lesson-review, pattern-detector\n\n--- conflict-resolution ---\nScanned 7 lessons, 1 CR docs\n\ud83d\udccb 1 finding(s):\n  - Unresolved CR: CR-001: Hook-Runner Module vs Plugin SDK for Blocking Gates (CR-001-hook-architecture-blocking.md)\n  Result: \ud83d\udccb findings\n\n--- lesson-review ---\n\u2139\ufe0f  Scanned 7 lesson files\n\ud83d\udccb 9 finding(s):\n  \ud83d\udccb 001-verify-before-claiming.md: hook status is 'new' \u2014 verify if implemented\n  \u2139\ufe0f 001-verify-before-claiming.md: 3 unverified item(s)\n  \ud83d\udccb 003-customer-data-in-slack.md: hook status is 'new' \u2014 verify if implemented\n  \u2139\ufe0f 003-customer-data-in-slack.md: 6 unverified item(s)\n  \ud83d\udfe1 004-context-reset-new-session.md: missing sections: Lesson/Principle\n  \ud83d\udccb 004-poll-all-permanently-dead.md: hook status is 'new' \u2014 verify if implemented\n  \u2139\ufe0f 004-poll-all-permanently-dead.md: 3 unverified item(s)\n  \ud83d\udfe1 005-gh-auto-account-switching.md: missing sections: Lesson/Principle\n  \ud83d\udd34 Duplicate lesson number 004: 004-context-reset-new-session.md and 004-poll-all-permanently-dead.md\n  Result: \ud83d\udccb findings\n\n--- pattern-detector ---\n\ud83d\udccb 5 pattern(s) detected:\n  \ud83d\udfe1 Repeated error (239x): {\n  \"status\": \"error\",\n  \"tool\": \"exec\",\n  \"error\": \"exec pr...\n  \ud83d\udfe1 Repeated error (26x): usage: check_gaps.py [-h] [--minutes MINUTES] [--enriched]\nc...\n  \ud83d\udfe1 Repeated error (22x): usage: tracker.py [-h]\n                  {record,respond,pen...\n  \ud83d\udfe1 Repeated error (22x): error: too many arguments for 'message'. Expected 0 argument...\n  \ud83d\udfe1 Repeated error (12x): {\n  \"status\": \"error\",\n  \"tool\": \"edit\",\n  \"error\": \"TODO EN...\n  Result: \ud83d\udccb findings\n\n--- Summary ---\n  \ud83d\udccb conflict-resolution\n  \ud83d\udccb lesson-review\n  \ud83d\udccb pattern-detector",
+      "stderr": "",
+      "exit_code": 0
+    }
+  }
+}
