@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 export function ProfileMenu() {
-  const { profile, loginProfile, registerProfile } = useAuth();
+  const { profile, loginProfile, registerProfile, dropProfile } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [pseudonym, setPseudonym] = useState('');
@@ -13,12 +13,21 @@ export function ProfileMenu() {
 
   if (profile) {
     return (
-      <Link
-        to={`/u/${profile.pseudonym}`}
-        className="text-[#D5232F] text-xs sm:text-sm font-medium hover:text-red-400 transition"
-      >
-        {profile.pseudonym}
-      </Link>
+      <div className="flex items-center gap-2">
+        <Link
+          to={`/u/${profile.pseudonym}`}
+          className="text-[#D5232F] text-xs sm:text-sm font-medium hover:text-red-400 transition"
+        >
+          {profile.pseudonym}
+        </Link>
+        <button
+          onClick={() => dropProfile()}
+          className="text-[#666688] text-xs hover:text-[#8888aa] transition"
+          title="Go anonymous"
+        >
+          Drop ID
+        </button>
+      </div>
     );
   }
 

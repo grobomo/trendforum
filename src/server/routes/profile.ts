@@ -93,6 +93,12 @@ router.get('/me', requireAuth, async (req, res) => {
   res.json({ profile });
 });
 
+// Drop profile — return to anonymous mode
+router.post('/drop', requireAuth, async (req, res) => {
+  const token = generateToken('member');
+  res.json({ token });
+});
+
 // Public profile page
 router.get('/:pseudonym', async (req, res) => {
   const profile = await prisma.profile.findUnique({

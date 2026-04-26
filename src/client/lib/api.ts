@@ -103,6 +103,7 @@ export const api = {
         body: JSON.stringify(data),
       }),
     me: () => request<{ profile: any }>('/profile/me'),
+    drop: () => request<{ token: string }>('/profile/drop', { method: 'POST' }),
     get: (pseudonym: string) => request<{ profile: any }>(`/profile/${pseudonym}`),
   },
 };

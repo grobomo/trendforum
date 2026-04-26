@@ -12,6 +12,7 @@ interface AuthContextType {
   login: (password: string) => Promise<void>;
   loginProfile: (pseudonym: string, password: string) => Promise<void>;
   registerProfile: (pseudonym: string, password: string) => Promise<void>;
+  dropProfile: () => Promise<void>;
   logout: () => void;
 }
 
@@ -53,6 +54,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(res.profile);
   };
 
+  const dropProfile = async () => {
+    const res = await api.profile.drop();
+    setToken(res.token);
+    setTokenState(res.token);
+    setProfile(null);
+  };
+
   const logout = () => {
     setToken(null);
     setTokenState(null);
@@ -61,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return createElement(
     AuthContext.Provider,
-    { value: { token, profile, login, loginProfile, registerProfile, logout } },
+    { value: { token, profile, login, loginProfile, registerProfile, dropProfile, logout } },
     children
   );
 }
