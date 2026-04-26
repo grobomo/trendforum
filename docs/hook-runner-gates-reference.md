@@ -48,29 +48,30 @@ Only loaded when `basename(CLAUDE_PROJECT_DIR || cwd) === <projectname>`. This m
 
 ### Key Differences: hook-runner-gates vs coconut-guardrails
 
-| Feature | hook-runner-gates | coconut-guardrails |
-|---------|------------------|-------------------|
-| Format | Simple .js files | TypeScript plugin code |
+The split is about *who is being governed*, not gate complexity:
+
+| Aspect | hook-runner-gates | coconut-guardrails |
+|--------|------------------|-------------------|
+| **Governs** | Claude Code sessions (Windows terminal tabs) | OpenClaw/Coconut (agent sessions) |
+| **Purpose** | Behavioral enforcement for Claude Code | Behavioral enforcement for Coconut |
+| Format | .js gate modules | TypeScript plugin code |
 | Config | modules.yaml | openclaw.json plugin config |
-| Scope | Project-scoped possible | Global only |
+| Scope | Project-scoped possible | Global |
 | Adding gates | Drop a .js file | Edit index.ts + restart |
-| Best for | Simple pattern matching | Complex stateful logic (LLM calls, file I/O) |
 
-**Rule of thumb:** Use hook-runner for simple "does this command match a pattern → block" gates. Use coconut-guardrails for anything needing state, API calls, or complex logic (inner voice, config-safety backups, todo gate with file reading).
+Both use the same hook-runner module system and the same contract (return `null` to allow, `{ decision: "block", reason }` to block). The difference is the target agent.
 
-### When I Need Hook Modules (Self-Reference)
+### When to Add a Gate (Self-Reference)
 
-Build a hook-runner module when:
-1. **A new behavioral rule emerges** — Joel says "never do X" → write a gate that blocks X
-2. **A pattern repeats** — I keep making the same mistake → encode the fix as a gate
-3. **Claude Code needs project-specific constraints** — Scope to the project dir
-4. **The check is simple** — Regex on command/path, no API calls needed
+Add to **hook-runner-gates** when:
+1. Claude Code needs a behavioral constraint ("never do X in this project")
+2. A pattern repeats across Claude Code sessions
+3. Project-scoped rules needed (scope to project subdirectory)
 
-Build a coconut-guardrails rule when:
-1. **State is needed** — e.g., "did I read todo.md this session?"
-2. **File I/O is needed** — e.g., "backup this file before writing"
-3. **LLM review is needed** — e.g., inner voice channel routing
-4. **Complex logic** — Multi-step checks, API calls, cross-session awareness
+Add to **coconut-guardrails** when:
+1. Coconut (OpenClaw agent) needs a behavioral constraint
+2. Inner voice, config-safety, todo enforcement, or other self-governance
+3. State, file I/O, or LLM review needed for the check
 
 ## Plugin Directory Structure (IMPORTANT)
 
