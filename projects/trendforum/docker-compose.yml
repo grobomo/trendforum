@@ -1,0 +1,13 @@
+services:
+  trendforum:
+    build: .
+    ports:
+      - "3847:3847"
+    environment:
+      - DATABASE_URL=file:/app/data/trendforum.db
+      - WIFI_PASSWORD_HASH=${WIFI_PASSWORD_HASH}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
