@@ -2,21 +2,29 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { PostCard } from './PostCard';
+import { Pagination } from './Pagination';
 import { SortTabs } from './SortTabs';
 import { useWebSocket } from '../hooks/useWebSocket';
+
+const PER_PAGE = 25;
 
 export function SubforumFeed() {
   const { slug } = useParams<{ slug: string }>();
   const [posts, setPosts] = useState<any[]>([]);
   const [searchParams] = useSearchParams();
   const sort = searchParams.get('sort') || 'hot';
+  const page = parseInt(searchParams.get('page') || '1', 10);
   const [newPostCount, setNewPostCount] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
 
   const loadPosts = useCallback(() => {
     if (slug) {
-      api.posts.bySubforum(slug, sort).then(setPosts).catch(() => {});
+      api.posts.bySubforum(slug, sort, page).then((data) => {
+        setPosts(data);
+        setHasMore(data.length >= PER_PAGE);
+      }).catch(() => {});
     }
-  }, [slug, sort]);
+  }, [slug, sort, page]);
 
   useEffect(() => {
     loadPosts();
@@ -57,7 +65,10 @@ export function SubforumFeed() {
       {posts.length === 0 ? (
         <div className="text-center text-[#8888aa] py-12">No posts in this subforum yet.</div>
       ) : (
-        posts.map((post) => <PostCard key={post.id} post={post} />)
+        <>
+          {posts.map((post) => <PostCard key={post.id} post={post} />)}
+          <Pagination hasMore={hasMore} />
+        </>
       )}
     </div>
   );
