@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { generateDisplayName } from '../auth.js';
+import { broadcast } from '../ws.js';
 
 const router = Router();
 
@@ -39,6 +40,7 @@ router.post('/posts/:id/comments', requireAuth, async (req, res) => {
     },
   });
 
+  broadcast({ type: 'new_comment', postId, commentId: comment.id });
   res.status(201).json(comment);
 });
 

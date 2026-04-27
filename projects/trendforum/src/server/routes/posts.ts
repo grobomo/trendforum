@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/requireAuth.js';
+import { broadcast } from '../ws.js';
 
 const router = Router();
 
@@ -80,6 +81,7 @@ router.post('/posts', requireAuth, async (req, res) => {
     include: { subforum: true },
   });
 
+  broadcast({ type: 'new_post', postId: post.id, subforumSlug: subforum.slug });
   res.status(201).json(post);
 });
 

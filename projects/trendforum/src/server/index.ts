@@ -1,7 +1,9 @@
 import express from 'express';
+import { createServer } from 'http';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { setupWebSocket } from './ws.js';
 import { authRouter } from './routes/auth.js';
 import { subforumsRouter } from './routes/subforums.js';
 import { postsRouter } from './routes/posts.js';
@@ -53,7 +55,10 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(clientDir, 'index.html'));
 });
 
-app.listen(PORT, () => {
+const server = createServer(app);
+setupWebSocket(server);
+
+server.listen(PORT, () => {
   console.log(`TrendForum running on http://localhost:${PORT}`);
   if (process.env.COCONUT_AUTOSTART === '1') {
     coconutBot.start();

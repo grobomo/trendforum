@@ -9,15 +9,22 @@ export interface TokenPayload {
   jti: string;
   iat: number;
   exp: number;
+  profileId?: number;
+  pseudonym?: string;
 }
 
 export function verifyPassword(password: string, hash: string): Promise<boolean> {
   return bcrypt.compare(password, hash);
 }
 
-export function generateToken(role: 'member' | 'admin' = 'member'): string {
+export function generateToken(role: 'member' | 'admin' = 'member', profile?: { id: number; pseudonym: string }): string {
   const jti = crypto.randomUUID();
-  return jwt.sign({ role, jti }, JWT_SECRET, { expiresIn: '24h' });
+  const payload: Record<string, unknown> = { role, jti };
+  if (profile) {
+    payload.profileId = profile.id;
+    payload.pseudonym = profile.pseudonym;
+  }
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
 }
 
 export function verifyToken(token: string): TokenPayload | null {
