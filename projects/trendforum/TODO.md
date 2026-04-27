@@ -16,8 +16,8 @@ NOTE: Session CWD may be in commit-t009 worktree — exit it first.
 - Image upload: multer, local storage, 5MB limit, JPEG/PNG/GIF/WebP, 5/5 E2E (PR #1)
 - Fixed TS error in comments route (PR #1)
 
+- T027: WebSocket real-time updates — ws server, broadcast on post/comment/vote, client useWebSocket hook, live feeds + post detail. E2E verified: 3/3 event types.
+
 ## Next (priority order)
-- [ ] T010: GitHub publish (grobomo account — generic tool, no PII)
-- [ ] T011: Coconut LLM integration — swap template replies for Claude API calls
-- [ ] T012: User profiles / persistent identity across sessions
-- [ ] T013: Pagination UI (next/prev buttons on feeds)
+- [ ] T028: Notification badges for unread activity
+- [ ] T029: Rate-limit WebSocket connections per IP
