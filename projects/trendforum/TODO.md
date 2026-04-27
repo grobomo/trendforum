@@ -1,13 +1,12 @@
 # TrendForum TODO
 
-## Session Handoff (2026-04-26 session 5)
-Working in worktree `trendforum-build` on branch `001-T001-create-forum-app`.
-Published to grobomo/trendforum (public). Login: WiFi="demo2026", Admin="admin2026".
-Run: `npm run dev` (Express :3847 + Vite :5173).
-E2E scripts: `bash test-coconut.sh` (7/7), `bash test-upload.sh` (5/5).
-Note: test scripts use demo2026 password, db must be re-seeded after schema change (T012).
-Published to grobomo/trendforum (public). Vite build: 264KB JS. All 3 E2E suites pass.
-Publish workflow: edit in worktree, patch to /tmp/tmp.F3IMnHJEQV, push via gh_auto.
+## Session Handoff (2026-04-26 session 6)
+T027 WebSocket done in worktree `trendforum-t027-websocket` (branch `worktree-trendforum-t027-websocket`).
+Pushed to grobomo/trendforum. 4 commits: ws.ts hub, client useWebSocket hook, broadcasts in posts/comments/votes, vite proxy.
+E2E verified: 3/3 event types (new_post, new_comment, vote_update). Vite build 189KB, tsc clean.
+Branch needs merging to main. Worktree .git file was fixed (UNC path -> relative).
+Login: WiFi="demo2026", Admin="admin2026". Run: `npm run dev` (Express :3847 + Vite :5173).
+Note: old worktrees `trendforum-build` and `trendforum-scaffold` are prunable — can be cleaned up.
 
 ## Completed
 - v0.1.0 MVP: scaffolding, Prisma, Express, React, auth, posts, comments, votes, reports, mod, feed, search
@@ -39,13 +38,10 @@ Publish workflow: edit in worktree, patch to /tmp/tmp.F3IMnHJEQV, push via gh_au
 - T025: Final E2E — all 3 suites pass: upload 5/5, coconut 7/7, profile 10/10
 
 - T026: Dark/light theme toggle — CSS variables, 218 color migrations, localStorage
-
-## Verified (this session)
-- npm install: 322 packages, 0 vulnerabilities
-- prisma generate + db push + seed: 8 subforums, 2 example posts
-- Express server starts on :3847
-- API E2E: 15/15 pass (auth, subforums, posts, comments, votes, reports, feed, search, bad-auth)
-- Vite build: 55 modules, 264KB JS + 34KB CSS, 3s build
+- T027: WebSocket real-time updates — ws server, broadcast on post/comment/vote, client useWebSocket hook, live feeds + post detail. E2E 3/3 event types verified. Vite build 189KB, tsc clean.
 
 ## Next (priority order)
-- [ ] T027: WebSocket for real-time post/comment updates
+- [ ] Merge T027 branch to main (worktree-trendforum-t027-websocket -> main)
+- [ ] T028: Notification badges for unread activity
+- [ ] T029: Rate-limit WebSocket connections per IP
+- [ ] Clean up prunable worktrees (trendforum-build, trendforum-scaffold)

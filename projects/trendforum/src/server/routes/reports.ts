@@ -1,19 +1,20 @@
 import { Router } from 'express';
-import { prisma } from '../db.js';
+import { PrismaClient } from '@prisma/client';
 import { requireAuth } from '../middleware/requireAuth.js';
+import { apiLimiter } from '../middleware/rateLimit.js';
 
+const prisma = new PrismaClient();
 const router = Router();
 
-router.post('/report', requireAuth, async (req, res) => {
+/**
+ * POST /api/report
+ * Body: { postId?: number, commentId?: number, reason: string }
+ */
+router.post('/', requireAuth, apiLimiter, async (req, res) => {
   const { postId, commentId, reason } = req.body;
 
   if (!reason || typeof reason !== 'string') {
     res.status(400).json({ error: 'Reason required' });
-    return;
-  }
-
-  if (reason.length > 1000) {
-    res.status(400).json({ error: 'Reason must be 1,000 characters or less' });
     return;
   }
 
@@ -26,11 +27,11 @@ router.post('/report', requireAuth, async (req, res) => {
     data: {
       postId: postId || null,
       commentId: commentId || null,
-      reason,
+      reason: reason.slice(0, 1000),
     },
   });
 
-  res.status(201).json(report);
+  res.status(201).json({ id: report.id, message: 'Report submitted' });
 });
 
-export { router as reportsRouter };
+export default router;

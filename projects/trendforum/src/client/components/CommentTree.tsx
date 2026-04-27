@@ -1,160 +1,151 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { VoteButton } from './VoteButton';
-import { api } from '../lib/api';
-import { formatTimeAgo } from '../lib/time';
-import { Markdown } from './Markdown';
+import React, { useState } from 'react';
+import { createComment, report } from '../lib/api';
+import VoteButton from './VoteButton';
 
-interface Comment {
-  id: number;
+interface Props {
+  comment: any;
+  childMap: Map<number, any[]>;
   postId: number;
-  parentId: number | null;
-  displayName: string;
-  body: string;
-  score: number;
-  createdAt: string;
-}
-
-function buildTree(comments: Comment[]): Map<number | null, Comment[]> {
-  const tree = new Map<number | null, Comment[]>();
-  for (const c of comments) {
-    const key = c.parentId;
-    if (!tree.has(key)) tree.set(key, []);
-    tree.get(key)!.push(c);
-  }
-  return tree;
-}
-
-function CommentNode({
-  comment,
-  tree,
-  postId,
-  onReply,
-  depth,
-}: {
-  comment: Comment;
-  tree: Map<number | null, Comment[]>;
-  postId: number;
-  onReply: () => void;
+  onRefresh: () => void;
   depth: number;
-}) {
-  const [replying, setReplying] = useState(false);
+}
+
+function timeAgo(dateStr: string): string {
+  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (seconds < 60) return 'just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+export default function CommentTree({ comment, childMap, postId, onRefresh, depth }: Props) {
+  const [showReply, setShowReply] = useState(false);
   const [replyBody, setReplyBody] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const children = tree.get(comment.id) || [];
+  const [collapsed, setCollapsed] = useState(false);
+
+  const children = childMap.get(comment.id) || [];
 
   const handleReply = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!replyBody.trim()) return;
     setSubmitting(true);
     try {
-      await api.comments.create(postId, { body: replyBody, parentId: comment.id });
+      await createComment(postId, replyBody, comment.id);
       setReplyBody('');
-      setReplying(false);
-      onReply();
+      setShowReply(false);
+      onRefresh();
+    } catch (err) {
+      console.error('Reply failed:', err);
     } finally {
       setSubmitting(false);
     }
   };
 
-  const isCoconut = comment.displayName === 'Coconut';
+  const handleReport = async () => {
+    const reason = prompt('Reason for report:');
+    if (reason) {
+      try {
+        await report({ commentId: comment.id, reason });
+        alert('Report submitted.');
+      } catch (err) {
+        console.error('Report failed:', err);
+      }
+    }
+  };
 
   return (
-    <div className={`${depth > 0 ? 'ml-6 border-l-2 border-border pl-4' : ''} mt-3`}>
-      <div className="flex items-center gap-2 text-xs">
-        {!isCoconut && !comment.displayName.startsWith('Anon-') ? (
-          <Link to={`/u/${comment.displayName}`} className="font-medium text-accent hover:underline">
-            {comment.displayName}
-          </Link>
-        ) : (
-          <span className={`font-medium ${isCoconut ? 'text-yellow-400' : 'text-accent'}`}>
-            {isCoconut ? 'Coconut' : comment.displayName}
-          </span>
-        )}
-        <span className="text-dim">&middot;</span>
-        <span className="text-dim">{formatTimeAgo(comment.createdAt)}</span>
-      </div>
-      <Markdown content={comment.body} className="text-text text-sm mt-1" />
-      <div className="flex items-center gap-3 mt-1">
-        <VoteButton score={comment.score} commentId={comment.id} compact />
-        <button
-          onClick={() => setReplying(!replying)}
-          className="text-xs text-muted hover:text-text transition"
-        >
-          Reply
-        </button>
-      </div>
+    <div className={`${depth > 0 ? 'ml-6 border-l-2 border-forum-border pl-4' : ''} mt-3`}>
+      <div className="flex gap-2">
+        {/* Mini vote column for comments */}
+        <div className="pt-1">
+          <VoteButton commentId={comment.id} currentScore={comment.score} />
+        </div>
 
-      {replying && (
-        <form onSubmit={handleReply} className="mt-2">
-          <textarea
-            value={replyBody}
-            onChange={(e) => setReplyBody(e.target.value)}
-            placeholder="Write a reply..."
-            className="w-full bg-input border border-border rounded p-2 text-sm text-text placeholder-dim resize-y focus:outline-none focus:border-accent transition"
-            rows={2}
-          />
-          <div className="flex gap-2 mt-1">
+        <div className="flex-1 min-w-0">
+          {/* Comment header */}
+          <div className="flex items-center gap-2 text-xs">
+            <span className="font-semibold text-blue-400">{comment.displayName}</span>
+            <span className="text-forum-muted">· {timeAgo(comment.createdAt)}</span>
             <button
-              type="submit"
-              disabled={submitting || !replyBody.trim()}
-              className="px-3 py-1 bg-accent text-white rounded text-xs hover:bg-accent-hover disabled:opacity-50 transition"
+              onClick={() => setCollapsed(!collapsed)}
+              className="text-forum-muted hover:text-white ml-1"
             >
-              Reply
-            </button>
-            <button
-              type="button"
-              onClick={() => setReplying(false)}
-              className="px-3 py-1 text-muted text-xs hover:text-text transition"
-            >
-              Cancel
+              [{collapsed ? '+' : '−'}]
             </button>
           </div>
-        </form>
-      )}
 
-      {children.map((child) => (
-        <CommentNode
-          key={child.id}
-          comment={child}
-          tree={tree}
-          postId={postId}
-          onReply={onReply}
-          depth={depth + 1}
-        />
-      ))}
-    </div>
-  );
-}
+          {!collapsed && (
+            <>
+              {/* Comment body */}
+              <div className="text-sm text-gray-300 mt-1 whitespace-pre-wrap">
+                {comment.body}
+              </div>
 
-export function CommentTree({
-  comments,
-  postId,
-  onReply,
-}: {
-  comments: Comment[];
-  postId: number;
-  onReply: () => void;
-}) {
-  const tree = buildTree(comments);
-  const roots = tree.get(null) || [];
+              {/* Comment actions */}
+              <div className="flex items-center gap-3 mt-1 text-xs text-forum-muted">
+                <button
+                  onClick={() => setShowReply(!showReply)}
+                  className="hover:text-white transition"
+                >
+                  Reply
+                </button>
+                <button
+                  onClick={handleReport}
+                  className="hover:text-red-400 transition"
+                >
+                  Report
+                </button>
+              </div>
 
-  if (roots.length === 0) {
-    return <div className="text-muted text-sm py-4">No comments yet.</div>;
-  }
+              {/* Reply form */}
+              {showReply && (
+                <form onSubmit={handleReply} className="mt-2">
+                  <textarea
+                    value={replyBody}
+                    onChange={(e) => setReplyBody(e.target.value)}
+                    placeholder="Reply..."
+                    rows={2}
+                    className="w-full px-3 py-2 bg-forum-bg border border-forum-border rounded text-white text-sm placeholder-forum-muted focus:outline-none focus:border-forum-accent resize-none"
+                    autoFocus
+                  />
+                  <div className="flex gap-2 mt-1">
+                    <button
+                      type="submit"
+                      disabled={submitting || !replyBody.trim()}
+                      className="px-3 py-1 bg-forum-accent text-white text-xs rounded hover:bg-orange-600 disabled:opacity-50"
+                    >
+                      {submitting ? '...' : 'Reply'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowReply(false)}
+                      className="px-3 py-1 text-xs text-forum-muted hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
 
-  return (
-    <div>
-      {roots.map((comment) => (
-        <CommentNode
-          key={comment.id}
-          comment={comment}
-          tree={tree}
-          postId={postId}
-          onReply={onReply}
-          depth={0}
-        />
-      ))}
+              {/* Children */}
+              {children.map((child: any) => (
+                <CommentTree
+                  key={child.id}
+                  comment={child}
+                  childMap={childMap}
+                  postId={postId}
+                  onRefresh={onRefresh}
+                  depth={depth + 1}
+                />
+              ))}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

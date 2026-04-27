@@ -1,53 +1,49 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { api } from '../lib/api';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { createPost, getSubforum } from '../lib/api';
 
-export function SubmitForm() {
+export default function SubmitForm() {
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { slug } = useParams();
-  const [subforums, setSubforums] = useState<any[]>([]);
-  const [subforumId, setSubforumId] = useState<number | null>(null);
+  const [subforum, setSubforum] = useState<any>(null);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [postType, setPostType] = useState<'text' | 'link'>('text');
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    api.subforums.list().then((sfs) => {
-      setSubforums(sfs);
-      if (slug) {
-        const match = sfs.find((sf: any) => sf.slug === slug);
-        if (match) setSubforumId(match.id);
-      }
-    });
+    if (slug) {
+      getSubforum(slug).then(setSubforum).catch(console.error);
+    }
   }, [slug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!subforumId || !title.trim()) return;
-    setSubmitting(true);
     setError('');
+
+    if (!title.trim()) {
+      setError('Title is required');
+      return;
+    }
+
+    if (!subforum) {
+      setError('Subforum not found');
+      return;
+    }
+
+    setSubmitting(true);
     try {
-      let imageUrl: string | undefined;
-      if (imageFile) {
-        const uploaded = await api.upload.image(imageFile);
-        imageUrl = uploaded.url;
-      }
-      const post = await api.posts.create({
-        subforumId,
+      const post = await createPost({
+        subforumId: subforum.id,
         title: title.trim(),
         body: postType === 'text' ? body.trim() || undefined : undefined,
         linkUrl: postType === 'link' ? linkUrl.trim() || undefined : undefined,
-        imageUrl,
       });
-      const sf = subforums.find((s) => s.id === subforumId);
-      navigate(`/t/${sf?.slug || 'general'}/post/${post.id}`);
-    } catch (e: any) {
-      setError(e.message);
+      navigate(`/t/${slug}/post/${post.id}`);
+    } catch (err: any) {
+      setError(err.message || 'Failed to create post');
     } finally {
       setSubmitting(false);
     }
@@ -55,116 +51,90 @@ export function SubmitForm() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-bold text-text mb-4">Create a Post</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-card border border-border rounded-md p-4 space-y-4"
-      >
-        {error && <div className="text-red-400 text-sm">{error}</div>}
+      <div className="text-sm text-forum-muted mb-4">
+        <Link to={`/t/${slug}`} className="hover:text-white transition">
+          ← t/{slug}
+        </Link>
+      </div>
 
-        <select
-          value={subforumId || ''}
-          onChange={(e) => setSubforumId(Number(e.target.value))}
-          className="w-full bg-input border border-border rounded p-2 text-text focus:outline-none focus:border-accent transition"
-        >
-          <option value="">Choose a subforum</option>
-          {subforums.map((sf) => (
-            <option key={sf.id} value={sf.id}>
-              t/{sf.slug}
-            </option>
-          ))}
-        </select>
+      <div className="bg-forum-card border border-forum-border rounded-lg p-6">
+        <h1 className="text-xl font-bold text-white mb-4">
+          Create a post in t/{slug}
+        </h1>
 
-        <div className="flex gap-2">
+        {/* Post type tabs */}
+        <div className="flex gap-0 border border-forum-border rounded-lg overflow-hidden mb-4">
           <button
-            type="button"
             onClick={() => setPostType('text')}
-            className={`px-3 py-1 rounded text-sm transition ${
-              postType === 'text' ? 'bg-border text-white' : 'text-muted'
+            className={`flex-1 px-4 py-2 text-sm font-medium ${
+              postType === 'text' ? 'bg-forum-hover text-white' : 'text-forum-muted hover:text-white'
             }`}
           >
-            Text
+            📝 Text
           </button>
           <button
-            type="button"
             onClick={() => setPostType('link')}
-            className={`px-3 py-1 rounded text-sm transition ${
-              postType === 'link' ? 'bg-border text-white' : 'text-muted'
+            className={`flex-1 px-4 py-2 text-sm font-medium border-l border-forum-border ${
+              postType === 'link' ? 'bg-forum-hover text-white' : 'text-forum-muted hover:text-white'
             }`}
           >
-            Link
+            🔗 Link
           </button>
         </div>
 
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
-          maxLength={300}
-          className="w-full bg-input border border-border rounded p-2 text-text placeholder-dim focus:outline-none focus:border-accent transition"
-        />
-
-        {postType === 'text' ? (
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="Text (optional)"
-            className="w-full bg-input border border-border rounded p-3 text-text placeholder-dim resize-y min-h-[120px] focus:outline-none focus:border-accent transition"
-            rows={5}
-          />
-        ) : (
-          <input
-            type="url"
-            value={linkUrl}
-            onChange={(e) => setLinkUrl(e.target.value)}
-            placeholder="URL"
-            className="w-full bg-input border border-border rounded p-2 text-text placeholder-dim focus:outline-none focus:border-accent transition"
-          />
-        )}
-
-        <div>
-          <label className="block text-sm text-muted mb-1">Image (optional, max 5MB)</label>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/gif,image/webp"
-            onChange={(e) => {
-              const file = e.target.files?.[0] || null;
-              setImageFile(file);
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = () => setImagePreview(reader.result as string);
-                reader.readAsDataURL(file);
-              } else {
-                setImagePreview(null);
-              }
-            }}
-            className="w-full text-sm text-muted file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-border file:text-text file:cursor-pointer hover:file:bg-[#3a3a5a] transition"
-          />
-          {imagePreview && (
-            <div className="mt-2 relative inline-block">
-              <img src={imagePreview} alt="Preview" className="max-h-32 rounded border border-border" />
-              <button
-                type="button"
-                onClick={() => { setImageFile(null); setImagePreview(null); }}
-                className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs flex items-center justify-center"
-              >
-                x
-              </button>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+              maxLength={300}
+              className="w-full px-4 py-3 bg-forum-bg border border-forum-border rounded text-white placeholder-forum-muted focus:outline-none focus:border-forum-accent transition"
+              autoFocus
+            />
+            <div className="text-xs text-forum-muted mt-1 text-right">
+              {title.length}/300
             </div>
-          )}
-        </div>
+          </div>
 
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={submitting || !subforumId || !title.trim()}
-            className="px-6 py-2 bg-accent text-white rounded font-medium hover:bg-accent-hover disabled:opacity-50 transition"
-          >
-            {submitting ? 'Posting...' : 'Post'}
-          </button>
-        </div>
-      </form>
+          {postType === 'text' ? (
+            <textarea
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="Text (optional)"
+              rows={6}
+              className="w-full px-4 py-3 bg-forum-bg border border-forum-border rounded text-white placeholder-forum-muted focus:outline-none focus:border-forum-accent resize-y transition"
+            />
+          ) : (
+            <input
+              type="url"
+              value={linkUrl}
+              onChange={(e) => setLinkUrl(e.target.value)}
+              placeholder="https://..."
+              className="w-full px-4 py-3 bg-forum-bg border border-forum-border rounded text-white placeholder-forum-muted focus:outline-none focus:border-forum-accent transition"
+            />
+          )}
+
+          {error && (
+            <p className="text-red-400 text-sm mt-2">{error}</p>
+          )}
+
+          <div className="flex justify-end mt-4">
+            <button
+              type="submit"
+              disabled={submitting || !title.trim()}
+              className="px-6 py-2 bg-forum-accent text-white font-semibold rounded hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            >
+              {submitting ? 'Posting...' : 'Post'}
+            </button>
+          </div>
+        </form>
+
+        <p className="text-xs text-forum-muted mt-4">
+          🔒 Your post is anonymous. No identity is stored or linked.
+        </p>
+      </div>
     </div>
   );
 }

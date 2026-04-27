@@ -1,0 +1,28 @@
+{
+  "workflow": "shtd",
+  "workflow_path": "C:\\Users\\joelg\\.claude\\hooks\\workflows\\shtd.yml",
+  "started_at": "2026-04-26T14:43:45.193Z",
+  "steps": {
+    "spec": {
+      "status": "pending"
+    },
+    "tasks": {
+      "status": "pending"
+    },
+    "branch": {
+      "status": "pending"
+    },
+    "test": {
+      "status": "pending"
+    },
+    "implement": {
+      "status": "pending"
+    },
+    "verify": {
+      "status": "pending"
+    },
+    "pr": {
+      "status": "pending"
+    }
+  }
+}

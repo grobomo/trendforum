@@ -1,105 +1,77 @@
 # TrendForum
 
-Anonymous community forum with Reddit-like UX. No accounts, no tracking — just a shared password to prove you belong.
-
-## How It Works
-
-1. Enter the shared community password to get access
-2. Get an anonymous session token (no username, no email, no account)
-3. Post, comment, and vote — nobody can link activity to your identity
-
-Each post thread assigns you a random display name (e.g., `Anon-A7X`) so conversations are followable, but names don't carry across posts. Optionally claim a persistent pseudonym for identity across sessions.
+> Anonymous internal forum for Trend Micro employees. Reddit-style, privacy-first.
 
 ## Quick Start
 
 ```bash
-# Install
+# Install dependencies
 npm install
 
-# Set up database
-npx prisma db push
-npm run db:seed
+# Set up database + seed default subforums
+npm run setup
 
-# Run (starts Express on :3847 + Vite on :5173)
+# Start development (API + frontend with HMR)
 npm run dev
 ```
 
-Open http://localhost:5173 and log in with the dev password: see `prisma/seed.ts`.
+Open **http://localhost:5173** in your browser.
 
-## Tech Stack
+Default WiFi password: `TrendForum2026`
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18 + TypeScript + Tailwind CSS |
-| Backend | Node.js + Express + TypeScript |
-| Database | SQLite (dev) via Prisma ORM |
-| Auth | Shared-secret password + JWT (no user ID) |
-| Markdown | marked + DOMPurify |
+## Architecture
 
-## Features
-
-- **Subforums** with hot/new/top sorting and pagination
-- **Nested comments** with voting and markdown rendering
-- **Image uploads** (JPEG, PNG, GIF, WebP — 5MB limit)
-- **User profiles** — optional persistent pseudonyms with profile pages (`/u/:name`)
-- **Coconut bot** — AI-powered community participant (uses `claude -p`, falls back to templates)
-- **Admin dashboard** — moderation queue at `/admin` with remove actions
-- **Content moderation** — report posts/comments, admin review queue
-- **Markdown** in posts and comments (bold, italic, code, links, lists, blockquotes)
-- **Mobile responsive** with hamburger menu and collapsible search
-- **Security** — rate limiting, input validation, XSS protection via DOMPurify
-- React error boundaries
+- **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS
+- **Backend:** Node.js + Express + TypeScript
+- **Database:** SQLite via Prisma ORM
+- **Auth:** WiFi password → anonymous JWT (no PII)
 
 ## Privacy Guarantees
 
-- Session tokens contain NO user identifier (just a random `jti` and expiry)
+- No user identity stored anywhere
+- JWT tokens contain only `jti` (random ID) and `exp` (expiry)
 - No IP logging, no fingerprinting, no analytics
-- Database stores no author field on posts/comments (unless you opt in with a pseudonym)
-- Display names are per-post-thread only (hash of session + post ID)
-- Rate limiting by token `jti`, not by IP
-
-## API
-
-```
-POST /api/auth/verify        { password }              -> { token }
-GET  /api/subforums                                    -> subforum list
-GET  /api/posts?sort=hot|new|top&page=1                -> all posts
-GET  /api/subforums/:slug/posts?sort=hot|new|top       -> subforum posts
-POST /api/posts              { subforumId, title, body? }
-GET  /api/posts/:id                                    -> post + comments
-POST /api/posts/:id/comments { body, parentId? }
-POST /api/vote               { postId?, commentId?, value: 1|-1 }
-POST /api/report             { postId?, commentId?, reason }
-POST /api/upload             multipart/form-data       -> { url }
-GET  /api/search?q=<query>&page=1                      -> search results
-POST /api/profile/register   { pseudonym, password }   -> { token, profile }
-POST /api/profile/login      { pseudonym, password }   -> { token, profile }
-GET  /api/profile/me                                   -> { profile }
-GET  /api/profile/:pseudonym                           -> public profile
-GET  /api/feed?since=<iso>                             -> new activity (Coconut)
-GET  /api/coconut/status                               -> bot status
-POST /api/coconut/start                                -> admin only
-POST /api/coconut/stop                                 -> admin only
-GET  /api/mod/reports                                  -> admin only
-POST /api/mod/action         { action, targetId, targetType }
-```
-
-## E2E Tests
-
-```bash
-bash test-upload.sh      # 5 tests — image upload flow
-bash test-coconut.sh     # 7 tests — bot lifecycle
-bash test-profile.sh     # 10 tests — profiles, pseudonyms, pagination
-```
+- Per-thread random display names (can't correlate across posts)
+- Rate limiting by session token, not by IP
 
 ## Docker
 
 ```bash
-docker compose up --build
+# Set environment variables
+export WIFI_PASSWORD="your-monthly-wifi-password"
+export ADMIN_PASSWORD="mod-password"
+export JWT_SECRET="change-me-in-production"
+
+docker-compose up --build
 ```
 
-Runs on port 3847. Set `JWT_SECRET` in environment for production.
+Access at **http://localhost:3847**
 
-## License
+## Scripts
 
-MIT
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev servers (API + Vite HMR) |
+| `npm run build` | Build frontend for production |
+| `npm start` | Run production server |
+| `npm run setup` | Generate Prisma client, push schema, seed DB |
+| `npm run db:seed` | Seed default subforums |
+
+## Default Subforums
+
+- **general** — Open discussion
+- **engineering** — Tech talk, architecture, tooling
+- **product-feedback** — Feature requests & product ideas
+- **random** — Off-topic, memes, whatever
+- **wins** — Celebrate achievements
+- **gripes** — Vent constructively
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | `file:./data/trendforum.db` | SQLite database path |
+| `JWT_SECRET` | `trendforum-dev-secret...` | JWT signing secret |
+| `WIFI_PASSWORD` | `TrendForum2026` | Auth password |
+| `ADMIN_PASSWORD` | `admin-secret-change-me` | Mod dashboard password |
+| `PORT` | `3847` | API server port |

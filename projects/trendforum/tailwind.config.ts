@@ -1,21 +1,21 @@
-import type { Config } from 'tailwindcss';
-
+/** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/client/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        trend: {
-          red: '#D5232F',
-          dark: '#1a1a2e',
-          darker: '#16162a',
-          card: '#1e1e3a',
-          border: '#2a2a4a',
-          text: '#e0e0e0',
-          muted: '#8888aa',
+        forum: {
+          bg: '#1a1a2e',
+          card: '#262640',
+          hover: '#2d2d50',
+          border: '#3a3a5c',
+          muted: '#8b8baf',
+          accent: '#ff6b35',
+          upvote: '#ff4500',
+          downvote: '#7193ff',
         },
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};

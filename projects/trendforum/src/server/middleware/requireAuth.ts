@@ -4,31 +4,38 @@ import { verifyToken, TokenPayload } from '../auth.js';
 declare global {
   namespace Express {
     interface Request {
-      token?: TokenPayload;
+      tokenPayload?: TokenPayload;
     }
   }
 }
 
+/**
+ * Middleware: require a valid JWT in Authorization: Bearer <token>
+ */
 export function requireAuth(req: Request, res: Response, next: NextFunction): void {
   const header = req.headers.authorization;
   if (!header?.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Authentication required' });
+    res.status(401).json({ error: 'Missing or invalid authorization header' });
     return;
   }
 
-  const payload = verifyToken(header.slice(7));
+  const token = header.slice(7);
+  const payload = verifyToken(token);
   if (!payload) {
     res.status(401).json({ error: 'Invalid or expired token' });
     return;
   }
 
-  req.token = payload;
+  req.tokenPayload = payload;
   next();
 }
 
+/**
+ * Middleware: require admin role
+ */
 export function requireAdmin(req: Request, res: Response, next: NextFunction): void {
   requireAuth(req, res, () => {
-    if (req.token?.role !== 'admin') {
+    if (req.tokenPayload?.role !== 'admin') {
       res.status(403).json({ error: 'Admin access required' });
       return;
     }

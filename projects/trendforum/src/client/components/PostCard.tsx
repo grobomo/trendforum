@@ -1,41 +1,83 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { VoteButton } from './VoteButton';
-import { formatTimeAgo } from '../lib/time';
-import { Markdown } from './Markdown';
+import VoteButton from './VoteButton';
 
-export function PostCard({ post }: { post: any }) {
+interface Props {
+  post: any;
+  showSubforum?: boolean;
+}
+
+function timeAgo(dateStr: string): string {
+  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (seconds < 60) return 'just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+export default function PostCard({ post, showSubforum = true }: Props) {
   return (
-    <div className="bg-card border border-border rounded-md mb-2 flex hover:border-border-hover transition">
-      <VoteButton score={post.score} postId={post.id} />
-      <div className="py-1.5 sm:py-2 pr-2 sm:pr-3 flex-1 min-w-0">
-        <div className="text-xs text-muted mb-0.5 sm:mb-1">
-          <Link to={`/t/${post.subforum.slug}`} className="text-accent hover:underline">
-            t/{post.subforum.slug}
-          </Link>
-          {' '}&middot; {formatTimeAgo(post.createdAt)}
+    <div className="bg-forum-card border border-forum-border rounded-lg hover:border-forum-muted/30 transition flex">
+      {/* Vote column */}
+      <div className="flex flex-col items-center py-3 px-2 bg-forum-bg/50 rounded-l-lg">
+        <VoteButton postId={post.id} currentScore={post.score} />
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 py-3 pr-4 min-w-0">
+        {/* Meta line */}
+        <div className="flex items-center gap-2 text-xs text-forum-muted mb-1">
+          {showSubforum && post.subforum && (
+            <>
+              <Link
+                to={`/t/${post.subforum.slug}`}
+                className="font-bold text-white hover:text-forum-accent transition"
+              >
+                t/{post.subforum.slug}
+              </Link>
+              <span>·</span>
+            </>
+          )}
+          <span>{timeAgo(post.createdAt)}</span>
         </div>
-        <Link to={`/t/${post.subforum.slug}/post/${post.id}`} className="block">
-          <h2 className="text-base sm:text-lg font-medium text-text hover:text-text transition leading-snug">
-            {post.title}
-          </h2>
-          {post.body && (
-            <div className="line-clamp-3">
-              <Markdown content={post.body} className="text-sm text-muted mt-1" />
-            </div>
-          )}
-          {post.imageUrl && (
-            <img src={post.imageUrl} alt="" className="mt-2 max-h-48 rounded border border-border" loading="lazy" />
-          )}
-          {post.linkUrl && (
-            <span className="text-xs text-blue-400 mt-1 block truncate">{post.linkUrl}</span>
-          )}
+
+        {/* Title */}
+        <Link
+          to={`/t/${post.subforum?.slug || 'general'}/post/${post.id}`}
+          className="text-lg font-medium text-white hover:text-forum-accent transition leading-snug"
+        >
+          {post.title}
         </Link>
-        <div className="text-xs text-muted mt-2">
-          <Link
-            to={`/t/${post.subforum.slug}/post/${post.id}`}
-            className="hover:text-text transition"
+
+        {/* Body preview */}
+        {post.body && (
+          <p className="text-sm text-forum-muted mt-1 line-clamp-2">
+            {post.body}
+          </p>
+        )}
+
+        {/* Link */}
+        {post.linkUrl && (
+          <a
+            href={post.linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-blue-400 hover:underline mt-1 inline-block"
           >
-            {post._count?.comments || 0} comments
+            🔗 {new URL(post.linkUrl).hostname}
+          </a>
+        )}
+
+        {/* Footer */}
+        <div className="flex items-center gap-4 mt-2 text-xs text-forum-muted">
+          <Link
+            to={`/t/${post.subforum?.slug || 'general'}/post/${post.id}`}
+            className="hover:text-white transition"
+          >
+            💬 {post._count?.comments || 0} comments
           </Link>
         </div>
       </div>

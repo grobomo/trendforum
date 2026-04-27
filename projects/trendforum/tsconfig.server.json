@@ -6,9 +6,12 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "dist/server",
     "rootDir": "src/server",
-    "declaration": false
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "declaration": true
   },
   "include": ["src/server/**/*"],
   "exclude": ["node_modules"]

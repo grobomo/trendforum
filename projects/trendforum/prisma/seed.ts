@@ -3,33 +3,19 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+const subforums = [
+  { slug: 'general', name: 'General', description: 'Anything and everything Trend-related' },
+  { slug: 'engineering', name: 'Engineering', description: 'Code, architecture, and tech discussions' },
+  { slug: 'product-feedback', name: 'Product Feedback', description: 'Feature requests, UX gripes, and product ideas' },
+  { slug: 'random', name: 'Random', description: 'Off-topic, memes, water cooler chat' },
+  { slug: 'wins', name: 'Wins', description: 'Celebrate victories — big and small' },
+  { slug: 'gripes', name: 'Gripes', description: 'Vent safely. No names, no blame — just catharsis.' },
+];
+
 async function main() {
-  const wifiHash = await bcrypt.hash('demo2026', 10);
-  const adminHash = await bcrypt.hash('admin2026', 10);
+  console.log('🌱 Seeding TrendForum...');
 
-  await prisma.config.upsert({
-    where: { key: 'wifi_password_hash' },
-    update: { value: wifiHash },
-    create: { key: 'wifi_password_hash', value: wifiHash },
-  });
-
-  await prisma.config.upsert({
-    where: { key: 'admin_password_hash' },
-    update: { value: adminHash },
-    create: { key: 'admin_password_hash', value: adminHash },
-  });
-
-  const subforums = [
-    { slug: 'general', name: 'General', description: 'General discussion for all Trenders' },
-    { slug: 'engineering', name: 'Engineering', description: 'Software engineering, architecture, and tech discussions' },
-    { slug: 'product-feedback', name: 'Product Feedback', description: 'Ideas and feedback on Trend Micro products' },
-    { slug: 'random', name: 'Random', description: 'Off-topic conversations, memes, and fun stuff' },
-    { slug: 'career', name: 'Career', description: 'Career growth, interviews, and professional development' },
-    { slug: 'announcements', name: 'Announcements', description: 'Company-wide announcements and news' },
-    { slug: 'security-research', name: 'Security Research', description: 'Threat research, CVEs, and security topics' },
-    { slug: 'watercooler', name: 'Water Cooler', description: 'Casual chat — what are you up to today?' },
-  ];
-
+  // Seed subforums
   for (const sf of subforums) {
     await prisma.subforum.upsert({
       where: { slug: sf.slug },
@@ -37,41 +23,34 @@ async function main() {
       create: sf,
     });
   }
-  console.log(`Seeded ${subforums.length} subforums`);
+  console.log(`  ✅ ${subforums.length} subforums seeded`);
 
-  // Example posts
-  const general = await prisma.subforum.findUnique({ where: { slug: 'general' } });
-  const random = await prisma.subforum.findUnique({ where: { slug: 'random' } });
+  // Seed default WiFi password (changeme)
+  const hash = await bcrypt.hash('changeme', 12);
+  await prisma.config.upsert({
+    where: { key: 'wifi_password_hash' },
+    update: { value: hash },
+    create: { key: 'wifi_password_hash', value: hash },
+  });
+  console.log('  ✅ Default WiFi password set (password: "changeme")');
 
-  if (general) {
-    await prisma.post.upsert({
-      where: { id: 1 },
-      update: {},
-      create: {
-        subforumId: general.id,
-        title: 'Welcome to TrendForum!',
-        body: 'This is a safe, anonymous space for Trenders to discuss anything. No one can see who you are — not even admins. Be honest, be respectful, and have fun.',
-        score: 5,
-      },
-    });
-  }
+  // Admin password
+  const adminHash = await bcrypt.hash('admin-changeme', 12);
+  await prisma.config.upsert({
+    where: { key: 'admin_password_hash' },
+    update: { value: adminHash },
+    create: { key: 'admin_password_hash', value: adminHash },
+  });
+  console.log('  ✅ Default admin password set (password: "admin-changeme")');
 
-  if (random) {
-    await prisma.post.upsert({
-      where: { id: 2 },
-      update: {},
-      create: {
-        subforumId: random.id,
-        title: 'What are you listening to right now?',
-        body: 'Drop your current playlist or song recommendation. Need new music.',
-        score: 3,
-      },
-    });
-  }
-
-  console.log('Seed complete. Dev passwords: WiFi="demo2026", Admin="admin2026"');
+  console.log('🌴 Seeding complete!');
 }
 
 main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .catch((e) => {
+    console.error('Seeding failed:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

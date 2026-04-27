@@ -20,12 +20,9 @@ model Post {
   id         Int       @id @default(autoincrement())
   subforumId Int
   subforum   Subforum  @relation(fields: [subforumId], references: [id])
-  profileId  Int?
-  profile    Profile?  @relation(fields: [profileId], references: [id])
   title      String
   body       String?
   linkUrl    String?
-  imageUrl   String?
   score      Int       @default(0)
   createdAt  DateTime  @default(now())
   comments   Comment[]
@@ -36,12 +33,10 @@ model Post {
 model Comment {
   id          Int       @id @default(autoincrement())
   postId      Int
-  post        Post      @relation(fields: [postId], references: [id])
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   parentId    Int?
-  parent      Comment?  @relation("CommentThread", fields: [parentId], references: [id])
+  parent      Comment?  @relation("CommentThread", fields: [parentId], references: [id], onDelete: SetNull)
   children    Comment[] @relation("CommentThread")
-  profileId   Int?
-  profile     Profile?  @relation(fields: [profileId], references: [id])
   displayName String
   body        String
   score       Int       @default(0)
@@ -54,9 +49,9 @@ model Vote {
   id        Int      @id @default(autoincrement())
   tokenJti  String
   postId    Int?
-  post      Post?    @relation(fields: [postId], references: [id])
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
   commentId Int?
-  comment   Comment? @relation(fields: [commentId], references: [id])
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
   value     Int
 
   @@unique([tokenJti, postId])
@@ -66,9 +61,9 @@ model Vote {
 model Report {
   id        Int      @id @default(autoincrement())
   postId    Int?
-  post      Post?    @relation(fields: [postId], references: [id])
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
   commentId Int?
-  comment   Comment? @relation(fields: [commentId], references: [id])
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
   reason    String
   createdAt DateTime @default(now())
 }
@@ -80,15 +75,6 @@ model ModAction {
   targetType String
   reason     String?
   createdAt  DateTime @default(now())
-}
-
-model Profile {
-  id           Int       @id @default(autoincrement())
-  pseudonym    String    @unique
-  passwordHash String
-  createdAt    DateTime  @default(now())
-  posts        Post[]
-  comments     Comment[]
 }
 
 model Config {

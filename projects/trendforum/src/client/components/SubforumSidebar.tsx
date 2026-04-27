@@ -1,43 +1,52 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { api } from '../lib/api';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export function SubforumSidebar({ onNavigate }: { onNavigate?: () => void } = {}) {
-  const [subforums, setSubforums] = useState<any[]>([]);
-  const { slug } = useParams();
+interface Props {
+  subforums: any[];
+  currentSlug?: string;
+}
 
-  useEffect(() => {
-    api.subforums.list().then(setSubforums).catch(() => {});
-  }, []);
-
+export default function SubforumSidebar({ subforums, currentSlug }: Props) {
   return (
-    <div className="bg-card border border-border rounded-md p-4 lg:sticky lg:top-16">
-      <h3 className="text-sm font-bold text-text uppercase tracking-wide mb-3">Subforums</h3>
-      <div className="space-y-1">
+    <div className="bg-forum-card border border-forum-border rounded-lg overflow-hidden">
+      <div className="bg-forum-accent px-4 py-3">
+        <h3 className="font-bold text-white text-sm">Subforums</h3>
+      </div>
+
+      <div className="p-2">
         <Link
           to="/"
-          onClick={onNavigate}
-          className={`block px-2 py-1.5 rounded text-sm transition ${
-            !slug ? 'bg-border text-white' : 'text-muted hover:text-text hover:bg-border/50'
+          className={`block px-3 py-2 rounded text-sm transition ${
+            !currentSlug
+              ? 'bg-forum-hover text-white font-semibold'
+              : 'text-forum-muted hover:text-white hover:bg-forum-hover'
           }`}
         >
-          All
+          🏠 Home (All)
         </Link>
+
         {subforums.map((sf) => (
           <Link
-            key={sf.id}
+            key={sf.slug}
             to={`/t/${sf.slug}`}
-            onClick={onNavigate}
-            className={`block px-2 py-1.5 rounded text-sm transition ${
-              slug === sf.slug
-                ? 'bg-border text-white'
-                : 'text-muted hover:text-text hover:bg-border/50'
+            className={`block px-3 py-2 rounded text-sm transition ${
+              currentSlug === sf.slug
+                ? 'bg-forum-hover text-white font-semibold'
+                : 'text-forum-muted hover:text-white hover:bg-forum-hover'
             }`}
           >
-            t/{sf.slug}
-            <span className="text-xs text-dim ml-1">({sf._count?.posts || 0})</span>
+            <span className="font-medium">t/{sf.slug}</span>
+            <span className="text-xs text-forum-muted ml-2">
+              {sf._count?.posts || 0}
+            </span>
           </Link>
         ))}
+      </div>
+
+      <div className="border-t border-forum-border p-3">
+        <p className="text-xs text-forum-muted text-center">
+          🔒 Anonymous &middot; No tracking
+        </p>
       </div>
     </div>
   );

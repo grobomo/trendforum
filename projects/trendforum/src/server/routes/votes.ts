@@ -1,15 +1,26 @@
 import { Router } from 'express';
-import { prisma } from '../db.js';
+import { PrismaClient } from '@prisma/client';
 import { requireAuth } from '../middleware/requireAuth.js';
+import { apiLimiter } from '../middleware/rateLimit.js';
 
+const prisma = new PrismaClient();
 const router = Router();
 
-router.post('/vote', requireAuth, async (req, res) => {
+/**
+ * POST /api/vote
+ * Body: { postId?: number, commentId?: number, value: 1 | -1 }
+ *
+ * Voting is per-session (keyed by JWT jti).
+ * Re-voting with the same value removes the vote (toggle).
+ * Re-voting with opposite value changes it.
+ * Returns the new score after the operation.
+ */
+router.post('/', requireAuth, apiLimiter, async (req, res) => {
   const { postId, commentId, value } = req.body;
-  const tokenJti = req.token!.jti;
+  const jti = req.tokenPayload!.jti;
 
   if (value !== 1 && value !== -1) {
-    res.status(400).json({ error: 'Value must be 1 or -1' });
+    res.status(400).json({ error: 'value must be 1 or -1' });
     return;
   }
 
@@ -18,56 +29,74 @@ router.post('/vote', requireAuth, async (req, res) => {
     return;
   }
 
+  if (postId && commentId) {
+    res.status(400).json({ error: 'Vote on either a post or comment, not both' });
+    return;
+  }
+
   try {
     if (postId) {
       const existing = await prisma.vote.findUnique({
-        where: { tokenJti_postId: { tokenJti, postId } },
+        where: { tokenJti_postId: { tokenJti: jti, postId } },
       });
 
       if (existing) {
         if (existing.value === value) {
           await prisma.vote.delete({ where: { id: existing.id } });
-          await prisma.post.update({ where: { id: postId }, data: { score: { decrement: value } } });
-          res.json({ voted: null });
+          const score = await updatePostScore(postId);
+          res.json({ action: 'removed', postId, voted: null, score });
+          return;
+        } else {
+          await prisma.vote.update({ where: { id: existing.id }, data: { value } });
+          const score = await updatePostScore(postId);
+          res.json({ action: 'changed', postId, voted: value, score });
           return;
         }
-        await prisma.vote.update({ where: { id: existing.id }, data: { value } });
-        await prisma.post.update({ where: { id: postId }, data: { score: { increment: value * 2 } } });
-        res.json({ voted: value });
-        return;
       }
 
-      await prisma.vote.create({ data: { tokenJti, postId, value } });
-      await prisma.post.update({ where: { id: postId }, data: { score: { increment: value } } });
-      res.json({ voted: value });
-      return;
-    }
-
-    if (commentId) {
+      await prisma.vote.create({ data: { tokenJti: jti, postId, value } });
+      const score = await updatePostScore(postId);
+      res.json({ action: 'voted', postId, voted: value, score });
+    } else {
       const existing = await prisma.vote.findUnique({
-        where: { tokenJti_commentId: { tokenJti, commentId } },
+        where: { tokenJti_commentId: { tokenJti: jti, commentId } },
       });
 
       if (existing) {
         if (existing.value === value) {
           await prisma.vote.delete({ where: { id: existing.id } });
-          await prisma.comment.update({ where: { id: commentId }, data: { score: { decrement: value } } });
-          res.json({ voted: null });
+          const score = await updateCommentScore(commentId);
+          res.json({ action: 'removed', commentId, voted: null, score });
+          return;
+        } else {
+          await prisma.vote.update({ where: { id: existing.id }, data: { value } });
+          const score = await updateCommentScore(commentId);
+          res.json({ action: 'changed', commentId, voted: value, score });
           return;
         }
-        await prisma.vote.update({ where: { id: existing.id }, data: { value } });
-        await prisma.comment.update({ where: { id: commentId }, data: { score: { increment: value * 2 } } });
-        res.json({ voted: value });
-        return;
       }
 
-      await prisma.vote.create({ data: { tokenJti, commentId, value } });
-      await prisma.comment.update({ where: { id: commentId }, data: { score: { increment: value } } });
-      res.json({ voted: value });
+      await prisma.vote.create({ data: { tokenJti: jti, commentId, value } });
+      const score = await updateCommentScore(commentId);
+      res.json({ action: 'voted', commentId, voted: value, score });
     }
-  } catch {
-    res.status(400).json({ error: 'Vote failed' });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Vote failed' });
   }
 });
 
-export { router as votesRouter };
+async function updatePostScore(postId: number): Promise<number> {
+  const votes = await prisma.vote.findMany({ where: { postId } });
+  const score = votes.reduce((sum, v) => sum + v.value, 0);
+  await prisma.post.update({ where: { id: postId }, data: { score } });
+  return score;
+}
+
+async function updateCommentScore(commentId: number): Promise<number> {
+  const votes = await prisma.vote.findMany({ where: { commentId } });
+  const score = votes.reduce((sum, v) => sum + v.value, 0);
+  await prisma.comment.update({ where: { id: commentId }, data: { score } });
+  return score;
+}
+
+export default router;

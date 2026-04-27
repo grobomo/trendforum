@@ -1,22 +1,30 @@
-import { useSearchParams } from 'react-router-dom';
+import React from 'react';
 
-export function SortTabs({ current }: { current: string }) {
-  const [, setSearchParams] = useSearchParams();
-  const tabs = ['hot', 'new', 'top'];
+interface Props {
+  sort: string;
+  onSort: (sort: string) => void;
+}
 
+const tabs = [
+  { key: 'hot', label: '🔥 Hot' },
+  { key: 'new', label: '🆕 New' },
+  { key: 'top', label: '⬆️ Top' },
+];
+
+export default function SortTabs({ sort, onSort }: Props) {
   return (
-    <div className="flex gap-2 mb-4 bg-card border border-border rounded-md px-3 py-2">
+    <div className="bg-forum-card border border-forum-border rounded-lg flex overflow-hidden">
       {tabs.map((tab) => (
         <button
-          key={tab}
-          onClick={() => setSearchParams({ sort: tab })}
-          className={`px-3 py-1 rounded text-sm capitalize transition ${
-            current === tab
-              ? 'bg-border text-white font-medium'
-              : 'text-muted hover:text-text'
+          key={tab.key}
+          onClick={() => onSort(tab.key)}
+          className={`px-4 py-2 text-sm font-medium transition ${
+            sort === tab.key
+              ? 'bg-forum-hover text-white'
+              : 'text-forum-muted hover:bg-forum-hover hover:text-white'
           }`}
         >
-          {tab}
+          {tab.label}
         </button>
       ))}
     </div>

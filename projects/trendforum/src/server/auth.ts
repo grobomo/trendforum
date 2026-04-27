@@ -1,32 +1,54 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
+const TOKEN_EXPIRY = '24h';
 
 export interface TokenPayload {
-  role: 'member' | 'admin';
+  role: 'trender' | 'admin';
   jti: string;
-  profileId?: number;
-  pseudonym?: string;
   iat: number;
   exp: number;
 }
 
-export function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return bcrypt.compare(password, hash);
+/**
+ * Verify WiFi password against stored hash.
+ * Returns a signed JWT with NO user identifier — just role + random jti.
+ */
+export async function verifyPassword(password: string): Promise<string | null> {
+  const config = await prisma.config.findUnique({ where: { key: 'wifi_password_hash' } });
+  if (!config) return null;
+
+  const valid = await bcrypt.compare(password, config.value);
+  if (!valid) return null;
+
+  const jti = uuidv4();
+  const token = jwt.sign({ role: 'trender', jti }, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+  return token;
 }
 
-export function generateToken(role: 'member' | 'admin' = 'member', profile?: { id: number; pseudonym: string }): string {
-  const jti = crypto.randomUUID();
-  const payload: Record<string, unknown> = { role, jti };
-  if (profile) {
-    payload.profileId = profile.id;
-    payload.pseudonym = profile.pseudonym;
-  }
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+/**
+ * Verify admin password.
+ */
+export async function verifyAdminPassword(password: string): Promise<string | null> {
+  const config = await prisma.config.findUnique({ where: { key: 'admin_password_hash' } });
+  if (!config) return null;
+
+  const valid = await bcrypt.compare(password, config.value);
+  if (!valid) return null;
+
+  const jti = uuidv4();
+  const token = jwt.sign({ role: 'admin', jti }, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+  return token;
 }
 
+/**
+ * Decode and verify a JWT token. Returns payload or null.
+ */
 export function verifyToken(token: string): TokenPayload | null {
   try {
     return jwt.verify(token, JWT_SECRET) as TokenPayload;
@@ -35,9 +57,14 @@ export function verifyToken(token: string): TokenPayload | null {
   }
 }
 
-export function generateDisplayName(jti: string, postId: number, pseudonym?: string): string {
-  if (pseudonym) return pseudonym;
-  const hash = crypto.createHash('sha256').update(`${jti}:${postId}`).digest('hex');
-  const suffix = hash.substring(0, 3).toUpperCase();
-  return `Anon-${suffix}`;
+/**
+ * Generate a random per-post-tree display name like "Trender-A7x"
+ */
+export function generateDisplayName(): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let suffix = '';
+  for (let i = 0; i < 3; i++) {
+    suffix += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return `Trender-${suffix}`;
 }

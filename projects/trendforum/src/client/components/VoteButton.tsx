@@ -1,65 +1,57 @@
-import { useState } from 'react';
-import { api } from '../lib/api';
+import React, { useState } from 'react';
+import { vote } from '../lib/api';
 
-interface VoteButtonProps {
-  score: number;
+interface Props {
   postId?: number;
   commentId?: number;
-  compact?: boolean;
+  currentScore: number;
 }
 
-export function VoteButton({ score, postId, commentId, compact }: VoteButtonProps) {
-  const [currentScore, setCurrentScore] = useState(score);
-  const [voted, setVoted] = useState<1 | -1 | null>(null);
+export default function VoteButton({ postId, commentId, currentScore }: Props) {
+  const [score, setScore] = useState(currentScore);
+  const [voted, setVoted] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleVote = async (value: 1 | -1) => {
+    if (loading) return;
+    setLoading(true);
     try {
-      const res = await api.votes.vote({ postId, commentId, value });
-      if (res.voted === null) {
-        setCurrentScore((prev) => prev - value);
-        setVoted(null);
-      } else if (voted !== null && voted !== value) {
-        setCurrentScore((prev) => prev + value * 2);
-        setVoted(value);
-      } else {
-        setCurrentScore((prev) => prev + value);
-        setVoted(value);
-      }
-    } catch {}
+      const result = await vote({ postId, commentId, value });
+      setScore(result.score);
+      setVoted(result.voted);
+    } catch (err) {
+      console.error('Vote failed:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const upClass = voted === 1 ? 'text-accent' : 'text-muted';
-  const downClass = voted === -1 ? 'text-blue-400' : 'text-muted';
-  const scoreClass = currentScore > 0 ? 'text-accent' : currentScore < 0 ? 'text-blue-400' : 'text-muted';
-
-  if (compact) {
-    return (
-      <span className="inline-flex items-center gap-1 text-xs">
-        <button onClick={() => handleVote(1)} className={`${upClass} hover:text-accent transition`}>
-          +
-        </button>
-        <span className={`font-bold ${scoreClass}`}>{currentScore}</span>
-        <button onClick={() => handleVote(-1)} className={`${downClass} hover:text-blue-400 transition`}>
-          -
-        </button>
-      </span>
-    );
-  }
-
   return (
-    <div className="flex flex-col items-center w-10 py-2 bg-input rounded-l-md shrink-0">
+    <div className="flex flex-col items-center gap-0.5">
       <button
         onClick={() => handleVote(1)}
-        className={`text-lg leading-none ${upClass} hover:text-accent transition`}
+        className={`p-1 rounded hover:bg-forum-hover transition text-lg leading-none ${
+          voted === 1 ? 'text-forum-upvote' : 'text-forum-muted hover:text-forum-upvote'
+        }`}
+        title="Upvote"
       >
-        &#9650;
+        ▲
       </button>
-      <span className={`text-xs font-bold my-1 ${scoreClass}`}>{currentScore}</span>
+
+      <span className={`text-xs font-bold ${
+        score > 0 ? 'text-forum-upvote' : score < 0 ? 'text-forum-downvote' : 'text-forum-muted'
+      }`}>
+        {score}
+      </span>
+
       <button
         onClick={() => handleVote(-1)}
-        className={`text-lg leading-none ${downClass} hover:text-blue-400 transition`}
+        className={`p-1 rounded hover:bg-forum-hover transition text-lg leading-none ${
+          voted === -1 ? 'text-forum-downvote' : 'text-forum-muted hover:text-forum-downvote'
+        }`}
+        title="Downvote"
       >
-        &#9660;
+        ▼
       </button>
     </div>
   );

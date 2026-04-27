@@ -1,65 +1,48 @@
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { authRouter } from './routes/auth.js';
-import { subforumsRouter } from './routes/subforums.js';
-import { postsRouter } from './routes/posts.js';
-import { commentsRouter } from './routes/comments.js';
-import { votesRouter } from './routes/votes.js';
-import { reportsRouter } from './routes/reports.js';
-import { modRouter } from './routes/mod.js';
-import { feedRouter } from './routes/feed.js';
-import { searchRouter } from './routes/search.js';
-import { coconutRouter } from './routes/coconut.js';
-import { uploadRouter } from './routes/upload.js';
-import { profileRouter } from './routes/profile.js';
-import { apiLimiter } from './middleware/rateLimit.js';
-import { coconutBot } from './coconut/index.js';
+import authRoutes from './routes/auth.js';
+import subforumRoutes from './routes/subforums.js';
+import postRoutes, { subforumPostsRouter } from './routes/posts.js';
+import commentRoutes from './routes/comments.js';
+import voteRoutes from './routes/votes.js';
+import reportRoutes from './routes/reports.js';
+import modRoutes from './routes/mod.js';
+import feedRoutes from './routes/feed.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
-const PORT = process.env.PORT || 3847;
+const PORT = parseInt(process.env.PORT || '3847', 10);
 
+// Middleware
 app.use(cors());
-app.use(express.json({ limit: '1mb' }));
-app.disable('x-powered-by');
+app.use(compression());
+app.use(express.json());
 
-// Security headers
-app.use((_req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('Referrer-Policy', 'no-referrer');
-  next();
-});
+// API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/subforums', subforumRoutes);
+app.use('/api/subforums', subforumPostsRouter); // GET /api/subforums/:slug/posts
+app.use('/api/posts', postRoutes);
+app.use('/api/posts', commentRoutes); // POST /api/posts/:id/comments
+app.use('/api/vote', voteRoutes);
+app.use('/api/report', reportRoutes);
+app.use('/api/mod', modRoutes);
+app.use('/api/feed', feedRoutes);
 
-app.use('/api', apiLimiter);
-app.use('/api/auth', authRouter);
-app.use('/api/subforums', subforumsRouter);
-app.use('/api', postsRouter);
-app.use('/api', commentsRouter);
-app.use('/api', votesRouter);
-app.use('/api', reportsRouter);
-app.use('/api/mod', modRouter);
-app.use('/api', feedRouter);
-app.use('/api', searchRouter);
-app.use('/api/coconut', coconutRouter);
-app.use('/api', uploadRouter);
-app.use('/api/profile', profileRouter);
-
-// Serve uploaded images
-app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
-
-// Serve static files in production
-const clientDir = path.resolve(__dirname, '../client');
-app.use(express.static(clientDir));
-app.get('*', (_req, res) => {
-  res.sendFile(path.join(clientDir, 'index.html'));
-});
+// Serve static frontend in production
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const clientDist = path.join(__dirname, '../../dist/client');
+  app.use(express.static(clientDist));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`TrendForum running on http://localhost:${PORT}`);
-  if (process.env.COCONUT_AUTOSTART === '1') {
-    coconutBot.start();
-  }
 });
+
+export default app;
