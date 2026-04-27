@@ -21,7 +21,7 @@ NOTE: Session CWD may be in commit-t009 worktree — exit it first.
 - T011: Coconut LLM integration — Anthropic SDK + Claude Haiku replies, graceful fallback to templates (2026-04-27)
 - T012: User profiles / persistent identity — clickable usernames in comments, public profile pages with comment history + stats, profile comments API (2026-04-27)
 - T028: Notification badges — Prisma Notification model, /api/notifications routes (list/count/mark-read), reply notifications on comment creation, real-time push via WebSocket (profileId-targeted), NotificationBell dropdown in header (2026-04-27)
+- T029: Rate-limit WebSocket connections per IP — max 10 concurrent/IP, 20 attempts/min sliding window, close code 1008, privacy-first in-memory tracking (2026-04-27)
 
 ## Next (priority order)
-- [ ] T029: Rate-limit WebSocket connections per IP
-- [ ] T030: Polish notification UX (notification page, clear individual, notification sounds)
+- [x] T030: Polish notification UX (notification page, clear individual, notification sounds) — completed 2026-04-27
