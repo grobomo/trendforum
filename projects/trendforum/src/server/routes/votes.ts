@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/requireAuth.js';
+import { broadcast } from '../ws.js';
 
 const router = Router();
 
@@ -27,18 +28,21 @@ router.post('/vote', requireAuth, async (req, res) => {
       if (existing) {
         if (existing.value === value) {
           await prisma.vote.delete({ where: { id: existing.id } });
-          await prisma.post.update({ where: { id: postId }, data: { score: { decrement: value } } });
+          const updated = await prisma.post.update({ where: { id: postId }, data: { score: { decrement: value } } });
+          broadcast({ type: 'vote_update', postId, score: updated.score });
           res.json({ voted: null });
           return;
         }
         await prisma.vote.update({ where: { id: existing.id }, data: { value } });
-        await prisma.post.update({ where: { id: postId }, data: { score: { increment: value * 2 } } });
+        const updated = await prisma.post.update({ where: { id: postId }, data: { score: { increment: value * 2 } } });
+        broadcast({ type: 'vote_update', postId, score: updated.score });
         res.json({ voted: value });
         return;
       }
 
       await prisma.vote.create({ data: { tokenJti, postId, value } });
-      await prisma.post.update({ where: { id: postId }, data: { score: { increment: value } } });
+      const updated = await prisma.post.update({ where: { id: postId }, data: { score: { increment: value } } });
+      broadcast({ type: 'vote_update', postId, score: updated.score });
       res.json({ voted: value });
       return;
     }
@@ -51,18 +55,21 @@ router.post('/vote', requireAuth, async (req, res) => {
       if (existing) {
         if (existing.value === value) {
           await prisma.vote.delete({ where: { id: existing.id } });
-          await prisma.comment.update({ where: { id: commentId }, data: { score: { decrement: value } } });
+          const updated = await prisma.comment.update({ where: { id: commentId }, data: { score: { decrement: value } } });
+          broadcast({ type: 'vote_update', commentId, score: updated.score });
           res.json({ voted: null });
           return;
         }
         await prisma.vote.update({ where: { id: existing.id }, data: { value } });
-        await prisma.comment.update({ where: { id: commentId }, data: { score: { increment: value * 2 } } });
+        const updated = await prisma.comment.update({ where: { id: commentId }, data: { score: { increment: value * 2 } } });
+        broadcast({ type: 'vote_update', commentId, score: updated.score });
         res.json({ voted: value });
         return;
       }
 
       await prisma.vote.create({ data: { tokenJti, commentId, value } });
-      await prisma.comment.update({ where: { id: commentId }, data: { score: { increment: value } } });
+      const updated = await prisma.comment.update({ where: { id: commentId }, data: { score: { increment: value } } });
+      broadcast({ type: 'vote_update', commentId, score: updated.score });
       res.json({ voted: value });
     }
   } catch {

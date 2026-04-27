@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { VoteButton } from './VoteButton';
 import { CommentTree } from './CommentTree';
 import { formatTimeAgo } from '../lib/time';
+import { useWebSocket } from '../hooks/useWebSocket';
 
 export function PostDetail() {
   const { id, slug } = useParams<{ id: string; slug: string }>();
@@ -11,11 +12,21 @@ export function PostDetail() {
   const [commentBody, setCommentBody] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const loadPost = () => {
+  const loadPost = useCallback(() => {
     if (id) api.posts.get(parseInt(id, 10)).then(setPost).catch(() => {});
-  };
+  }, [id]);
 
-  useEffect(loadPost, [id]);
+  useEffect(loadPost, [loadPost]);
+
+  useWebSocket(useCallback((event) => {
+    const postIdNum = id ? parseInt(id, 10) : null;
+    if (event.type === 'new_comment' && event.postId === postIdNum) {
+      loadPost();
+    }
+    if (event.type === 'vote_update' && event.postId === postIdNum) {
+      setPost((prev: any) => prev ? { ...prev, score: event.score } : prev);
+    }
+  }, [id, loadPost]));
 
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
