@@ -1,55 +1,51 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import PostCard from './PostCard';
-import SortTabs from './SortTabs';
-import { usePosts } from '../hooks/usePosts';
+import { useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { api } from '../lib/api';
+import { PostCard } from './PostCard';
+import { SortTabs } from './SortTabs';
+import { useWebSocket } from '../hooks/useWebSocket';
 
-export default function HomeFeed() {
-  const [sort, setSort] = useState('hot');
-  const { data, loading, error } = usePosts(undefined, sort);
+export function HomeFeed() {
+  const [posts, setPosts] = useState<any[]>([]);
+  const [searchParams] = useSearchParams();
+  const sort = searchParams.get('sort') || 'hot';
+  const [newPostCount, setNewPostCount] = useState(0);
+
+  const loadPosts = useCallback(() => {
+    api.posts.list(sort).then(setPosts).catch(() => {});
+  }, [sort]);
+
+  useEffect(() => {
+    loadPosts();
+    setNewPostCount(0);
+  }, [loadPosts]);
+
+  useWebSocket(useCallback((event) => {
+    if (event.type === 'new_post') {
+      setNewPostCount((n) => n + 1);
+    }
+    if (event.type === 'vote_update' && event.postId) {
+      setPosts((prev) =>
+        prev.map((p) => p.id === event.postId ? { ...p, score: event.score } : p)
+      );
+    }
+  }, []));
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <SortTabs sort={sort} onSort={setSort} />
-      </div>
-
-      {loading && (
-        <div className="text-center py-12 text-forum-muted">Loading...</div>
+      <SortTabs current={sort} />
+      {newPostCount > 0 && (
+        <button
+          onClick={() => { loadPosts(); setNewPostCount(0); }}
+          className="w-full py-2 mb-3 bg-[#2a2a4a] border border-[#D5232F] rounded text-sm text-[#D5232F] hover:bg-[#D5232F] hover:text-white transition"
+        >
+          {newPostCount} new {newPostCount === 1 ? 'post' : 'posts'} — click to refresh
+        </button>
       )}
-
-      {error && (
-        <div className="text-center py-12 text-red-400">{error}</div>
-      )}
-
-      {data && data.posts.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-forum-muted text-lg">No posts yet.</p>
-          <p className="text-forum-muted mt-2">Be the first — pick a subforum and start a conversation.</p>
-        </div>
-      )}
-
-      <div className="space-y-3">
-        {data?.posts.map((post) => (
-          <PostCard key={post.id} post={post} showSubforum={true} />
-        ))}
-      </div>
-
-      {data && data.totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-6">
-          {Array.from({ length: data.totalPages }, (_, i) => (
-            <button
-              key={i}
-              className={`px-3 py-1 rounded text-sm ${
-                data.page === i + 1
-                  ? 'bg-forum-accent text-white'
-                  : 'bg-forum-card text-forum-muted hover:text-white'
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+      {posts.length === 0 ? (
+        <div className="text-center text-[#8888aa] py-12">No posts yet. Be the first!</div>
+      ) : (
+        posts.map((post) => <PostCard key={post.id} post={post} />)
       )}
     </div>
   );
