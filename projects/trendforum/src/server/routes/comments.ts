@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { requireAuth } from '../middleware/requireAuth.js';
 import { apiLimiter } from '../middleware/rateLimit.js';
 import { generateDisplayName } from '../auth.js';
+import { broadcast } from '../ws.js';
 
 const prisma = new PrismaClient();
 const router = Router();
@@ -61,6 +62,7 @@ router.post('/:postId/comments', requireAuth, apiLimiter, async (req, res) => {
     },
   });
 
+  broadcast({ type: 'new_comment', postId, commentId: comment.id });
   res.status(201).json(comment);
 });
 
