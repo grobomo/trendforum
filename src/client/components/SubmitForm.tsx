@@ -55,17 +55,17 @@ export function SubmitForm() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-bold text-text mb-4">Create a Post</h1>
+      <h1 className="text-xl font-bold text-[#e0e0e0] mb-4">Create a Post</h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-card border border-border rounded-md p-4 space-y-4"
+        className="bg-[#1e1e3a] border border-[#2a2a4a] rounded-md p-4 space-y-4"
       >
         {error && <div className="text-red-400 text-sm">{error}</div>}
 
         <select
           value={subforumId || ''}
           onChange={(e) => setSubforumId(Number(e.target.value))}
-          className="w-full bg-input border border-border rounded p-2 text-text focus:outline-none focus:border-accent transition"
+          className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-2 text-[#e0e0e0] focus:outline-none focus:border-[#D5232F] transition"
         >
           <option value="">Choose a subforum</option>
           {subforums.map((sf) => (
@@ -80,7 +80,7 @@ export function SubmitForm() {
             type="button"
             onClick={() => setPostType('text')}
             className={`px-3 py-1 rounded text-sm transition ${
-              postType === 'text' ? 'bg-border text-white' : 'text-muted'
+              postType === 'text' ? 'bg-[#2a2a4a] text-white' : 'text-[#8888aa]'
             }`}
           >
             Text
@@ -89,7 +89,7 @@ export function SubmitForm() {
             type="button"
             onClick={() => setPostType('link')}
             className={`px-3 py-1 rounded text-sm transition ${
-              postType === 'link' ? 'bg-border text-white' : 'text-muted'
+              postType === 'link' ? 'bg-[#2a2a4a] text-white' : 'text-[#8888aa]'
             }`}
           >
             Link
@@ -102,7 +102,7 @@ export function SubmitForm() {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
           maxLength={300}
-          className="w-full bg-input border border-border rounded p-2 text-text placeholder-dim focus:outline-none focus:border-accent transition"
+          className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-2 text-[#e0e0e0] placeholder-[#666688] focus:outline-none focus:border-[#D5232F] transition"
         />
 
         {postType === 'text' ? (
@@ -110,7 +110,7 @@ export function SubmitForm() {
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="Text (optional)"
-            className="w-full bg-input border border-border rounded p-3 text-text placeholder-dim resize-y min-h-[120px] focus:outline-none focus:border-accent transition"
+            className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-3 text-[#e0e0e0] placeholder-[#666688] resize-y min-h-[120px] focus:outline-none focus:border-[#D5232F] transition"
             rows={5}
           />
         ) : (
@@ -119,12 +119,12 @@ export function SubmitForm() {
             value={linkUrl}
             onChange={(e) => setLinkUrl(e.target.value)}
             placeholder="URL"
-            className="w-full bg-input border border-border rounded p-2 text-text placeholder-dim focus:outline-none focus:border-accent transition"
+            className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-2 text-[#e0e0e0] placeholder-[#666688] focus:outline-none focus:border-[#D5232F] transition"
           />
         )}
 
         <div>
-          <label className="block text-sm text-muted mb-1">Image (optional, max 5MB)</label>
+          <label className="block text-sm text-[#8888aa] mb-1">Image (optional, max 5MB)</label>
           <input
             type="file"
             accept="image/jpeg,image/png,image/gif,image/webp"
@@ -139,11 +139,11 @@ export function SubmitForm() {
                 setImagePreview(null);
               }
             }}
-            className="w-full text-sm text-muted file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-border file:text-text file:cursor-pointer hover:file:bg-[#3a3a5a] transition"
+            className="w-full text-sm text-[#8888aa] file:mr-3 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-[#2a2a4a] file:text-[#e0e0e0] file:cursor-pointer hover:file:bg-[#3a3a5a] transition"
           />
           {imagePreview && (
             <div className="mt-2 relative inline-block">
-              <img src={imagePreview} alt="Preview" className="max-h-32 rounded border border-border" />
+              <img src={imagePreview} alt="Preview" className="max-h-32 rounded border border-[#2a2a4a]" />
               <button
                 type="button"
                 onClick={() => { setImageFile(null); setImagePreview(null); }}
@@ -159,7 +159,7 @@ export function SubmitForm() {
           <button
             type="submit"
             disabled={submitting || !subforumId || !title.trim()}
-            className="px-6 py-2 bg-accent text-white rounded font-medium hover:bg-accent-hover disabled:opacity-50 transition"
+            className="px-6 py-2 bg-[#D5232F] text-white rounded font-medium hover:bg-red-700 disabled:opacity-50 transition"
           >
             {submitting ? 'Posting...' : 'Post'}
           </button>

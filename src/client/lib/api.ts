@@ -91,19 +91,4 @@ export const api = {
     create: (data: { postId?: number; commentId?: number; reason: string }) =>
       request<any>('/report', { method: 'POST', body: JSON.stringify(data) }),
   },
-  profile: {
-    register: (data: { pseudonym: string; password: string }) =>
-      request<{ token: string; profile: { id: number; pseudonym: string } }>('/profile/register', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }),
-    login: (data: { pseudonym: string; password: string }) =>
-      request<{ token: string; profile: { id: number; pseudonym: string } }>('/profile/login', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }),
-    me: () => request<{ profile: any }>('/profile/me'),
-    drop: () => request<{ token: string }>('/profile/drop', { method: 'POST' }),
-    get: (pseudonym: string) => request<{ profile: any }>(`/profile/${pseudonym}`),
-  },
 };

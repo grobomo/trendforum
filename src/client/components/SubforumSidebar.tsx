@@ -11,14 +11,14 @@ export function SubforumSidebar({ onNavigate }: { onNavigate?: () => void } = {}
   }, []);
 
   return (
-    <div className="bg-card border border-border rounded-md p-4 lg:sticky lg:top-16">
-      <h3 className="text-sm font-bold text-text uppercase tracking-wide mb-3">Subforums</h3>
+    <div className="bg-[#1e1e3a] border border-[#2a2a4a] rounded-md p-4 lg:sticky lg:top-16">
+      <h3 className="text-sm font-bold text-[#e0e0e0] uppercase tracking-wide mb-3">Subforums</h3>
       <div className="space-y-1">
         <Link
           to="/"
           onClick={onNavigate}
           className={`block px-2 py-1.5 rounded text-sm transition ${
-            !slug ? 'bg-border text-white' : 'text-muted hover:text-text hover:bg-border/50'
+            !slug ? 'bg-[#2a2a4a] text-white' : 'text-[#8888aa] hover:text-white hover:bg-[#2a2a4a]/50'
           }`}
         >
           All
@@ -30,12 +30,12 @@ export function SubforumSidebar({ onNavigate }: { onNavigate?: () => void } = {}
             onClick={onNavigate}
             className={`block px-2 py-1.5 rounded text-sm transition ${
               slug === sf.slug
-                ? 'bg-border text-white'
-                : 'text-muted hover:text-text hover:bg-border/50'
+                ? 'bg-[#2a2a4a] text-white'
+                : 'text-[#8888aa] hover:text-white hover:bg-[#2a2a4a]/50'
             }`}
           >
             t/{sf.slug}
-            <span className="text-xs text-dim ml-1">({sf._count?.posts || 0})</span>
+            <span className="text-xs text-[#666688] ml-1">({sf._count?.posts || 0})</span>
           </Link>
         ))}
       </div>

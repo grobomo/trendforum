@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { VoteButton } from './VoteButton';
 import { CommentTree } from './CommentTree';
 import { formatTimeAgo } from '../lib/time';
-import { Markdown } from './Markdown';
+import { useWebSocket } from '../hooks/useWebSocket';
 
 export function PostDetail() {
   const { id, slug } = useParams<{ id: string; slug: string }>();
@@ -12,11 +12,21 @@ export function PostDetail() {
   const [commentBody, setCommentBody] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const loadPost = () => {
+  const loadPost = useCallback(() => {
     if (id) api.posts.get(parseInt(id, 10)).then(setPost).catch(() => {});
-  };
+  }, [id]);
 
-  useEffect(loadPost, [id]);
+  useEffect(loadPost, [loadPost]);
+
+  useWebSocket(useCallback((event) => {
+    const postIdNum = id ? parseInt(id, 10) : null;
+    if (event.type === 'new_comment' && event.postId === postIdNum) {
+      loadPost();
+    }
+    if (event.type === 'vote_update' && event.postId === postIdNum) {
+      setPost((prev: any) => prev ? { ...prev, score: event.score } : prev);
+    }
+  }, [id, loadPost]));
 
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,25 +41,25 @@ export function PostDetail() {
     }
   };
 
-  if (!post) return <div className="text-muted py-8 text-center">Loading...</div>;
+  if (!post) return <div className="text-[#8888aa] py-8 text-center">Loading...</div>;
 
   return (
     <div>
-      <div className="bg-card border border-border rounded-md flex">
+      <div className="bg-[#1e1e3a] border border-[#2a2a4a] rounded-md flex">
         <VoteButton score={post.score} postId={post.id} />
         <div className="py-3 pr-4 flex-1">
-          <div className="text-xs text-muted mb-1">
-            <Link to={`/t/${slug}`} className="text-accent hover:underline">
+          <div className="text-xs text-[#8888aa] mb-1">
+            <Link to={`/t/${slug}`} className="text-[#D5232F] hover:underline">
               t/{slug}
             </Link>
             {' '}&middot; {formatTimeAgo(post.createdAt)}
           </div>
-          <h1 className="text-xl font-bold text-text">{post.title}</h1>
+          <h1 className="text-xl font-bold text-[#e0e0e0]">{post.title}</h1>
           {post.body && (
-            <Markdown content={post.body} className="mt-2 text-muted" />
+            <p className="text-[#aaaacc] mt-2 whitespace-pre-wrap">{post.body}</p>
           )}
           {post.imageUrl && (
-            <img src={post.imageUrl} alt="" className="mt-3 max-w-full rounded border border-border" loading="lazy" />
+            <img src={post.imageUrl} alt="" className="mt-3 max-w-full rounded border border-[#2a2a4a]" loading="lazy" />
           )}
           {post.linkUrl && (
             <a
@@ -66,20 +76,20 @@ export function PostDetail() {
 
       <form
         onSubmit={handleComment}
-        className="mt-4 bg-card border border-border rounded-md p-4"
+        className="mt-4 bg-[#1e1e3a] border border-[#2a2a4a] rounded-md p-4"
       >
         <textarea
           value={commentBody}
           onChange={(e) => setCommentBody(e.target.value)}
           placeholder="What are your thoughts?"
-          className="w-full bg-input border border-border rounded p-3 text-text placeholder-dim resize-y min-h-[80px] focus:outline-none focus:border-accent transition"
+          className="w-full bg-[#16162a] border border-[#2a2a4a] rounded p-3 text-[#e0e0e0] placeholder-[#666688] resize-y min-h-[80px] focus:outline-none focus:border-[#D5232F] transition"
           rows={3}
         />
         <div className="mt-2 flex justify-end">
           <button
             type="submit"
             disabled={submitting || !commentBody.trim()}
-            className="px-4 py-1.5 bg-accent text-white rounded text-sm hover:bg-accent-hover disabled:opacity-50 transition"
+            className="px-4 py-1.5 bg-[#D5232F] text-white rounded text-sm hover:bg-red-700 disabled:opacity-50 transition"
           >
             {submitting ? 'Posting...' : 'Comment'}
           </button>

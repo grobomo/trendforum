@@ -7,10 +7,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 export interface TokenPayload {
   role: 'member' | 'admin';
   jti: string;
-  profileId?: number;
-  pseudonym?: string;
   iat: number;
   exp: number;
+  profileId?: number;
+  pseudonym?: string;
 }
 
 export function verifyPassword(password: string, hash: string): Promise<boolean> {
@@ -35,8 +35,7 @@ export function verifyToken(token: string): TokenPayload | null {
   }
 }
 
-export function generateDisplayName(jti: string, postId: number, pseudonym?: string): string {
-  if (pseudonym) return pseudonym;
+export function generateDisplayName(jti: string, postId: number): string {
   const hash = crypto.createHash('sha256').update(`${jti}:${postId}`).digest('hex');
   const suffix = hash.substring(0, 3).toUpperCase();
   return `Anon-${suffix}`;

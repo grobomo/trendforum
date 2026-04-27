@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../db.js';
 import { requireAuth } from '../middleware/requireAuth.js';
+import { broadcast } from '../ws.js';
 
 const router = Router();
 
@@ -64,18 +65,8 @@ router.get('/posts', async (req, res) => {
 router.post('/posts', requireAuth, async (req, res) => {
   const { subforumId, title, body, linkUrl, imageUrl } = req.body;
 
-  if (!subforumId || !title || typeof title !== 'string') {
+  if (!subforumId || !title) {
     res.status(400).json({ error: 'subforumId and title are required' });
-    return;
-  }
-
-  if (title.length > 300) {
-    res.status(400).json({ error: 'Title must be 300 characters or less' });
-    return;
-  }
-
-  if (body && typeof body === 'string' && body.length > 40000) {
-    res.status(400).json({ error: 'Post body must be 40,000 characters or less' });
     return;
   }
 
@@ -86,17 +77,11 @@ router.post('/posts', requireAuth, async (req, res) => {
   }
 
   const post = await prisma.post.create({
-    data: {
-      subforumId,
-      title,
-      body: body || null,
-      linkUrl: linkUrl || null,
-      imageUrl: imageUrl || null,
-      profileId: req.token?.profileId || null,
-    },
+    data: { subforumId, title, body: body || null, linkUrl: linkUrl || null, imageUrl: imageUrl || null },
     include: { subforum: true },
   });
 
+  broadcast({ type: 'new_post', postId: post.id, subforumSlug: subforum.slug });
   res.status(201).json(post);
 });
 
