@@ -20,8 +20,6 @@ model Post {
   id         Int       @id @default(autoincrement())
   subforumId Int
   subforum   Subforum  @relation(fields: [subforumId], references: [id])
-  profileId  Int?
-  profile    Profile?  @relation(fields: [profileId], references: [id])
   title      String
   body       String?
   linkUrl    String?
@@ -40,8 +38,6 @@ model Comment {
   parentId    Int?
   parent      Comment?  @relation("CommentThread", fields: [parentId], references: [id])
   children    Comment[] @relation("CommentThread")
-  profileId   Int?
-  profile     Profile?  @relation(fields: [profileId], references: [id])
   displayName String
   body        String
   score       Int       @default(0)
@@ -80,15 +76,6 @@ model ModAction {
   targetType String
   reason     String?
   createdAt  DateTime @default(now())
-}
-
-model Profile {
-  id           Int       @id @default(autoincrement())
-  pseudonym    String    @unique
-  passwordHash String
-  createdAt    DateTime  @default(now())
-  posts        Post[]
-  comments     Comment[]
 }
 
 model Config {

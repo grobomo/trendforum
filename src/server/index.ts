@@ -1,7 +1,9 @@
 import express from 'express';
+import { createServer } from 'http';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { setupWebSocket } from './ws.js';
 import { authRouter } from './routes/auth.js';
 import { subforumsRouter } from './routes/subforums.js';
 import { postsRouter } from './routes/posts.js';
@@ -13,8 +15,6 @@ import { feedRouter } from './routes/feed.js';
 import { searchRouter } from './routes/search.js';
 import { coconutRouter } from './routes/coconut.js';
 import { uploadRouter } from './routes/upload.js';
-import { profileRouter } from './routes/profile.js';
-import { apiLimiter } from './middleware/rateLimit.js';
 import { coconutBot } from './coconut/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -33,7 +33,6 @@ app.use((_req, res, next) => {
   next();
 });
 
-app.use('/api', apiLimiter);
 app.use('/api/auth', authRouter);
 app.use('/api/subforums', subforumsRouter);
 app.use('/api', postsRouter);
@@ -45,7 +44,6 @@ app.use('/api', feedRouter);
 app.use('/api', searchRouter);
 app.use('/api/coconut', coconutRouter);
 app.use('/api', uploadRouter);
-app.use('/api/profile', profileRouter);
 
 // Serve uploaded images
 app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
@@ -57,7 +55,10 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(clientDir, 'index.html'));
 });
 
-app.listen(PORT, () => {
+const server = createServer(app);
+setupWebSocket(server);
+
+server.listen(PORT, () => {
   console.log(`TrendForum running on http://localhost:${PORT}`);
   if (process.env.COCONUT_AUTOSTART === '1') {
     coconutBot.start();

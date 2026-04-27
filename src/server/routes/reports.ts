@@ -7,13 +7,8 @@ const router = Router();
 router.post('/report', requireAuth, async (req, res) => {
   const { postId, commentId, reason } = req.body;
 
-  if (!reason || typeof reason !== 'string') {
+  if (!reason) {
     res.status(400).json({ error: 'Reason required' });
-    return;
-  }
-
-  if (reason.length > 1000) {
-    res.status(400).json({ error: 'Reason must be 1,000 characters or less' });
     return;
   }
 
