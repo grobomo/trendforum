@@ -17,7 +17,10 @@ NOTE: Session CWD may be in commit-t009 worktree — exit it first.
 - Fixed TS error in comments route (PR #1)
 
 - T027: WebSocket real-time updates — ws server, broadcast on post/comment/vote, client useWebSocket hook, live feeds + post detail. E2E verified: 3/3 event types.
+- T010: GitHub publish — live at https://github.com/grobomo/trendforum (public, PII-free, 2026-04-27)
+- T011: Coconut LLM integration — Anthropic SDK + Claude Haiku replies, graceful fallback to templates (2026-04-27)
 
 ## Next (priority order)
+- [ ] T012: User profiles / persistent identity across sessions
 - [ ] T028: Notification badges for unread activity
 - [ ] T029: Rate-limit WebSocket connections per IP
