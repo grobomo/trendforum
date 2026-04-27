@@ -276,6 +276,10 @@ export async function markNotificationsRead(ids?: number[]): Promise<void> {
   });
 }
 
+export async function deleteNotification(id: number): Promise<{ ok: boolean }> {
+  return request(`/notifications/${id}`, { method: 'DELETE' });
+}
+
 // --- Namespaced API object (used by newer components) ---
 
 export const api = {

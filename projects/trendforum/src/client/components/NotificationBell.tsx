@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   getNotifications,
   markNotificationsRead,
+  deleteNotification,
   NotificationItem,
 } from '../lib/api';
 import { useWebSocket, WsEvent } from '../hooks/useWebSocket';
@@ -20,6 +21,39 @@ function timeAgo(dateStr: string): string {
   if (hours < 24) return `${hours}h`;
   const days = Math.floor(hours / 24);
   return `${days}d`;
+}
+
+/** Play a short "ding" notification sound using Web Audio API */
+function playNotificationSound() {
+  // Check user preference (default: enabled)
+  const pref = localStorage.getItem('tf_notification_sound');
+  if (pref === 'false') return;
+
+  // Don't play if tab is hidden
+  if (document.hidden) return;
+
+  try {
+    const ctx = new AudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(520, ctx.currentTime);
+    oscillator.frequency.setValueAtTime(660, ctx.currentTime + 0.08);
+
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.2);
+
+    oscillator.onended = () => ctx.close();
+  } catch {
+    // AudioContext not available, silently ignore
+  }
 }
 
 export function NotificationBell({ profileId }: Props) {
@@ -46,6 +80,7 @@ export function NotificationBell({ profileId }: Props) {
         const n = event.notification as NotificationItem;
         setNotifications((prev) => [{ ...n, read: false }, ...prev].slice(0, 50));
         setUnreadCount((c) => c + 1);
+        playNotificationSound();
       }
     }, [profileId]),
     profileId,
@@ -100,6 +135,18 @@ export function NotificationBell({ profileId }: Props) {
     navigate(n.linkUrl);
   };
 
+  const handleDelete = async (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    try {
+      await deleteNotification(id);
+      const deleted = notifications.find((n) => n.id === id);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+      if (deleted && !deleted.read) {
+        setUnreadCount((c) => Math.max(0, c - 1));
+      }
+    } catch {}
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Bell button */}
@@ -140,7 +187,7 @@ export function NotificationBell({ profileId }: Props) {
           </div>
 
           {/* List */}
-          <div className="overflow-y-auto max-h-80">
+          <div className="overflow-y-auto max-h-72">
             {notifications.length === 0 ? (
               <div className="px-3 py-8 text-center text-sm text-forum-muted">
                 No notifications yet
@@ -150,22 +197,41 @@ export function NotificationBell({ profileId }: Props) {
                 <button
                   key={n.id}
                   onClick={() => handleClickNotification(n)}
-                  className={`w-full text-left px-3 py-2.5 border-b border-forum-border/50 hover:bg-forum-bg/50 transition ${
+                  className={`w-full text-left px-3 py-2.5 border-b border-forum-border/50 hover:bg-forum-bg/50 transition group ${
                     !n.read ? 'bg-forum-bg/30' : ''
                   }`}
                 >
                   <div className="flex items-start gap-2">
                     {!n.read && (
-                      <span className="mt-1.5 w-2 h-2 rounded-full bg-[#D5232F] flex-shrink-0" />
+                      <span className="mt-1.5 w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
                     )}
                     <div className={`flex-1 min-w-0 ${n.read ? 'ml-4' : ''}`}>
-                      <p className="text-sm text-[#e0e0e0] line-clamp-2">{n.message}</p>
+                      <p className={`text-sm line-clamp-2 ${n.read ? 'text-forum-muted' : 'text-[#e0e0e0]'}`}>{n.message}</p>
                       <span className="text-xs text-forum-muted">{timeAgo(n.createdAt)}</span>
                     </div>
+                    <button
+                      onClick={(e) => handleDelete(e, n.id)}
+                      className="opacity-0 group-hover:opacity-100 p-0.5 text-forum-muted hover:text-[#D5232F] transition flex-shrink-0"
+                      aria-label="Delete notification"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
                 </button>
               ))
             )}
+          </div>
+
+          {/* See all link */}
+          <div className="border-t border-forum-border px-3 py-2 text-center">
+            <button
+              onClick={() => { setOpen(false); navigate('/notifications'); }}
+              className="text-xs text-forum-accent hover:underline"
+            >
+              See all notifications
+            </button>
           </div>
         </div>
       )}

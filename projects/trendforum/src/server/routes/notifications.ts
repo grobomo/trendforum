@@ -97,4 +97,31 @@ router.post('/read', requireAuth, async (req, res) => {
   res.status(400).json({ error: 'Provide ids array or all: true' });
 });
 
+/**
+ * DELETE /api/notifications/:id
+ * Delete a single notification. Only the owner can delete.
+ */
+router.delete('/:id', requireAuth, async (req, res) => {
+  const profileId = req.tokenPayload!.profileId;
+  if (!profileId) {
+    res.status(403).json({ error: 'No profile linked' });
+    return;
+  }
+
+  const id = parseInt(req.params.id as string);
+  if (isNaN(id)) {
+    res.status(400).json({ error: 'Invalid notification id' });
+    return;
+  }
+
+  const notification = await prisma.notification.findUnique({ where: { id } });
+  if (!notification || notification.profileId !== profileId) {
+    res.status(404).json({ error: 'Notification not found' });
+    return;
+  }
+
+  await prisma.notification.delete({ where: { id } });
+  res.json({ ok: true });
+});
+
 export { router as notificationsRouter };
