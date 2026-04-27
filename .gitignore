@@ -8,3 +8,9 @@ uploads/
 .workflow-state.json
 package-lock.json
 TODO.md
+sync-publish.sh
+.github/publish.json
+prisma/data/
+prisma/migrations/
+archive/
+specs/

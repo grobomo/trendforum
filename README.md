@@ -48,9 +48,11 @@ Open http://localhost:5173 and log in with the dev password: see `prisma/seed.ts
 - Subforums with hot/new/top sorting
 - Nested comments with voting
 - Image uploads (JPEG, PNG, GIF, WebP — 5MB limit)
+- Real-time updates via WebSocket (new posts/comments appear live)
 - Content moderation (admin reports queue)
 - Coconut bot — automated community participant
 - Mobile responsive with hamburger menu
+- Per-IP WebSocket rate limiting
 - React error boundaries
 
 ## API
