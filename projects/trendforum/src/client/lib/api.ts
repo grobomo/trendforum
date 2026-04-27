@@ -74,6 +74,7 @@ export interface CommentNode {
   score: number;
   createdAt: string;
   parentId: number | null;
+  profileId: number | null;
   children: CommentNode[];
 }
 
@@ -98,6 +99,14 @@ export interface PostsResponse {
   subforum?: { id: number; slug: string; name: string; description?: string | null };
 }
 
+export interface Profile {
+  id: number;
+  username: string;
+  bio: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
+}
+
 // --- Auth ---
 
 export async function verifyPassword(password: string, admin = false): Promise<{ token: string }> {
@@ -113,13 +122,17 @@ export async function getSubforums(): Promise<SubforumInfo[]> {
   return request('/subforums');
 }
 
+export async function getSubforum(slug: string): Promise<SubforumInfo> {
+  return request(`/subforums/${slug}`);
+}
+
 // --- Posts ---
 
-export async function getAllPosts(sort = 'hot', page = 1): Promise<PostsResponse> {
+export async function getAllPosts(sort = 'hot', page = 1): Promise<any[]> {
   return request(`/posts?sort=${sort}&page=${page}`);
 }
 
-export async function getSubforumPosts(slug: string, sort = 'hot', page = 1): Promise<PostsResponse> {
+export async function getSubforumPosts(slug: string, sort = 'hot', page = 1): Promise<any[]> {
   return request(`/subforums/${slug}/posts?sort=${sort}&page=${page}`);
 }
 
@@ -195,3 +208,95 @@ export async function modAction(data: {
     body: JSON.stringify(data),
   });
 }
+
+// --- Search ---
+
+export async function searchPosts(q: string, page = 1): Promise<any[]> {
+  return request(`/search?q=${encodeURIComponent(q)}&page=${page}`);
+}
+
+// --- Profiles ---
+
+export async function createProfile(username: string, pin: string): Promise<{ token: string; profile: Profile }> {
+  return request('/profile/create', {
+    method: 'POST',
+    body: JSON.stringify({ username, pin }),
+  });
+}
+
+export async function claimProfile(username: string, pin: string): Promise<{ token: string; profile: Profile }> {
+  return request('/profile/claim', {
+    method: 'POST',
+    body: JSON.stringify({ username, pin }),
+  });
+}
+
+export async function getProfile(): Promise<{ profile: Profile | null }> {
+  return request('/profile');
+}
+
+export async function updateProfile(data: { bio?: string; avatarUrl?: string }): Promise<Profile> {
+  return request('/profile', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function getPublicProfile(username: string): Promise<Profile> {
+  return request(`/profile/${encodeURIComponent(username)}`);
+}
+
+export async function getProfileComments(username: string, page = 1): Promise<{ comments: any[]; total: number }> {
+  return request(`/profile/${encodeURIComponent(username)}/comments?page=${page}`);
+}
+
+// --- Notifications ---
+
+export interface NotificationItem {
+  id: number;
+  type: string;
+  message: string;
+  linkUrl: string;
+  read: boolean;
+  createdAt: string;
+}
+
+export async function getNotifications(unreadOnly = false, limit = 50): Promise<{ notifications: NotificationItem[]; unreadCount: number }> {
+  return request(`/notifications?unreadOnly=${unreadOnly}&limit=${limit}`);
+}
+
+export async function getNotificationCount(): Promise<{ unreadCount: number }> {
+  return request('/notifications/count');
+}
+
+export async function markNotificationsRead(ids?: number[]): Promise<void> {
+  await request('/notifications/read', {
+    method: 'POST',
+    body: JSON.stringify(ids ? { ids } : { all: true }),
+  });
+}
+
+// --- Namespaced API object (used by newer components) ---
+
+export const api = {
+  posts: {
+    list: getAllPosts,
+    bySubforum: getSubforumPosts,
+    get: getPost,
+    create: createPost,
+  },
+  comments: {
+    create: (postId: number, data: { body: string; parentId?: number }) =>
+      createComment(postId, data.body, data.parentId),
+  },
+  search: {
+    query: searchPosts,
+  },
+  profile: {
+    get: (username: string) => getPublicProfile(username).then(profile => ({ profile })),
+    me: () => getProfile(),
+    create: createProfile,
+    claim: claimProfile,
+    update: updateProfile,
+  },
+};

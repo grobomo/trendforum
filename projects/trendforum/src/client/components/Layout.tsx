@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getSubforums } from '../lib/api';
 import SubforumSidebar from './SubforumSidebar';
+import { ProfileBadge } from './ProfileBadge';
+import { NotificationBell } from './NotificationBell';
 
 interface Props {
   children: React.ReactNode;
   role: string;
+  profileId: number | null;
   onLogout: () => void;
 }
 
-export default function Layout({ children, role, onLogout }: Props) {
+export default function Layout({ children, role, profileId, onLogout }: Props) {
   const [subforums, setSubforums] = useState<any[]>([]);
   const location = useLocation();
 
@@ -28,6 +31,17 @@ export default function Layout({ children, role, onLogout }: Props) {
           </Link>
 
           <div className="flex items-center gap-4">
+            {profileId && <NotificationBell profileId={profileId} />}
+            {profileId ? (
+              <ProfileBadge profileId={profileId} />
+            ) : (
+              <Link
+                to="/profile/setup"
+                className="text-sm text-forum-muted hover:text-forum-accent transition"
+              >
+                Set Profile
+              </Link>
+            )}
             {role === 'admin' && (
               <Link
                 to="/mod"

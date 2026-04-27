@@ -40,6 +40,8 @@ model Comment {
   displayName String
   body        String
   score       Int       @default(0)
+  profileId   Int?
+  profile     Profile?  @relation(fields: [profileId], references: [id])
   createdAt   DateTime  @default(now())
   votes       Vote[]
   reports     Report[]
@@ -75,6 +77,28 @@ model ModAction {
   targetType String
   reason     String?
   createdAt  DateTime @default(now())
+}
+
+model Profile {
+  id          Int       @id @default(autoincrement())
+  username    String    @unique
+  bio         String?
+  avatarUrl   String?
+  secretHash  String
+  createdAt     DateTime       @default(now())
+  comments      Comment[]
+  notifications Notification[]
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  type      String   // 'reply' | 'mention'
+  message   String
+  linkUrl   String   // e.g. /t/general/post/5
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model Config {
